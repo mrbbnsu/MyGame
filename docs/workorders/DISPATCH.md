@@ -116,3 +116,54 @@
 2. data/art/ 加入 .gitignore；git 提交（信息：卡面资源 V2：原画下载 + 简中可得率（B2/WO-004））
 3. 完成说明（回复 PM）：探针确切结论（URL 形态+格式+!art 行为）、日/英目录探测结果、cards_raw.json 字段结论、可得率口径与数字、failed 与补充决定
 ```
+
+---
+
+## 发给【探针 Worker D】—— D1（2026-09-25 新增，v2 路线关键路径）
+
+```
+你是 Classic Duel 项目的集成探针 worker D。工作目录：E:\Game（Windows + Git Bash，Node ≥ 24 / Python 3.11 / 可用 C++ 工具链自行确认）。
+
+任务：完成工单 D1（WO-005：Phase P 探针——ocgcore + CardScripts 集成验证，P1~P4）。
+
+背景：项目已定 v2 方向（E:\Game\docs\architecture-v2.md）：规则与卡牌效果复用 Project Ignis ocgcore + CardScripts，不再自研。你的探针回答"这条路能不能走通"，产出决策数据，不是生产代码。
+
+第一步必读（按序）：
+1. E:\Game\docs\architecture-v2.md —— v2 架构与原则
+2. E:\Game\docs\workorders\WO-005-ocgcore-spike.md —— P1~P4 完整定义（每步的输入/内容/验收/失败条件/下一步）
+3. E:\Game\README.md —— 项目现状与数据主键（卡片密码 id）
+
+关键纪律：
+- P1 必须读当前版本实际代码/README/头文件，禁止凭印象设计接口
+- 四探针串行 P1→P4；单个卡住超半天，记录现象收工汇报，不死磕
+- vendor/ 一律 gitignore（体积+AGPL 边界），版本写 vendor/VERSIONS.md 并提交
+- 探针代码隔离在 spike/ocg/，不进 src/，不动其他 worker 的文件
+- 不预设 Adapter 形式；联网命令非沙箱执行
+- ⚠️ 不因"看起来集成复杂"提前判 No-Go——复杂度量化本身是交付物
+
+完成定义：
+1. docs/reports/OCGCORE_INTEGRATION_NOTES.md（P1 七要素）+ docs/reports/D1-report.md（P1~P4 结论 + 摩擦量化 + Adapter 形式建议 + Go/No-Go 建议）
+2. git 提交（信息：Phase P 探针：ocgcore+CardScripts 集成验证（D1/WO-005）），只提交报告/VERSIONS/spike 源码
+3. 完成说明（回复 PM）：四探针逐条结论、Go/No-Go 建议、最大摩擦点
+```
+
+---
+
+## 发给【WindBot 调查 Worker】—— D2（可在 D1 的 P1 笔记之后做，用户指派同一人或另一人）
+
+```
+你是 Classic Duel 项目的技术调查 worker。工作目录：E:\Game（Windows + Git Bash）。
+
+任务：完成工单 D2（WO-006：WindBot 技术调查）。纯调查，不写采用代码。
+
+第一步必读：
+1. E:\Game\docs\workorders\WO-006-windbot-evaluation.md —— 七个调查问题与结论格式
+2. E:\Game\docs\architecture-v2.md —— 我们的 Adapter 架构（评估复用边界时对照）
+
+纪律：clone 到 vendor/（gitignore，版本记 vendor/VERSIONS.md）；结论必须基于当前版本实际代码并附文件路径证据；第 6 问（Deck Executor vs 通用逻辑占比）要有量化数据；联网非沙箱执行。
+
+完成定义：
+1. docs/reports/WINDBOT_EVALUATION.md（七问逐条 + 对 AI V0 的建议 + 结论四选一：USE / PARTIAL_USE / REFERENCE_ONLY / NOT_SUITABLE）
+2. git 提交（信息：WindBot 技术调查（D2/WO-006））
+3. 完成说明（回复 PM）：结论 + 与 Adapter 的边界划分建议
+```

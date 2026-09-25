@@ -1,8 +1,9 @@
-# 效果系统规范（引擎契约）
+# 效果系统规范（引擎契约）—— ⚠️ 已归档（fallback 设计）
+
+> **归档说明（2026-09-25）**：v2 主线改用 Project Ignis CardScripts（`c{passcode}.lua`）实现卡牌效果（见 `docs/architecture-v2.md`），不再人工编写 Trigger/Target/Action 结构化效果。本文保留作为 **NO-GO 时的回退设计**；其 §11 卡牌准入清单仍被 C1 卡池初筛引用。
 
 > 引擎**不解析卡片文字**。每张卡是结构化数据，效果 = 触发时机 + 费用 + 对象 + 动作序列。
 > 加新卡 = 填数据；只有出现新的动作/时机类型时才改引擎。
-> 本文与 `data/cards/*.json` 一一对应，校验脚本 `tools/validate.js` 会检查所有枚举。
 
 ## 1. 卡片结构
 

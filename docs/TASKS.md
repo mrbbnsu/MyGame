@@ -1,147 +1,106 @@
-# 项目任务树（Classic Duel）
+# 项目任务树（Classic Duel）—— v2 方向修正版（2026-09-25）
 
-> 本文档是项目的唯一任务管理入口。每个 Phase 含：状态 / 依赖 / 任务清单 / 验收标准。
-> 任何新需求先判断归属模块（数据/规则/效果/AI/UI/模式/测试），再登记到对应 Phase，不临时堆功能。
+> 本文档是项目的唯一任务管理入口。
+> **v2 重大修正（用户方向书）**：放弃自研规则/效果引擎主线，改用 Project Ignis `ocgcore + CardScripts` 作为规则与卡牌执行层；"Classic" = 卡池选择，不再自定义规则。
+> 架构基准：`docs/architecture-v2.md` ｜ 决策过程：`docs/engine-route-assessment.md`
 
-## 模块 → 目录映射
+## 0. 修正后原则（最高优先级，覆盖旧文档冲突处）
 
-| 模块 | 目录 | 说明 |
+1. **能够让 ocgcore 负责的规则，不重新实现**（回合/阶段/召唤合法/战斗/连锁/时点/目标合法/结算/胜负全归 core）
+2. 卡牌效果 = CardScripts（`c{passcode}.lua`），不手写 Trigger/Target/Action；自然语言解析最多作为未来缺脚本的辅助
+3. "Classic" = 卡池与预设卡组选择，不是规则修改。**已取消**：每回合 3 次特殊召唤上限、简化连锁、自研召唤规则等全部自定义规则
+4. YGOCDB 只做中文显示层，不是规则真相源
+5. 自有数据层只放 metadata（enabled / pool / ai_tags / 收藏解锁 / 卡组），不改原始 CardScripts 与中文卡库
+6. 卡图语言与游戏语言解耦（`docs/card-display.md`），英文卡图不阻塞任何事
+7. **Phase P 探针结束前禁止**：手写几十张卡效、自研连锁、重写召唤规则、批量生成 T/T/A、特殊召唤限制、大规模 UI、RL、复杂搜索 AI
+
+## 1. 新优先级（P0~P8）
+
+| 优先级 | 内容 | 对应任务 | 状态 |
+|---|---|---|---|
+| **P0** | ocgcore/CardScripts 技术探针（Phase P：P1~P4） | **D1**（`WO-005`） | 📋 待派发 🔴 |
+| **P0** | WindBot 技术调查（AI V0 参照） | **D2**（`WO-006`） | 📋 待派发 |
+| P1 | 中文卡库与 ID 映射（数据层已就绪；三方 ID 对齐在 D1-P4 验证） | 数据层 + **C1** | 🔄 C1 执行中 |
+| P2 | Classic Duel Adapter（D1=GO 后开单） | 未来工单 | ⏸ 等 P0 |
+| P3 | 最小 UI（中文，原画+中文渲染卡面） | 未来工单 | ⏸ |
+| P4 | 玩家完整进行一局真实规则决斗（第一里程碑 v2） | — | ⏸ |
+| P5 | AI V0（heuristic，经 Adapter，零非法操作） | 未来工单 | ⏸ |
+| P6 | 经典卡池建立（C1 产出 + 人工挑卡 + metadata） | C1 + 后续 | 🔄 |
+| P7 | 卡组编辑器 | 未来工单 | ⏸ |
+| P8 | 扩卡与 AI 增强（AI V1 届时再评估搜索/clone/replay） | — | ⏸ |
+
+## 2. 变更清单（对既有任务的处置：KEEP / MODIFY / PAUSE / REMOVE / NEW）
+
+| 既有项 | 处置 | 说明 |
 |---|---|---|
-| Card Database | `data/` + `tools/*.py` | 卡库下载、清洗、统计、查询 |
-| Rule Engine | `src/core/` + `src/engine/` | 状态模型、区域/移动 API、回合/阶段、召唤、战斗、胜负 |
-| Effect Engine | `src/effects/`（Phase 4 起） | 结构化效果解释执行（契约：`docs/effect-system.md`） |
-| Deck System | `src/deck/` | 卡组合法性、卡池筛选、预设卡组 |
-| AI | `src/ai/` | Legal Action 消费者、评价函数、搜索（绝不直接改状态） |
-| UI | `src/ui/` | 主菜单、决斗界面、卡组编辑器 |
-| Game Modes | `src/modes/` | Free Duel、Test Mode |
-| Test Framework | `tests/` | node:test 单元/规则/AI/完整对局测试 |
+| 中文卡库数据层（cards_clean.json 等 + 工具） | **KEEP** | 核心资产，P1 优先级的主体；ID 映射由 D1-P4 验证 |
+| 卡面体系（card-display.md + B1 下载器） | **KEEP** | 与方向书 §九 完全一致 |
+| B2 原画工单（WO-004） | **KEEP** | 待派发，不阻塞主线 |
+| C1 卡池初筛（worker C 执行中） | **KEEP，语义 MODIFY** | 客观过滤规则不变；产出语义从"effect-system 可表达性"改为"**经典卡池适合度**"（排除 Link/灵摆/同调/超量核心与现代高速展开）；complexity 字段降级为参考 |
+| A1 自研规则引擎（worker A 已回报完成） | **验收后 PAUSE（冻结为 fallback）** | 交付价值：No-Go 回退路线 + 规则行为对照参考 + 测试骨架；验收后冻结，不再迭代 |
+| src/core 状态模型 + node:test 骨架 | **PAUSE（随 A1 归档）** | v2 的 GameState 来自 Adapter；测试骨架供 Adapter/UI 复用 |
+| Phase 4 自研 Effect Engine（原已冻结） | **REMOVE（主线）** | effect-system.md 归档为 fallback 设计 |
+| Phase 5 自研 Spell/Trap | **REMOVE（主线）** | ocgcore 原生处理 |
+| 每回合 3 次特殊召唤等自定义规则 | **REMOVE** | 从正式需求删除；仅存在于 fallback 代码归档（src/core/config.ts 的 specialSummonLimit 随归档保留，主线不引用） |
+| v1-rules.md / effect-system.md | **ARCHIVE** | fallback 设计文档，已加归档头注；NO-GO 时恢复 |
+| AI 计划（原 Phase 6：Minimax/clone 搜索） | **MODIFY** | AI V0 = heuristic 经 Adapter；AI V1 等 Adapter 稳定再研究（不预设 Minimax）；WindBot 调查（D2）决定复用 |
+| 原 Phase 7/8（真实卡组/扩卡） | **MODIFY** | 并入新 P4/P6/P7/P8；扩卡成本因 CardScripts 大幅下降 |
+| Phase P 探针（D1）、WindBot 调查（D2）、Adapter、metadata 层 | **NEW** | 见 P0~P2 与 §3~§5 |
 
-## 技术栈（已定）
+## 3. Phase P：OCGCore Integration Probe（D1，WO-005）
 
-- **引擎/AI/UI**：TypeScript，Node ≥ 24 直接执行（type stripping），测试用 node:test，零 npm 依赖。
-- **数据管道**：Python（`tools/`），产出 `data/cards_clean.json` 供游戏读取。
-- **主键**：卡片密码 `id`（数字）。游戏内卡牌实例用运行时 `uid` 区分同名副本。
+总目标：回答"**ocgcore + CardScripts 能否作为 Classic Duel 的真正后台规则引擎**"。产出决策数据，不是生产代码。细节（输入/内容/验收/失败条件/下一步）见工单 `docs/workorders/WO-005-ocgcore-spike.md`。
 
----
+| 探针 | 目标 | 关键验收 | 失败条件 |
+|---|---|---|---|
+| P1 | 获取并理解现有项目（读当前版本实际代码，不凭印象） | `OCGCORE_INTEGRATION_NOTES.md`（API/初始化/载卡/载脚本/消息机制/Windows 构建七要素） | 拿不到核心且无法构建 |
+| P2 | 最小 Duel（脱离 EDOPro UI） | 普通怪兽完整最小决斗（抽/召/战斗/回合推进） | API 无法脱离客户端驱动 |
+| P3 | CardScripts 真实效果卡 | 5~10 张简单卡（抽牌/破坏/改ATK/墓地特招/陷阱/触发）零自研逻辑正确执行 | 脚本无法脱离 EDOPro 加载 |
+| P4 | 中文卡库 ID 映射 | 随机 20~50 张三方对齐，"passcode 可否作统一主键"有明确结论 | 系统性 ID 不对齐 |
 
-## Phase 0：项目骨架 —— ✅ 完成（2026-09-25）
+### Go / No-Go（用户定义标准，探针后执行）
 
-- 依赖：无
-- 任务：
-  - [x] 项目目录结构（src/core、src/engine、tests、docs、data、tools）
-  - [x] Git 仓库初始化 + .gitignore
-  - [x] 配置文件（package.json / tsconfig.json / 规则配置 `src/core/config.ts`）
-  - [x] 基础日志系统（`src/core/log.ts`，分级，默认静默）
-  - [x] 测试框架（node:test，`npm test`）
-  - [x] 游戏状态数据模型（`src/core/`：CardDef / CardInstance / Zone / PlayerState / GameState / RNG）
-- 验收：`npm test` 通过冒烟测试，项目可启动。
+- **GO**：ocgcore 独立运行 ✚ CardScripts 可加载 ✚ 能读取并提交决斗选择 ✚ 中文 ID 可靠映射 ✚ Adapter 路径可接受 → 正式确定主线，开 Adapter 工单
+- **NO-GO**：仅在明确技术阻塞（Windows 构建不稳 / API 无法满足客户端控制 / CardScripts 无法脱离 EDOPro / 数据映射系统性问题）→ 重评自研路线（fallback 资产在归档区）
+- ⚠️ **不因"看起来集成复杂"提前 No-Go**——复杂度本身就是探针要量化的交付物
 
-## Phase 1：中文卡库 —— ✅ 完成（2026-09-25）
+## 4. WindBot 调查（D2，WO-006）
 
-- 依赖：Phase 0（目录约定）
-- 任务：
-  - [x] 下载 YGOCDB 整库（14325 条）并本地保存
-  - [x] 清洗为内部格式 `cards_clean.json`（14281 张，过滤 44 张 id=0 动画卡）
-  - [x] 统计报告 `docs/db-stats.md`（大类/召唤机制/魔陷种类/字段完整度）
-  - [x] 内部 Card Schema 定型（见 README 字段表）
-  - [x] Card ID 查询工具 `tools/query_card.py`
-  - [ ] YGOPRODeck 补充数据（Link 箭头/禁限表/系列）——推迟到需要时
-- 验收：✅ 通过 Card ID 可查询中文名/英文名/类型/ATK/DEF/Level/效果文字。
-- 报告：`docs/reports/phase-1-report.md`
+七问（通讯方式/合法动作获取/决策结构/可否作 AI V0/通信层复用/Deck Executor 占比量化/自定义卡组限制）→ `docs/reports/WINDBOT_EVALUATION.md`，结论 USE / PARTIAL_USE / REFERENCE_ONLY / NOT_SUITABLE。只调查不采用。
 
-## Phase 2：卡面资源 —— ✅ B1（L3 英文实体图）｜ 📋 B2 工单已备待派发
+## 5. AI 路线（v2 重定义）
 
-- **决策更新（2026-09-25，用户拍板，见 `docs/card-display.md`）**：不要求实体简中卡图。核心展示 = 原画 + 中文数据自渲染卡面（L1）；实体卡图（简中优先、日英兜底）仅作详情页资源（L2/L3）
-- B1 ✅：英文实体卡图下载器（= L3 兜底层），验收记录 `docs/reports/B1-acceptance.md`
-- B2（`docs/workorders/WO-004-card-art.md`）：原画下载器（L1，Phase 7 关键资产）+ 简中实体图可得率统计（L2）
-- 全库英文卡图跑批优先级下降（L3 是兜底层，Phase 7 前按需小批量）
-- 任务：
-  - [ ] 卡图下载器（id.jpg，本地缓存，只下载缺失，失败重试，禁止热链）
-  - [ ] 简中 → 其他版本 fallback
-- 验收：随机抽 20 张卡正确显示对应卡图。
+- **AI V0**：经 Adapter 获取当前可执行选择，heuristic/rule-based 完整打一局；会召唤、发动基础效果、攻击、选合法目标、结束回合，零非法操作
+- **AI V1**：Adapter 稳定后研究——公开 Game State 获取 / duel clone / 快速 replay / seed 确定性 / 短程搜索适配性；**不预设 Minimax，不做 RL**
 
-## Phase 3：最小 Rule Engine —— ✅ 完成（2026-09-25，待 PM 验收）
+## 6. 架构（v2）
 
-- 依赖：Phase 0
-- 范围：**只用普通怪兽**。Deck / Hand / Monster Zone / Graveyard / Draw / 通常召唤 / 盖放 / 反转召唤 / 祭品召唤 / 位置变更 / 回合 / 阶段 / 战斗 / LP / 胜负 / 手牌上限。
-- 明确不做：效果、魔法陷阱、连锁、特殊召唤（接口预留：special_summon_limit 进配置）。
-- 架构要求（WO-001 中已细化为接口契约）：统一 moveCard API、数据化 Action（legalActions/applyAction）、GameState 可 structuredClone、RNG 种子化。
-- 规则基准：`docs/v1-rules.md`（冻结版）；已固定选项：**先攻第一回合不抽牌**。
-- 任务与验收：见 A1 工单 `docs/workorders/WO-001-phase3-rule-engine.md`
-- 验收：两套普通怪兽卡组可脚本驱动完整打完一局并正确判胜，全程无非法状态。
+见 `docs/architecture-v2.md`：`UI / AI / 卡组卡池 → Adapter(JSON 协议) → ocgcore(C API) + CardScripts`；YGOCDB 独立做中文显示层；自有 metadata 层管卡池/标签/收藏。UI 与 AI 只面对 Adapter，不直接处理 core 二进制消息。
 
-## Phase 3.5：路线验证 D1 —— ocgcore 探针 —— 📋 工单已备，🔴 新关键路径候选
+## 7. 工单索引（PM 制定 → 用户派发 → worker 执行 → PM 验收）
 
-- 背景：用户提供参考方案——用 Project Ignis `ocgcore + CardScripts`（Lua 官方卡牌脚本）替代自研 Effect Engine，卡效果零边际成本。完整评估见 `docs/engine-route-assessment.md`
-- 决策：**探针先行**。三道 Go/No-Go 门：G1 Windows 获取/构建核心 → G2 无头最小对局（含效果与连锁）→ G3 适配评估（动作映射/Classic 过滤/确定性重放）
-- 影响：D1 通过 → Phase 4 取消，改为 ocgcore Adapter 路线；D1 失败 → 原计划恢复（A1 引擎兜底）
-- A1 **继续执行不停**（fallback + 规则语义参照 + 测试资产）；C1/B2 不受影响
-- 工单：`docs/workorders/WO-005-ocgcore-spike.md`
-
-## Phase 4：Effect Engine V1 —— ⏸ 冻结（待 D1 结论）
-
-- 依赖：Phase 3 ｜ **状态：冻结，等 D1（Phase 3.5）结论**
-- 若 D1 失败恢复本阶段；若 D1 通过则本阶段取消，改为 ocgcore Adapter 工单（首批工作：GameAction ↔ core 消息映射）
-- 原计划首批 Action（任务书 §16）：DRAW / DESTROY / GAIN_ATK / DAMAGE / GAIN_LP
-- 原计划任务（留档）：
-  - [ ] `src/effects/` 执行器：解释 effect-system.md 的结构化效果（timing/cost/target/actions/duration）
-  - [ ] V1 卡池数据格式 `data/cards/*.json` + 校验脚本
-  - [ ] 少量测试卡（真实卡，从 cards_clean.json 取数 + 手写结构化效果）
-- 验收：所有已支持 Action 有自动测试（能发动/不能发动/合法与非法目标/正确结算）。
-
-## Phase 5：Spell / Trap —— ⬜ 未开始
-
-- 依赖：Phase 4
-- 任务：通常魔法 / 通常陷阱 / 盖放 / 发动 / 基础 Chain（速度与后进先出，fizzle 规则）
-- 验收：玩家可用基础魔法陷阱完成一局。
-
-## Phase 6：AI V1 —— ⬜ 未开始
-
-- 依赖：Phase 3（动作模型）、Phase 5（魔陷决策）
-- 任务：Legal Action 消费者 / 基础评价函数（LP·怪兽·ATK·手牌·后场·墓地·斩杀线）/ 战斗+召唤+发动决策 / 有限深度搜索
-- 任务书 §30 专项：Test AI-001（空场直接攻击）、Test AI-002（死者苏生斩杀识别）
-- 验收：AI 全自主完整决斗，零非法操作（引擎级断言）。
-
-## Phase 7：第一批真实卡组 —— ⬜ 未开始
-
-- 依赖：Phase 4、5、6、2（卡图）
-- 任务：龙族/青眼 vs 战士族，各 40 张；Test Mode（残局构造）就绪
-- 验收：玩家 vs AI 从 8000 LP 完整对局（**第一里程碑**）。
-
-## Phase 8：扩展至 100～150 张 —— ⬜ 未开始
-
-- 依赖：Phase 7
-- 任务：按 effect-system.md 枚举能力从全库筛卡，标 SUPPORTED / PARTIAL / UNSUPPORTED
-- 验收：每张入库卡有结构化效果且通过校验脚本。
-
----
-
-## 横切任务（不属于单一 Phase）
-
-| 任务 | 归属 | 状态 |
-|---|---|---|
-| 卡池筛选（supported/complexity 打标） | Card Database | 📋 C1 已派发（worker C 执行中） |
-| Test Mode（指定 LP/手牌/墓地起局） | Game Modes | ⬜ Phase 6 前就绪（AI 残局测试依赖） |
-| YGOPRODeck 补充数据 | Card Database | ⬜ 按需 |
-| 卡图下载 | Card Database | ⏸ Phase 7 前 |
-
-## 工单索引（PM 制定 → 用户派发 → worker 执行 → PM 验收）
-
-> **编号规则：任务编号 = worker 字母 + 序号。** A1=worker A（规则引擎）、B1=worker B（卡图）、C1=worker C（卡池初筛）。
-> 工单文件名保留 WO-xxx 不变（worker 已按旧路径领取，改名会断链）。
+> 编号规则：任务编号 = worker 字母 + 序号。工单文件名沿用 WO-xxx（已派发会话按旧路径领取，勿改名）。
 
 | 任务编号 | 执行者 | 内容 | 依赖 | 优先级 | 状态 |
 |---|---|---|---|---|---|
-| A1（`workorders/WO-001-phase3-rule-engine.md`） | worker A | 最小规则引擎 + 规则测试套件 | Phase 0 ✅ | 🔴 关键路径 | ✅ 已完成（2026-09-25，待 PM 验收） |
-| B1（`workorders/WO-002-card-images.md`） | worker B | 卡图下载器（本地缓存） | Phase 1 ✅ | 🟡 可并行 | ✅ 完成，验收通过（2026-09-25，`reports/B1-acceptance.md`） |
-| B2（`workorders/WO-004-card-art.md`） | worker B | 卡面资源 V2：原画下载（L1）+ 简中可得率（L2） | B1 ✅ | 🟡 可并行 | 待派发 |
-| D1（`workorders/WO-005-ocgcore-spike.md`） | worker D（或 A 完成 A1 后） | ocgcore+CardScripts 集成探针（路线决策） | 无 | 🔴 关键路径候选 | 待派发 |
-| C1（`workorders/WO-003-v1-pool-screening.md`） | worker C | V1 卡池机器初筛打标 | Phase 1 ✅ | 🟢 低 | 已派发，执行中 |
+| A1（`WO-001`） | worker A | 自研规则引擎（fallback 资产） | — | 已降级 | ✅ worker 回报完成，**待 PM 验收**（验收后冻结归档） |
+| B1（`WO-002`） | worker B | 卡图下载器（L3） | — | — | ✅ 验收通过（`reports/B1-acceptance.md`） |
+| B2（`WO-004`） | worker B | 原画下载（L1）+ 简中可得率（L2） | B1 ✅ | 🟡 | 待派发 |
+| C1（`WO-003`） | worker C | 卡池机器初筛（语义已改为经典适合度） | — | P1/P6 | 🔄 执行中 |
+| **D1**（`WO-005`） | worker D | **Phase P 探针 P1~P4（路线决策）** | 无 | 🔴 P0 | **待派发** |
+| **D2**（`WO-006`） | worker D（D1 后）或另派 | WindBot 技术调查 | 建议 D1-P1 后 | P0 | 待派发 |
 
-> **秘书 worker**（`workorders/SECRETARY.md`）：PM 直接控制的子代理，只做跨任务小改动与验收后小修，PM 不亲手改代码。
+> 秘书 worker（`SECRETARY.md`）：PM 直接控制的小改动子代理，规则不变。
 
-## 阶段报告索引
+## 8. 归档区（fallback，不删除）
 
-- `docs/reports/phase-0-report.md`
-- `docs/reports/phase-1-report.md`
-- `docs/reports/B1-acceptance.md`（卡图下载器验收）
+- `docs/v1-rules.md`、`docs/effect-system.md`（已加归档头注）
+- src/core + src/engine（A1 交付验收后冻结）及其测试
+- 原 Phase 3~8 计划文本（git 历史可溯）
+- **恢复条件**：Phase P = NO-GO 时整体解冻，按原路线继续
+
+## 9. 阶段报告索引
+
+- `docs/reports/phase-0-report.md`、`phase-1-report.md`、`B1-acceptance.md`
+- `docs/engine-route-assessment.md`（路线决策记录）
+- 待产：`OCGCORE_INTEGRATION_NOTES.md`（D1-P1）、`D1-report.md`、`WINDBOT_EVALUATION.md`（D2）
