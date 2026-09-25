@@ -90,7 +90,7 @@
 | B2（`WO-004`） | worker B | 原画下载（L1）+ 简中可得率（L2） | B1 ✅ | 🟡 | ✅ 验收通过（`reports/B2-acceptance.md`；L1 源实测修正为 YGOPRODeck cards_cropped） |
 | C1（`WO-003`） | worker C | 卡池机器初筛（语义=经典适合度） | — | P1/P6 | ✅ 验收通过（`reports/C1-acceptance.md`，入池 2599 张候选） |
 | **D1**（`WO-005`） | worker D | **Phase P 探针 P1~P4（路线决策）** | 无 | 🔴 P0 | ✅ 验收通过，**判定 GO**（`reports/D1-acceptance.md`，提交 `feeede7`） |
-| **D2**（`WO-006`） | worker D（D1 后）或另派 | WindBot 技术调查 | 建议 D1-P1 后 | P0 | 待派发 |
+| **D2**（`WO-006`） | worker D | WindBot 技术调查 | D1 ✅ | P0 | ✅ 验收通过（`reports/D2-acceptance.md`，结论 REFERENCE_ONLY，AI V0 设计输入已沉淀） |
 | **E1**（`WO-007`） | worker E | **Adapter v0：JSON 协议服务（P2 关键路径）** | D1 ✅ GO | 🔴 P2 | 待派发 |
 
 > 秘书 worker（`SECRETARY.md`）：PM 直接控制的小改动子代理，规则不变。
