@@ -49,10 +49,11 @@
 - 验收：✅ 通过 Card ID 可查询中文名/英文名/类型/ATK/DEF/Level/效果文字。
 - 报告：`docs/reports/phase-1-report.md`
 
-## Phase 2：卡图 —— 📋 B1 已派发（worker B 执行中）
+## Phase 2：卡图 —— ✅ B1 完成（下载器就绪，样本验证通过）
 
-- 依赖：Phase 1
-- 决策：卡图不阻塞引擎/AI，可与 Phase 3 并行；Phase 7（真实卡组+UI）前必须完成。
+- 依赖：Phase 1 ｜ 执行：worker B ｜ 提交 `71aa244` ｜ 验收记录 `docs/reports/B1-acceptance.md`
+- 已完成：下载器（直链构造、跳过已有、重试、限速、运行报告）、22 张样本全部合法且抽查对图正确
+- 待用户决策：全库 14281 张跑批（约 2~3 小时 / 约 2GB，命令就绪 `python -X utf8 tools/download_images.py`）
 - 任务：
   - [ ] 卡图下载器（id.jpg，本地缓存，只下载缺失，失败重试，禁止热链）
   - [ ] 简中 → 其他版本 fallback
@@ -122,7 +123,7 @@
 | 任务编号 | 执行者 | 内容 | 依赖 | 优先级 | 状态 |
 |---|---|---|---|---|---|
 | A1（`workorders/WO-001-phase3-rule-engine.md`） | worker A | 最小规则引擎 + 规则测试套件 | Phase 0 ✅ | 🔴 关键路径 | 已派发，执行中 |
-| B1（`workorders/WO-002-card-images.md`） | worker B | 卡图下载器（本地缓存） | Phase 1 ✅ | 🟡 可并行 | 已派发，执行中 |
+| B1（`workorders/WO-002-card-images.md`） | worker B | 卡图下载器（本地缓存） | Phase 1 ✅ | 🟡 可并行 | ✅ 完成，验收通过（2026-09-25，`reports/B1-acceptance.md`） |
 | C1（`workorders/WO-003-v1-pool-screening.md`） | worker C | V1 卡池机器初筛打标 | Phase 1 ✅ | 🟢 低 | 已派发，执行中 |
 
 > **秘书 worker**（`workorders/SECRETARY.md`）：PM 直接控制的子代理，只做跨任务小改动与验收后小修，PM 不亲手改代码。
@@ -131,3 +132,4 @@
 
 - `docs/reports/phase-0-report.md`
 - `docs/reports/phase-1-report.md`
+- `docs/reports/B1-acceptance.md`（卡图下载器验收）
