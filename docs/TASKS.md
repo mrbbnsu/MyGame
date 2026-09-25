@@ -60,6 +60,8 @@
 
 ### Go / No-Go（用户定义标准，探针后执行）
 
+> **✅ 判定结果（2026-09-25）：GO**（见 `reports/D1-acceptance.md`）。ocgcore + CardScripts 正式确定为主线；P2 Adapter 工单已开（E1/WO-007）。
+
 - **GO**：ocgcore 独立运行 ✚ CardScripts 可加载 ✚ 能读取并提交决斗选择 ✚ 中文 ID 可靠映射 ✚ Adapter 路径可接受 → 正式确定主线，开 Adapter 工单
 - **NO-GO**：仅在明确技术阻塞（Windows 构建不稳 / API 无法满足客户端控制 / CardScripts 无法脱离 EDOPro / 数据映射系统性问题）→ 重评自研路线（fallback 资产在归档区）
 - ⚠️ **不因"看起来集成复杂"提前 No-Go**——复杂度本身就是探针要量化的交付物
@@ -87,8 +89,9 @@
 | B1（`WO-002`） | worker B | 卡图下载器（L3） | — | — | ✅ 验收通过（`reports/B1-acceptance.md`） |
 | B2（`WO-004`） | worker B | 原画下载（L1）+ 简中可得率（L2） | B1 ✅ | 🟡 | ✅ 验收通过（`reports/B2-acceptance.md`；L1 源实测修正为 YGOPRODeck cards_cropped） |
 | C1（`WO-003`） | worker C | 卡池机器初筛（语义=经典适合度） | — | P1/P6 | ✅ 验收通过（`reports/C1-acceptance.md`，入池 2599 张候选） |
-| **D1**（`WO-005`） | worker D | **Phase P 探针 P1~P4（路线决策）** | 无 | 🔴 P0 | **待派发** |
+| **D1**（`WO-005`） | worker D | **Phase P 探针 P1~P4（路线决策）** | 无 | 🔴 P0 | ✅ 验收通过，**判定 GO**（`reports/D1-acceptance.md`，提交 `feeede7`） |
 | **D2**（`WO-006`） | worker D（D1 后）或另派 | WindBot 技术调查 | 建议 D1-P1 后 | P0 | 待派发 |
+| **E1**（`WO-007`） | worker E | **Adapter v0：JSON 协议服务（P2 关键路径）** | D1 ✅ GO | 🔴 P2 | 待派发 |
 
 > 秘书 worker（`SECRETARY.md`）：PM 直接控制的小改动子代理，规则不变。
 

@@ -167,3 +167,34 @@
 2. git 提交（信息：WindBot 技术调查（D2/WO-006））
 3. 完成说明（回复 PM）：结论 + 与 Adapter 的边界划分建议
 ```
+
+---
+
+## 发给【Adapter Worker E】—— E1（2026-09-25 新增，D1=GO 后的 P2 关键路径）
+
+```
+你是 Classic Duel 项目的 Adapter worker E。工作目录：E:\Game（Windows + Git Bash，Node ≥ 24 / Python 3.11）。
+
+任务：完成工单 E1（WO-007：Classic Duel Adapter v0——JSON 协议服务）。
+
+背景：D1 探针已验收判定 GO（E:\Game\docs\reports\D1-acceptance.md）——ocgcore+CardScripts 正式成为规则主线。你把探针验证过的驱动能力硬化成正式 Adapter 服务：TS 侧（UI/AI）与规则引擎之间的唯一交互面。P3 最小 UI 和 P5 AI V0 都建在它上面。
+
+第一步必读（按序）：
+1. E:\Game\docs\workorders\WO-007-adapter.md —— 本任务完整定义（PM 已拍板的 5 项决策 K1~K5、协议契约、验收标准）
+2. E:\Game\docs\architecture-v2.md —— 架构原则
+3. E:\Game\docs\reports\D1-report.md 和 OCGCORE_INTEGRATION_NOTES.md —— 探针结论与技术手册（11 项坑都在里面）
+4. E:\Game\spike\ocg\ —— 探针源码（ctypes 绑定 + 26 种消息解码器 = 你的种子代码）
+5. vendor\VERSIONS.md —— 版本锚定与 DLL 构建（zig 方案）
+
+关键纪律：
+- K1~K5 拍板项直接执行不重议（Python v0 / JSON Lines over stdio / 只说 passcode / 信息隐藏红线 / 解码集中一处 ≥40 种）
+- vendor/ 不入库不改动；DLL 用现成构建脚本或封装它，不重复造
+- TS 侧零二进制解析；测试用 node:test（集成测试 spawn 真服务）
+- 不做 UI/AI/卡组合法性/中文 join（后续工单的事）
+- 卡住超半天记录后收工汇报
+
+完成定义：
+1. 工单第 5 节验收 1-6 自测通过（含信息隐藏与确定性两个专门测试）
+2. git 提交（信息：Adapter v0：JSON 协议服务（E1/WO-007））
+3. 完成说明（回复 PM）：协议偏离点、解码覆盖清单、已知限制
+```

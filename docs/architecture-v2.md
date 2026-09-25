@@ -1,6 +1,8 @@
 # Classic Duel 架构 v2（2026-09-25 用户方向书落地）
 
 > v2 修正核心：**不重新开发《游戏王》**。规则与卡牌效果复用 Project Ignis 生态（ocgcore + CardScripts）；"Classic"由卡池选择实现，不再自定义规则。本文是主线路径的架构基准，取代自研引擎路线（后者归档为 fallback，见任务树归档区）。
+>
+> **命名勘误（D1 探针实证）**：核心仓库实为 `edo9300/ygopro-core`（EDOPro 官方 submodule，AGPL-3.0，C API 11.0），俗称 ocgcore；ProjectIgnis 名下只有 CardScripts。本文统称 ocgcore。
 
 ## 1. 整体架构
 
