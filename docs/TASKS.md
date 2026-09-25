@@ -83,10 +83,10 @@
 
 | 任务编号 | 执行者 | 内容 | 依赖 | 优先级 | 状态 |
 |---|---|---|---|---|---|
-| A1（`WO-001`） | worker A | 自研规则引擎（fallback 资产） | — | 已降级 | ✅ worker 回报完成，**待 PM 验收**（验收后冻结归档） |
+| A1（`WO-001`） | worker A | 自研规则引擎（fallback 资产） | — | 已降级 | ✅ 验收通过（`reports/A1-acceptance.md`），**已冻结归档** |
 | B1（`WO-002`） | worker B | 卡图下载器（L3） | — | — | ✅ 验收通过（`reports/B1-acceptance.md`） |
 | B2（`WO-004`） | worker B | 原画下载（L1）+ 简中可得率（L2） | B1 ✅ | 🟡 | 待派发 |
-| C1（`WO-003`） | worker C | 卡池机器初筛（语义已改为经典适合度） | — | P1/P6 | 🔄 执行中 |
+| C1（`WO-003`） | worker C | 卡池机器初筛（语义=经典适合度） | — | P1/P6 | ✅ 验收通过（`reports/C1-acceptance.md`，入池 2599 张候选） |
 | **D1**（`WO-005`） | worker D | **Phase P 探针 P1~P4（路线决策）** | 无 | 🔴 P0 | **待派发** |
 | **D2**（`WO-006`） | worker D（D1 后）或另派 | WindBot 技术调查 | 建议 D1-P1 后 | P0 | 待派发 |
 
