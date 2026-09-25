@@ -88,3 +88,31 @@
 2. git 提交，信息：V1 卡池机器初筛（WO-003）
 3. 完成说明（回复给 PM）：各级数量统计、补充的黑名单词、异常卡记录
 ```
+
+---
+
+## 发给【卡面 Worker B】—— B2（2026-09-25 新增，卡面策略变更后）
+
+```
+你是 Classic Duel 项目的工具 worker B（继续负责卡面资源线）。工作目录：E:\Game（Windows + Git Bash，Python 3.11）。
+
+任务：完成工单 B2（WO-004：卡面资源体系 V2 —— 原画下载 + 简中实体图可得率）。
+
+背景：B1 验收通过后卡面策略已变更（见 E:\Game\docs\card-display.md）：游戏核心展示改用「原画 + 中文数据自渲染卡面」，实体卡图降为详情页资源。你只做数据侧，不做游戏内渲染。
+
+第一步必读（按序）：
+1. E:\Game\docs\card-display.md —— 新策略（L1 原画 / L2 简中实体图 / L3 英文实体图三层）
+2. E:\Game\docs\workorders\WO-004-card-art.md —— 本任务完整定义（探针要求、交付物、验收）
+3. E:\Game\tools\download_images.py —— 你 B1 的实现，CLI 与报告格式保持一致
+
+红线提醒：
+- 一切 URL 形态先探针实测：/ygoimg/sc/{id}.webp 和 !art 参数都是待验证假设（!art 可能是路径后缀也可能是查询参数），用 89631139 等已知 id 实测后再写批量逻辑
+- 先查 data/cards_raw.json 是否自带各语言发行/图片字段——若自带，简中可得率统计零网络请求完成
+- 只动 tools/download_art.py、data/art/、data/sc_coverage.{json,md}；不动 B1 的文件；L2/L3 不批量下载；L1 只做样本量
+- 联网命令非沙箱执行；Python 一律 python -X utf8；API 整体不可达就停下汇报
+
+完成定义：
+1. 工单第 4 节验收 1-5 自测通过
+2. data/art/ 加入 .gitignore；git 提交（信息：卡面资源 V2：原画下载 + 简中可得率（B2/WO-004））
+3. 完成说明（回复 PM）：探针确切结论（URL 形态+格式+!art 行为）、日/英目录探测结果、cards_raw.json 字段结论、可得率口径与数字、failed 与补充决定
+```
