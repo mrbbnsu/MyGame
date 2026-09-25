@@ -10,6 +10,7 @@
 |---|---|---|---|
 | ygopro-core（=架构文档所称 "ocgcore"） | https://github.com/edo9300/ygopro-core | commit `efc21aa433b88cd35b7c37db4072a35c58d9d435`（master，2026-09-25T08:05Z） | C API 11.0；EDOPro 官方 submodule 指向此仓（ProjectIgnis/ocgcore 仓库名不存在） |
 | CardScripts | https://github.com/ProjectIgnis/CardScripts | commit `3e09ff8b3ce089b8e6197e095ee60f86a832a568`（master，2026-09-25T06:09Z） | official/ 12702+ 卡脚本（发行版 script/ 为同源拷贝） |
+| WindBot Ignite（D2 调查，仅参考不集成） | https://github.com/ProjectIgnis/windbot | commit `bffe6b62679c8b2fafea8f59740e03a132517da4`（master，2026-08-27T18:52Z） | AGPL-3.0；结论见 docs/reports/WINDBOT_EVALUATION.md |
 | Lua（core 子模块） | https://github.com/lua/lua | submodule SHA `6e22fedb74cf0c9b6656e9fce8b7331db847c605`（5.4 开发树，35 个 .c） | 与 core 捆绑编译，按 C++ 编译 |
 
 ## EDOPro 发行包（cards.cdb 来源）
