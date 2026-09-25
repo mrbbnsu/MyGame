@@ -60,7 +60,7 @@
   - [ ] 简中 → 其他版本 fallback
 - 验收：随机抽 20 张卡正确显示对应卡图。
 
-## Phase 3：最小 Rule Engine —— 📋 A1 已派发（worker A 执行中）
+## Phase 3：最小 Rule Engine —— ✅ 完成（2026-09-25，待 PM 验收）
 
 - 依赖：Phase 0
 - 范围：**只用普通怪兽**。Deck / Hand / Monster Zone / Graveyard / Draw / 通常召唤 / 盖放 / 反转召唤 / 祭品召唤 / 位置变更 / 回合 / 阶段 / 战斗 / LP / 胜负 / 手牌上限。
@@ -70,11 +70,20 @@
 - 任务与验收：见 A1 工单 `docs/workorders/WO-001-phase3-rule-engine.md`
 - 验收：两套普通怪兽卡组可脚本驱动完整打完一局并正确判胜，全程无非法状态。
 
-## Phase 4：Effect Engine V1 —— ⬜ 未开始
+## Phase 3.5：路线验证 D1 —— ocgcore 探针 —— 📋 工单已备，🔴 新关键路径候选
 
-- 依赖：Phase 3
-- 首批 Action（任务书 §16）：DRAW / DESTROY / GAIN_ATK / DAMAGE / GAIN_LP
-- 任务：
+- 背景：用户提供参考方案——用 Project Ignis `ocgcore + CardScripts`（Lua 官方卡牌脚本）替代自研 Effect Engine，卡效果零边际成本。完整评估见 `docs/engine-route-assessment.md`
+- 决策：**探针先行**。三道 Go/No-Go 门：G1 Windows 获取/构建核心 → G2 无头最小对局（含效果与连锁）→ G3 适配评估（动作映射/Classic 过滤/确定性重放）
+- 影响：D1 通过 → Phase 4 取消，改为 ocgcore Adapter 路线；D1 失败 → 原计划恢复（A1 引擎兜底）
+- A1 **继续执行不停**（fallback + 规则语义参照 + 测试资产）；C1/B2 不受影响
+- 工单：`docs/workorders/WO-005-ocgcore-spike.md`
+
+## Phase 4：Effect Engine V1 —— ⏸ 冻结（待 D1 结论）
+
+- 依赖：Phase 3 ｜ **状态：冻结，等 D1（Phase 3.5）结论**
+- 若 D1 失败恢复本阶段；若 D1 通过则本阶段取消，改为 ocgcore Adapter 工单（首批工作：GameAction ↔ core 消息映射）
+- 原计划首批 Action（任务书 §16）：DRAW / DESTROY / GAIN_ATK / DAMAGE / GAIN_LP
+- 原计划任务（留档）：
   - [ ] `src/effects/` 执行器：解释 effect-system.md 的结构化效果（timing/cost/target/actions/duration）
   - [ ] V1 卡池数据格式 `data/cards/*.json` + 校验脚本
   - [ ] 少量测试卡（真实卡，从 cards_clean.json 取数 + 手写结构化效果）
@@ -123,9 +132,10 @@
 
 | 任务编号 | 执行者 | 内容 | 依赖 | 优先级 | 状态 |
 |---|---|---|---|---|---|
-| A1（`workorders/WO-001-phase3-rule-engine.md`） | worker A | 最小规则引擎 + 规则测试套件 | Phase 0 ✅ | 🔴 关键路径 | 已派发，执行中 |
+| A1（`workorders/WO-001-phase3-rule-engine.md`） | worker A | 最小规则引擎 + 规则测试套件 | Phase 0 ✅ | 🔴 关键路径 | ✅ 已完成（2026-09-25，待 PM 验收） |
 | B1（`workorders/WO-002-card-images.md`） | worker B | 卡图下载器（本地缓存） | Phase 1 ✅ | 🟡 可并行 | ✅ 完成，验收通过（2026-09-25，`reports/B1-acceptance.md`） |
 | B2（`workorders/WO-004-card-art.md`） | worker B | 卡面资源 V2：原画下载（L1）+ 简中可得率（L2） | B1 ✅ | 🟡 可并行 | 待派发 |
+| D1（`workorders/WO-005-ocgcore-spike.md`） | worker D（或 A 完成 A1 后） | ocgcore+CardScripts 集成探针（路线决策） | 无 | 🔴 关键路径候选 | 待派发 |
 | C1（`workorders/WO-003-v1-pool-screening.md`） | worker C | V1 卡池机器初筛打标 | Phase 1 ✅ | 🟢 低 | 已派发，执行中 |
 
 > **秘书 worker**（`workorders/SECRETARY.md`）：PM 直接控制的子代理，只做跨任务小改动与验收后小修，PM 不亲手改代码。
