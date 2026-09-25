@@ -49,7 +49,7 @@
 - 验收：✅ 通过 Card ID 可查询中文名/英文名/类型/ATK/DEF/Level/效果文字。
 - 报告：`docs/reports/phase-1-report.md`
 
-## Phase 2：卡图 —— 📋 工单已定义，可并行分发（WO-002）
+## Phase 2：卡图 —— 📋 B1 已派发（worker B 执行中）
 
 - 依赖：Phase 1
 - 决策：卡图不阻塞引擎/AI，可与 Phase 3 并行；Phase 7（真实卡组+UI）前必须完成。
@@ -58,14 +58,14 @@
   - [ ] 简中 → 其他版本 fallback
 - 验收：随机抽 20 张卡正确显示对应卡图。
 
-## Phase 3：最小 Rule Engine —— 📋 工单已定义，待分发（WO-001）
+## Phase 3：最小 Rule Engine —— 📋 A1 已派发（worker A 执行中）
 
 - 依赖：Phase 0
 - 范围：**只用普通怪兽**。Deck / Hand / Monster Zone / Graveyard / Draw / 通常召唤 / 盖放 / 反转召唤 / 祭品召唤 / 位置变更 / 回合 / 阶段 / 战斗 / LP / 胜负 / 手牌上限。
 - 明确不做：效果、魔法陷阱、连锁、特殊召唤（接口预留：special_summon_limit 进配置）。
 - 架构要求（WO-001 中已细化为接口契约）：统一 moveCard API、数据化 Action（legalActions/applyAction）、GameState 可 structuredClone、RNG 种子化。
 - 规则基准：`docs/v1-rules.md`（冻结版）；已固定选项：**先攻第一回合不抽牌**。
-- 任务与验收：见 `docs/workorders/WO-001-phase3-rule-engine.md`
+- 任务与验收：见 A1 工单 `docs/workorders/WO-001-phase3-rule-engine.md`
 - 验收：两套普通怪兽卡组可脚本驱动完整打完一局并正确判胜，全程无非法状态。
 
 ## Phase 4：Effect Engine V1 —— ⬜ 未开始
@@ -109,18 +109,23 @@
 
 | 任务 | 归属 | 状态 |
 |---|---|---|
-| 卡池筛选（supported/complexity 打标） | Card Database | 📋 初筛工单 WO-003，可并行分发 |
+| 卡池筛选（supported/complexity 打标） | Card Database | 📋 C1 已派发（worker C 执行中） |
 | Test Mode（指定 LP/手牌/墓地起局） | Game Modes | ⬜ Phase 6 前就绪（AI 残局测试依赖） |
 | YGOPRODeck 补充数据 | Card Database | ⬜ 按需 |
 | 卡图下载 | Card Database | ⏸ Phase 7 前 |
 
-## 工单索引（PM 制定，用户分发，完成后 PM 验收）
+## 工单索引（PM 制定 → 用户派发 → worker 执行 → PM 验收）
 
-| 工单 | 内容 | 依赖 | 优先级 | 状态 |
-|---|---|---|---|---|
-| `workorders/WO-001-phase3-rule-engine.md` | 最小规则引擎 + 规则测试套件 | Phase 0（已完成） | 🔴 关键路径 | 待分发 |
-| `workorders/WO-002-card-images.md` | 卡图下载器（本地缓存） | Phase 1（已完成） | 🟡 可并行 | 待分发 |
-| `workorders/WO-003-v1-pool-screening.md` | V1 卡池机器初筛打标 | Phase 1（已完成） | 🟢 低 | 待分发 |
+> **编号规则：任务编号 = worker 字母 + 序号。** A1=worker A（规则引擎）、B1=worker B（卡图）、C1=worker C（卡池初筛）。
+> 工单文件名保留 WO-xxx 不变（worker 已按旧路径领取，改名会断链）。
+
+| 任务编号 | 执行者 | 内容 | 依赖 | 优先级 | 状态 |
+|---|---|---|---|---|---|
+| A1（`workorders/WO-001-phase3-rule-engine.md`） | worker A | 最小规则引擎 + 规则测试套件 | Phase 0 ✅ | 🔴 关键路径 | 已派发，执行中 |
+| B1（`workorders/WO-002-card-images.md`） | worker B | 卡图下载器（本地缓存） | Phase 1 ✅ | 🟡 可并行 | 已派发，执行中 |
+| C1（`workorders/WO-003-v1-pool-screening.md`） | worker C | V1 卡池机器初筛打标 | Phase 1 ✅ | 🟢 低 | 已派发，执行中 |
+
+> **秘书 worker**（`workorders/SECRETARY.md`）：PM 直接控制的子代理，只做跨任务小改动与验收后小修，PM 不亲手改代码。
 
 ## 阶段报告索引
 

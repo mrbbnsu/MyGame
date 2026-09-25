@@ -1,5 +1,7 @@
 # WO-002：Phase 2 卡图下载器（Python）
 
+> **任务编号 B1 ｜ 执行：worker B。** 文件名保留 WO-002 不变（已派发会话按此路径领取，勿改名）。
+
 > 优先级：🟡 可与 WO-001 并行（Phase 7 前必须完成）
 > 依赖：Phase 1 已完成（`data/cards_clean.json`，14281 张，主键 = 卡片密码 id）
 > 本工单自包含；只改 `tools/` 与 `data/images/`，不碰引擎代码。
