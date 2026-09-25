@@ -1,0 +1,2768 @@
+{
+ "probe": "WO-005 P2 最小对局",
+ "core_api_version": "11.0",
+ "core_commit": "efc21aa433b88cd35b7c37db4072a35c58d9d435",
+ "duel_flags": "DUEL_TEST_MODE(0x1)，MR5 默认规则",
+ "seed": [
+  539363621,
+  1,
+  2,
+  3
+ ],
+ "deck": {
+  "p0": [
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467
+  ],
+  "p1": [
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467,
+   47226949,
+   43096270,
+   14575467
+  ]
+ },
+ "final": {
+  "lp": {
+   "0": 8000,
+   "1": 0
+  },
+  "turns": 5,
+  "winner": 0,
+  "win_reason": 1,
+  "retries": 0
+ },
+ "verification": {
+  "无 RETRY": {
+   "pass": true,
+   "detail": "retries=0"
+  },
+  "决斗已结束": {
+   "pass": true,
+   "detail": "winner=0 reason=1"
+  },
+  "赢家符合预期": {
+   "pass": true,
+   "detail": "winner=0"
+  },
+  "对手 LP 归零": {
+   "pass": true,
+   "detail": "LP={0: 8000, 1: 0}"
+  },
+  "发生通常召唤": {
+   "pass": true,
+   "detail": "[{'turn': 1, 'player': 0, 'code': 14575467, 'seq': 0, 'pos': 1}, {'turn': 3, 'player': 0, 'code': 43096270, 'seq': 1, 'pos': 1}]"
+  },
+  "发生攻击": {
+   "pass": true,
+   "detail": "8 条战斗消息"
+  },
+  "对手受到战斗伤害": {
+   "pass": true,
+   "detail": "伤害明细=[2000, 2000, 2000, 2000]"
+  },
+  "回合数≥3": {
+   "pass": true,
+   "detail": "turns=5"
+  },
+  "先攻第 1 回合无抽牌（现行规则）": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "first_turn_draw_p0": [],
+ "transcript": [
+  {
+   "msg": 90,
+   "name": "DRAW",
+   "player": 0,
+   "cards": [
+    {
+     "code": 14575467,
+     "pos": 10
+    },
+    {
+     "code": 43096270,
+     "pos": 10
+    },
+    {
+     "code": 47226949,
+     "pos": 10
+    },
+    {
+     "code": 14575467,
+     "pos": 10
+    },
+    {
+     "code": 43096270,
+     "pos": 10
+    }
+   ],
+   "_consumed": 45
+  },
+  {
+   "msg": 90,
+   "name": "DRAW",
+   "player": 1,
+   "cards": [
+    {
+     "code": 14575467,
+     "pos": 10
+    },
+    {
+     "code": 43096270,
+     "pos": 10
+    },
+    {
+     "code": 47226949,
+     "pos": 10
+    },
+    {
+     "code": 14575467,
+     "pos": 10
+    },
+    {
+     "code": 43096270,
+     "pos": 10
+    }
+   ],
+   "_consumed": 45
+  },
+  {
+   "msg": 40,
+   "name": "NEW_TURN",
+   "turn_player": 0,
+   "_consumed": 1
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 1,
+   "phase_name": "DRAW",
+   "_consumed": 2
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 2,
+   "phase_name": "STANDBY",
+   "_consumed": 2
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 4,
+   "phase_name": "MAIN1",
+   "_consumed": 2
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 0,
+   "summonable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 4
+    }
+   ],
+   "spsummonable": [],
+   "repositionable": [],
+   "msetable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 4
+    }
+   ],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 0,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 128
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "03006b67de0000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 18,
+   "name": "SELECT_PLACE",
+   "player": 0,
+   "count": 1,
+   "flag": 4294967264,
+   "_consumed": 6
+  },
+  {
+   "msg": 50,
+   "name": "MOVE",
+   "code": 14575467,
+   "from": {
+    "con": 0,
+    "loc": 2,
+    "seq": 0,
+    "pos": 10
+   },
+   "to": {
+    "con": 0,
+    "loc": 4,
+    "seq": 0,
+    "pos": 1
+   },
+   "reason": 33555456,
+   "_consumed": 28
+  },
+  {
+   "msg": 60,
+   "name": "SUMMONING",
+   "code": 14575467,
+   "at": {
+    "con": 0,
+    "loc": 4,
+    "seq": 0,
+    "pos": 1
+   },
+   "_consumed": 14
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 61,
+   "name": "SUMMONED",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 64,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 64,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 0,
+   "summonable": [],
+   "spsummonable": [],
+   "repositionable": [],
+   "msetable": [],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 0,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 28
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011700000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 512,
+   "phase_name": "END",
+   "_consumed": 2
+  },
+  {
+   "msg": 40,
+   "name": "NEW_TURN",
+   "turn_player": 1,
+   "_consumed": 1
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 1,
+   "phase_name": "DRAW",
+   "_consumed": 2
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 90,
+   "name": "DRAW",
+   "player": 1,
+   "cards": [
+    {
+     "code": 47226949,
+     "pos": 10
+    }
+   ],
+   "_consumed": 13
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 2162688,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 2162688,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 2,
+   "phase_name": "STANDBY",
+   "_consumed": 2
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 4,
+   "phase_name": "MAIN1",
+   "_consumed": 2
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 1,
+   "summonable": [
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 4
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 5
+    }
+   ],
+   "spsummonable": [],
+   "repositionable": [],
+   "msetable": [
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 4
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 5
+    }
+   ],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 1,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 148
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001700000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 512,
+   "phase_name": "END",
+   "_consumed": 2
+  },
+  {
+   "msg": 40,
+   "name": "NEW_TURN",
+   "turn_player": 0,
+   "_consumed": 1
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 1,
+   "phase_name": "DRAW",
+   "_consumed": 2
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 90,
+   "name": "DRAW",
+   "player": 0,
+   "cards": [
+    {
+     "code": 47226949,
+     "pos": 10
+    }
+   ],
+   "_consumed": 13
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 2162688,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 2162688,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 2,
+   "phase_name": "STANDBY",
+   "_consumed": 2
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 4,
+   "phase_name": "MAIN1",
+   "_consumed": 2
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 0,
+   "summonable": [
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 4
+    }
+   ],
+   "spsummonable": [],
+   "repositionable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 4,
+     "seq": 0
+    }
+   ],
+   "msetable": [
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 4
+    }
+   ],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 1,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 135
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "0300ce98910200000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 18,
+   "name": "SELECT_PLACE",
+   "player": 0,
+   "count": 1,
+   "flag": 4294967265,
+   "_consumed": 6
+  },
+  {
+   "msg": 50,
+   "name": "MOVE",
+   "code": 43096270,
+   "from": {
+    "con": 0,
+    "loc": 2,
+    "seq": 0,
+    "pos": 10
+   },
+   "to": {
+    "con": 0,
+    "loc": 4,
+    "seq": 1,
+    "pos": 1
+   },
+   "reason": 33555456,
+   "_consumed": 28
+  },
+  {
+   "msg": 60,
+   "name": "SUMMONING",
+   "code": 43096270,
+   "at": {
+    "con": 0,
+    "loc": 4,
+    "seq": 1,
+    "pos": 1
+   },
+   "_consumed": 14
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 61,
+   "name": "SUMMONED",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 64,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 64,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 0,
+   "summonable": [],
+   "spsummonable": [],
+   "repositionable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 4,
+     "seq": 0
+    }
+   ],
+   "msetable": [],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 1,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 35
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011700000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 8,
+   "phase_name": "BATTLE_START",
+   "_consumed": 2
+  },
+  {
+   "msg": 10,
+   "name": "SELECT_BATTLECMD",
+   "player": 0,
+   "activatable": [],
+   "attackable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 4,
+     "seq": 0,
+     "direct": 1
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 4,
+     "seq": 1,
+     "direct": 1
+    }
+   ],
+   "to_m2": 1,
+   "to_ep": 1,
+   "_consumed": 27
+  },
+  {
+   "msg": 110,
+   "name": "ATTACK",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 0,
+    "pos": 1
+   },
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "_consumed": 20
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 4096,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4096,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 113,
+   "name": "DAMAGE_STEP_START",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 8192,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 8192,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16384,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 16384,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 111,
+   "name": "BATTLE",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 0,
+    "pos": 1
+   },
+   "aa": 2000,
+   "ad": 0,
+   "bd0": 0,
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "da": 0,
+   "dd": 0,
+   "bd1": 0,
+   "_consumed": 38
+  },
+  {
+   "msg": 91,
+   "name": "DAMAGE",
+   "player": 1,
+   "amount": 2000,
+   "_consumed": 5
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 134217728,
+   "timing_p1": 134348800,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 134348800,
+   "timing_p1": 134217728,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002c00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012c00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 114,
+   "name": "DAMAGE_STEP_END",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 10,
+   "name": "SELECT_BATTLECMD",
+   "player": 0,
+   "activatable": [],
+   "attackable": [
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 4,
+     "seq": 1,
+     "direct": 1
+    }
+   ],
+   "to_m2": 1,
+   "to_ep": 1,
+   "_consumed": 19
+  },
+  {
+   "msg": 110,
+   "name": "ATTACK",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 1,
+    "pos": 1
+   },
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "_consumed": 20
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 4096,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4096,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 113,
+   "name": "DAMAGE_STEP_START",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 8192,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 8192,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16384,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 16384,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 111,
+   "name": "BATTLE",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 1,
+    "pos": 1
+   },
+   "aa": 2000,
+   "ad": 100,
+   "bd0": 0,
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "da": 0,
+   "dd": 0,
+   "bd1": 0,
+   "_consumed": 38
+  },
+  {
+   "msg": 91,
+   "name": "DAMAGE",
+   "player": 1,
+   "amount": 2000,
+   "_consumed": 5
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 134217728,
+   "timing_p1": 134348800,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 134348800,
+   "timing_p1": 134217728,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002c00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012c00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 114,
+   "name": "DAMAGE_STEP_END",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 10,
+   "name": "SELECT_BATTLECMD",
+   "player": 0,
+   "activatable": [],
+   "attackable": [],
+   "to_m2": 1,
+   "to_ep": 1,
+   "_consumed": 11
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011d00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 67108864,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 256,
+   "phase_name": "MAIN2",
+   "_consumed": 2
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 0,
+   "summonable": [],
+   "spsummonable": [],
+   "repositionable": [],
+   "msetable": [],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 0,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 28
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011700000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 512,
+   "phase_name": "END",
+   "_consumed": 2
+  },
+  {
+   "msg": 40,
+   "name": "NEW_TURN",
+   "turn_player": 1,
+   "_consumed": 1
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 1,
+   "phase_name": "DRAW",
+   "_consumed": 2
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 90,
+   "name": "DRAW",
+   "player": 1,
+   "cards": [
+    {
+     "code": 14575467,
+     "pos": 10
+    }
+   ],
+   "_consumed": 13
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 2162688,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 2162688,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 2,
+   "phase_name": "STANDBY",
+   "_consumed": 2
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 4,
+   "phase_name": "MAIN1",
+   "_consumed": 2
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 1,
+   "summonable": [
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 4
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 5
+    },
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 6
+    }
+   ],
+   "spsummonable": [],
+   "repositionable": [],
+   "msetable": [
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 43096270,
+     "con": 1,
+     "loc": 2,
+     "seq": 4
+    },
+    {
+     "code": 47226949,
+     "con": 1,
+     "loc": 2,
+     "seq": 5
+    },
+    {
+     "code": 14575467,
+     "con": 1,
+     "loc": 2,
+     "seq": 6
+    }
+   ],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 1,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 168
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001700000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 512,
+   "phase_name": "END",
+   "_consumed": 2
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "0301f501000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 15,
+   "name": "SELECT_CARD",
+   "player": 1,
+   "cancelable": 0,
+   "min": 1,
+   "max": 1,
+   "cards": [
+    {
+     "code": 14575467,
+     "at": {
+      "con": 1,
+      "loc": 2,
+      "seq": 0,
+      "pos": 10
+     }
+    },
+    {
+     "code": 43096270,
+     "at": {
+      "con": 1,
+      "loc": 2,
+      "seq": 1,
+      "pos": 10
+     }
+    },
+    {
+     "code": 47226949,
+     "at": {
+      "con": 1,
+      "loc": 2,
+      "seq": 2,
+      "pos": 10
+     }
+    },
+    {
+     "code": 14575467,
+     "at": {
+      "con": 1,
+      "loc": 2,
+      "seq": 3,
+      "pos": 10
+     }
+    },
+    {
+     "code": 43096270,
+     "at": {
+      "con": 1,
+      "loc": 2,
+      "seq": 4,
+      "pos": 10
+     }
+    },
+    {
+     "code": 47226949,
+     "at": {
+      "con": 1,
+      "loc": 2,
+      "seq": 5,
+      "pos": 10
+     }
+    },
+    {
+     "code": 14575467,
+     "at": {
+      "con": 1,
+      "loc": 2,
+      "seq": 6,
+      "pos": 10
+     }
+    }
+   ],
+   "_consumed": 112
+  },
+  {
+   "msg": 50,
+   "name": "MOVE",
+   "code": 14575467,
+   "from": {
+    "con": 1,
+    "loc": 2,
+    "seq": 0,
+    "pos": 10
+   },
+   "to": {
+    "con": 1,
+    "loc": 16,
+    "seq": 0,
+    "pos": 5
+   },
+   "reason": 17664,
+   "_consumed": 28
+  },
+  {
+   "msg": 40,
+   "name": "NEW_TURN",
+   "turn_player": 0,
+   "_consumed": 1
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 1,
+   "phase_name": "DRAW",
+   "_consumed": 2
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 90,
+   "name": "DRAW",
+   "player": 0,
+   "cards": [
+    {
+     "code": 14575467,
+     "pos": 10
+    }
+   ],
+   "_consumed": 13
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 2162688,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 2162688,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 2,
+   "phase_name": "STANDBY",
+   "_consumed": 2
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 4,
+   "phase_name": "MAIN1",
+   "_consumed": 2
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 0,
+   "summonable": [
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 4
+    }
+   ],
+   "spsummonable": [],
+   "repositionable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 4,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 4,
+     "seq": 1
+    }
+   ],
+   "msetable": [
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 0
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 1
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 2,
+     "seq": 2
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 2,
+     "seq": 3
+    },
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 2,
+     "seq": 4
+    }
+   ],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 1,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 142
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "030045a0d00200000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 18,
+   "name": "SELECT_PLACE",
+   "player": 0,
+   "count": 1,
+   "flag": 4294967267,
+   "_consumed": 6
+  },
+  {
+   "msg": 50,
+   "name": "MOVE",
+   "code": 47226949,
+   "from": {
+    "con": 0,
+    "loc": 2,
+    "seq": 0,
+    "pos": 10
+   },
+   "to": {
+    "con": 0,
+    "loc": 4,
+    "seq": 2,
+    "pos": 1
+   },
+   "reason": 33555456,
+   "_consumed": 28
+  },
+  {
+   "msg": 60,
+   "name": "SUMMONING",
+   "code": 47226949,
+   "at": {
+    "con": 0,
+    "loc": 4,
+    "seq": 2,
+    "pos": 1
+   },
+   "_consumed": 14
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 61,
+   "name": "SUMMONED",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 64,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 64,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 11,
+   "name": "SELECT_IDLECMD",
+   "player": 0,
+   "summonable": [],
+   "spsummonable": [],
+   "repositionable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 4,
+     "seq": 0
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 4,
+     "seq": 1
+    }
+   ],
+   "msetable": [],
+   "ssetable": [],
+   "activatable": [],
+   "to_bp": 1,
+   "to_ep": 1,
+   "can_shuffle": 1,
+   "_consumed": 42
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011700000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 41,
+   "name": "NEW_PHASE",
+   "phase": 8,
+   "phase_name": "BATTLE_START",
+   "_consumed": 2
+  },
+  {
+   "msg": 10,
+   "name": "SELECT_BATTLECMD",
+   "player": 0,
+   "activatable": [],
+   "attackable": [
+    {
+     "code": 14575467,
+     "con": 0,
+     "loc": 4,
+     "seq": 0,
+     "direct": 1
+    },
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 4,
+     "seq": 1,
+     "direct": 1
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 4,
+     "seq": 2,
+     "direct": 1
+    }
+   ],
+   "to_m2": 1,
+   "to_ep": 1,
+   "_consumed": 35
+  },
+  {
+   "msg": 110,
+   "name": "ATTACK",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 0,
+    "pos": 1
+   },
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "_consumed": 20
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 4096,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4096,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 113,
+   "name": "DAMAGE_STEP_START",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 8192,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 8192,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16384,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 16384,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 111,
+   "name": "BATTLE",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 0,
+    "pos": 1
+   },
+   "aa": 2000,
+   "ad": 0,
+   "bd0": 0,
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "da": 0,
+   "dd": 0,
+   "bd1": 0,
+   "_consumed": 38
+  },
+  {
+   "msg": 91,
+   "name": "DAMAGE",
+   "player": 1,
+   "amount": 2000,
+   "_consumed": 5
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012b00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 134217728,
+   "timing_p1": 134348800,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 134348800,
+   "timing_p1": 134217728,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002c00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012c00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 114,
+   "name": "DAMAGE_STEP_END",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 10,
+   "name": "SELECT_BATTLECMD",
+   "player": 0,
+   "activatable": [],
+   "attackable": [
+    {
+     "code": 43096270,
+     "con": 0,
+     "loc": 4,
+     "seq": 1,
+     "direct": 1
+    },
+    {
+     "code": 47226949,
+     "con": 0,
+     "loc": 4,
+     "seq": 2,
+     "direct": 1
+    }
+   ],
+   "to_m2": 1,
+   "to_ep": 1,
+   "_consumed": 27
+  },
+  {
+   "msg": 110,
+   "name": "ATTACK",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 1,
+    "pos": 1
+   },
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "_consumed": 20
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 4096,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 4096,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01001800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01011800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16777216,
+   "timing_p1": 16777216,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 113,
+   "name": "DAMAGE_STEP_START",
+   "hex": "",
+   "_raw_len": 0
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012800000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012900000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 8192,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 8192,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01002a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 2,
+   "name": "HINT",
+   "hex": "01012a00000000000000",
+   "_raw_len": 10
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 0,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 16384,
+   "timing_p1": 0,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 16,
+   "name": "SELECT_CHAIN",
+   "player": 1,
+   "spe_count": 0,
+   "forced": 0,
+   "timing_p0": 0,
+   "timing_p1": 16384,
+   "chains": [],
+   "_consumed": 15
+  },
+  {
+   "msg": 111,
+   "name": "BATTLE",
+   "attacker": {
+    "con": 0,
+    "loc": 4,
+    "seq": 1,
+    "pos": 1
+   },
+   "aa": 2000,
+   "ad": 100,
+   "bd0": 0,
+   "target": {
+    "con": 0,
+    "loc": 0,
+    "seq": 0,
+    "pos": 0
+   },
+   "da": 0,
+   "dd": 0,
+   "bd1": 0,
+   "_consumed": 38
+  },
+  {
+   "msg": 91,
+   "name": "DAMAGE",
+   "player": 1,
+   "amount": 2000,
+   "_consumed": 5
+  },
+  {
+   "msg": 5,
+   "name": "WIN",
+   "winner": 0,
+   "reason": 1,
+   "_consumed": 2
+  }
+ ],
+ "script_log": [
+  "[script-missing] b'c0.lua'",
+  "[script-missing] b'c14575467.lua'",
+  "[script-missing] b'c47226949.lua'",
+  "[script-missing] b'c43096270.lua'"
+ ]
+}

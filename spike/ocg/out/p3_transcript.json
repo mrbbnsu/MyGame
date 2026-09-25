@@ -1,0 +1,117 @@
+{
+ "probe": "WO-005 P3 CardScripts 验证",
+ "cards": {
+  "55144522": "Pot of Greed",
+  "53129443": "Dark Hole",
+  "83764718": "Monster Reborn",
+  "83011277": "Mystic Tomato",
+  "44095762": "Mirror Force",
+  "70046172": "Rush Recklessly",
+  "32864": "The 13th Grave",
+  "47226949": "Leotron"
+ },
+ "final_lp": {
+  "0": 7400,
+  "1": 6600
+ },
+ "turns": 7,
+ "evidence": {
+  "action.summon.83011277": true,
+  "action.set.70046172": true,
+  "action.set.44095762": true,
+  "action.activate.55144522": true,
+  "pot.draw2": {
+   "turn": 3,
+   "codes": [
+    47226949,
+    47226949
+   ]
+  },
+  "action.summon.47226949": true,
+  "action.select.47226949": true,
+  "spsummon": [
+   {
+    "turn": 5,
+    "code": 32864,
+    "con": 0
+   },
+   {
+    "turn": 7,
+    "code": 47226949,
+    "con": 0
+   }
+  ],
+  "action.select.32864": true,
+  "action.chain.70046172": true,
+  "action.chain.44095762": true,
+  "t3_raw_query": [
+   {
+    "1": 32864,
+    "2": 1,
+    "8": 17,
+    "16": 3,
+    "256": 1900,
+    "512": 900,
+    "1048576": 1
+   }
+  ],
+  "rush.atk_on_field": 1900,
+  "mirror.p1_mzone": [],
+  "t5_checked": true,
+  "action.activate.83764718": true,
+  "action.activate.53129443": true,
+  "darkhole.after": {
+   "p0": [],
+   "p1": []
+  },
+  "darkhole.verified": true
+ },
+ "verification": {
+  "55144522 强欲之壶：抽 2 张": {
+   "pass": true,
+   "detail": "{'turn': 3, 'codes': [47226949, 47226949]}"
+  },
+  "83011277 杀人番茄：战斗破坏→卡组特召 32864": {
+   "pass": true,
+   "detail": "[{'turn': 5, 'code': 32864, 'con': 0}]"
+  },
+  "70046172 突进：32864 ATK 1200→1900": {
+   "pass": true,
+   "detail": "1900"
+  },
+  "70046172 突进：连锁发动成功": {
+   "pass": true,
+   "detail": ""
+  },
+  "44095762 圣防：p1 怪兽区清空": {
+   "pass": true,
+   "detail": "[]"
+  },
+  "44095762 圣防：连锁发动成功": {
+   "pass": true,
+   "detail": ""
+  },
+  "83764718 死者苏生：特召对方墓地 47226949": {
+   "pass": true,
+   "detail": "[{'turn': 7, 'code': 47226949, 'con': 0}]"
+  },
+  "53129443 黑洞：双方怪兽区清空": {
+   "pass": true,
+   "detail": "{'p0': [], 'p1': []}"
+  },
+  "直接攻击造成战斗伤害(8000-1400)": {
+   "pass": true,
+   "detail": "{0: 7400, 1: 6600}"
+  },
+  "无 RETRY": {
+   "pass": true,
+   "detail": "0"
+  }
+ },
+ "script_log": [
+  "[script-missing] b'c0.lua'",
+  "[script-missing] b'c32864.lua'",
+  "[script-missing] b'c47226949.lua'"
+ ],
+ "transcript_msgs": 338
+}

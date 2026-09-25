@@ -4,3 +4,9 @@ node_modules/
 __pycache__/
 data/images/
 data/art/
+
+# WO-005 探针：ocgcore/CardScripts/EDOPro 原始资产不进库（体积+AGPL），版本见 vendor/VERSIONS.md
+vendor/*
+!vendor/VERSIONS.md
+spike/ocg/out/*
+!spike/ocg/out/*.json

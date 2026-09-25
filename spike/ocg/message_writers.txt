@@ -1,0 +1,3502 @@
+
+========== MSG_SELECT_IDLECMD @ playerop.cpp:72 ==========
+new_message(MSG_SELECT_IDLECMD);
+		message->write<uint8_t>(playerid);
+		//idle summon
+		message->write<uint32_t>(core.summonable_cards.size());
+		for(auto& pcard : core.summonable_cards) {
+			message->write<uint32_t>(pcard->data.code);
+			message->write<uint8_t>(pcard->current.controler);
+			message->write<uint8_t>(pcard->current.location);
+			message->write<uint32_t>(pcard->current.sequence);
+		}
+		//idle spsummon
+		message->write<uint32_t>(core.spsummonable_cards.size());
+		for(auto& pcard : core.spsummonable_cards) {
+			message->write<uint32_t>(pcard->data.code);
+			message->write<uint8_t>(pcard->current.controler);
+			message->write<uint8_t>(pcard->current.location);
+			message->write<uint32_t>(pcard->current.sequence);
+		}
+		//idle pos change
+		message->write<uint32_t>(core.repositionable_cards.size());
+		for(auto& pcard : core.repositionable_cards) {
+			message->write<uint32_t>(pca
+
+========== MSG_SELECT_BATTLECMD @ playerop.cpp:21 ==========
+new_message(MSG_SELECT_BATTLECMD);
+		message->write<uint8_t>(playerid);
+		//Activatable
+		message->write<uint32_t>(core.select_chains.size());
+		core.select_chains.sort(chain::chain_operation_sort);
+		for(const auto& ch : core.select_chains) {
+			effect* peffect = ch.triggering_effect;
+			card* pcard = peffect->get_handler();
+			message->write<uint32_t>(pcard->data.code);
+			message->write<uint8_t>(pcard->current.controler);
+			message->write<uint8_t>(pcard->current.location);
+			message->write<uint32_t>(pcard->current.sequence);
+			message->write<uint64_t>(peffect->description);
+			message->write<uint8_t>(peffect->get_client_mode());
+		}
+		//Attackable
+		message->write<uint32_t>(core.attackable_cards.size());
+		for(auto& pcard : core.attackable_cards) {
+			message->write<uint32_t>(pcard->data.code);
+			message->write<uint8_t>(pcard->current.controler);
+			message->write<uint8_t>(pcard->
+
+========== MSG_SELECT_CARD @ playerop.cpp:306 ==========
+new_message(MSG_SELECT_CARD);
+		message->write<uint8_t>(playerid);
+		message->write<uint8_t>(cancelable || min == 0);
+		message->write<uint32_t>(min);
+		message->write<uint32_t>(max);
+		message->write<uint32_t>((uint32_t)core.select_cards.size());
+		std::sort(core.select_cards.begin(), core.select_cards.end(), card::card_operation_sort);
+		for(auto& pcard : core.select_cards) {
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+		}
+		return FALSE;
+	} else {
+		if(!parse_response_cards(cancelable || min == 0)) {
+			return_cards.clear();
+			pduel->
+
+========== MSG_SELECT_CARD @ playerop.cpp:361 ==========
+new_message(MSG_SELECT_CARD);
+		message->write<uint8_t>(playerid);
+		message->write<uint8_t>(cancelable || min == 0);
+		message->write<uint32_t>(min);
+		message->write<uint32_t>(max);
+		message->write<uint32_t>((uint32_t)core.select_cards_codes.size());
+		for(const auto& obj : core.select_cards_codes) {
+			message->write<uint32_t>(obj.first);
+			message->write(loc_info{ playerid, 0, 0, 0 });
+		}
+		return FALSE;
+	} else {
+		if(!::parse_response_cards(returns, return_card_codes, core.select_cards_codes, cancelable || min == 0)) {
+			return_card_codes.clear();
+			pduel->
+
+========== MSG_SELECT_CHAIN @ playerop.cpp:477 ==========
+new_message(MSG_SELECT_CHAIN);
+		message->write<uint8_t>(playerid);
+		message->write<uint8_t>(spe_count);
+		message->write<uint8_t>(forced);
+		message->write<uint32_t>(core.hint_timing[playerid]);
+		message->write<uint32_t>(core.hint_timing[1 - playerid]);
+		core.select_chains.sort(chain::chain_operation_sort);
+		message->write<uint32_t>(core.select_chains.size());
+		for(const auto& ch : core.select_chains) {
+			effect* peffect = ch.triggering_effect;
+			card* pcard = peffect->get_handler();
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+			message->write<uint64_t>(peffect->description);
+			message->write<uint8_t>(peffect->get_client_mode());
+		}
+		return FALSE;
+	} else {
+		if(!forced && returns.at<int32_t>(0) == -1)
+			return TRUE;
+		if(returns.at<int32_t>(0) < 0 || returns.at<int32_t>(0) >= (int32_t)core.select_chains.size()) {
+			pduel->n
+
+========== MSG_SELECT_EFFECTYN @ playerop.cpp:169 ==========
+new_message(MSG_SELECT_EFFECTYN);
+		message->write<uint8_t>(playerid);
+		message->write<uint32_t>(pcard->data.code);
+		message->write(pcard->get_info_location());
+		message->write<uint64_t>(description);
+		returns.set<int32_t>(0, -1);
+		return FALSE;
+	} else {
+		if(returns.at<int32_t>(0) != 0 && returns.at<int32_t>(0) != 1) {
+			pduel->
+
+========== MSG_SELECT_YESNO @ playerop.cpp:192 ==========
+new_message(MSG_SELECT_YESNO);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(description);
+		returns.set<int32_t>(0, -1);
+		return FALSE;
+	} else {
+		if(returns.at<int32_t>(0) != 0 && returns.at<int32_t>(0) != 1) {
+			pduel->
+
+========== MSG_SELECT_OPTION @ playerop.cpp:220 ==========
+new_message(MSG_SELECT_OPTION);
+		message->write<uint8_t>(playerid);
+		message->write<uint8_t>(static_cast<uint8_t>(core.select_options.size()));
+		for(auto& option : core.select_options)
+			message->write<uint64_t>(option);
+		return FALSE;
+	} else {
+		if(returns.at<int32_t>(0) < 0 || returns.at<int32_t>(0) >= (int32_t)core.select_options.size()) {
+			pduel->
+
+========== MSG_NEW_TURN @ processor.cpp:3334 ==========
+new_message(MSG_NEW_TURN);
+		message->write<uint8_t>(turn_player);
+		if(!is_flag(DUEL_RELAY) && infos.turn_id != 1)
+			tag_swap(turn_player);
+		if(is_player_affected_by_effect(infos.turn_player, EFFECT_SKIP_TURN)) {
+			arg.step = 18;
+			reset_phase(PHASE_DRAW);
+			reset_phase(PHASE_STANDBY);
+			reset_phase(PHASE_END);
+			adjust_all();
+			return FALSE;
+		}
+		infos.phase = PHASE_DRAW;
+		core.phase_action = false;
+		core.hand_adjusted = false;
+		raise_event(nullptr, EVENT_PHASE_START + PHASE_DRAW, nullptr, 0, 0, turn_player, 0);
+		process_instant_event();
+		adjust_all();
+		return FALSE;
+	}
+	case 2: {
+		core.new_fchain.clear();
+		core.new_ochain.clear();
+		core.quick_f_chain.clear();
+		core.delayed_quick_tmp.clear();
+		if(is_player_affected_by_effect(infos.turn_player, EFFECT_SKIP_DP) || core.force_turn_end) {
+			arg.step = 3;
+			reset_phase(PHASE_DRAW);
+			adjust_all();
+			return FALSE;
+		}
+
+========== MSG_NEW_PHASE @ processor.cpp:2787 ==========
+new_message(MSG_NEW_PHASE);
+			message->write<uint16_t>(PHASE_BATTLE_START);
+			reset_phase(PHASE_BATTLE_START);
+			reset_phase(PHASE_BATTLE_STEP);
+			reset_phase(PHASE_BATTLE);
+			adjust_all();
+			message = pduel->
+
+========== MSG_NEW_PHASE @ processor.cpp:2793 ==========
+new_message(MSG_NEW_PHASE);
+			message->write<uint16_t>(infos.phase);
+			return TRUE;
+		}
+		arg.backup_phase = infos.phase;
+		auto tmp_attacker = core.forced_attacker;
+		auto tmp_attack_target = core.forced_attack_target;
+		if(!tmp_attacker->is_capable_attack_announce(infos.turn_player))
+			return TRUE;
+		card_vector cv;
+		get_attack_target(tmp_attacker, &cv);
+		if((cv.size() == 0 && tmp_attacker->direct_attackable == 0) || (tmp_attack_target && std::find(cv.begin(), cv.end(), tmp_attack_target)==cv.end()))
+			return TRUE;
+		core.attacker = tmp_attacker;
+		core.attack_target = tmp_attack_target;
+		for(uint8_t p = 0; p < 2; ++p) {
+			for(auto& pcard : player[p].list_mzone) {
+				if(!pcard)
+					continue;
+				pcard->attack_announce_count = 0;
+				pcard->announce_count = 0;
+				pcard->attacked_count = 0;
+				pcard->announced_cards.clear();
+				pcard->attacked_cards.clear();
+				pcard->battl
+
+========== MSG_NEW_PHASE @ processor.cpp:2832 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(PHASE_BATTLE_START);
+		emplace_process<Processors::BattleCommand>(Step{ 1 }, nullptr, true);
+		return FALSE;
+	}
+	case 1: {
+		reset_phase(infos.phase);
+		infos.phase = arg.backup_phase;
+		core.new_fchain.clear();
+		core.new_ochain.clear();
+		core.quick_f_chain.clear();
+		core.delayed_quick_tmp.clear();
+		for(uint8_t p = 0; p < 2; ++p) {
+			for(auto& pcard : player[p].list_mzone) {
+				if(!pcard)
+					continue;
+				pcard->attack_announce_count = 0;
+				pcard->announce_count = 0;
+				pcard->attacked_count = 0;
+				pcard->announced_cards.clear();
+				pcard->attacked_cards.clear();
+				pcard->battled_cards.clear();
+			}
+		}
+		core.attacker = nullptr;
+		core.attack_target = nullptr;
+		auto message = pduel->
+
+========== MSG_NEW_PHASE @ processor.cpp:2858 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(infos.phase);
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+bool field::process(Processors::DamageStep& arg) {
+	auto new_attack = arg.new_attack;
+	switch(arg.step) {
+	case 0: {
+		if(core.effect_damage_step && !new_attack)
+			return TRUE;
+		core.effect_damage_step = 1;
+		std::swap(core.attacker, arg.attacker);
+		std::swap(core.attack_target, arg.attack_target);
+		arg.backup_phase = infos.phase;
+		if(core.attacker->current.location != LOCATION_MZONE || (core.attack_target && core.attack_target->current.location != LOCATION_MZONE)) {
+			arg.step = 2;
+			return FALSE;
+		}
+		if(new_attack) {
+			++core.attack_state_count[infos.turn_player];
+			++core.battled_count[infos.turn_player];
+			check_card_counter(core.attacker, ACTIVITY_ATTACK, infos.turn_player);
+		}
+		core.attacker->announced_cards.addcard(core.attack_target);
+		attack_all_target_check()
+
+========== MSG_NEW_PHASE @ processor.cpp:3365 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(infos.phase);
+		raise_event(nullptr, EVENT_PREDRAW, nullptr, 0, 0, turn_player, 0);
+		process_instant_event();
+		message = pduel->
+
+========== MSG_NEW_PHASE @ processor.cpp:3414 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(infos.phase);
+		raise_event(nullptr, EVENT_PHASE_START + PHASE_STANDBY, nullptr, 0, 0, turn_player, 0);
+		process_instant_event();
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 6: {
+		// EVENT_PHASE_START + PHASE_STANDBY is a special case(c89642993)
+		if(core.new_fchain.size() || core.new_ochain.size() || core.instant_event.back().event_code != EVENT_PHASE_START + PHASE_STANDBY)
+			emplace_process<Processors::PointEvent>(false, false, false);
+		emplace_process<Processors::PhaseEvent>(PHASE_STANDBY);
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 7: {
+		//Main1
+		infos.phase = PHASE_MAIN1;
+		core.phase_action = false;
+		raise_event(nullptr, EVENT_PHASE_START + PHASE_MAIN1, nullptr, 0, 0, turn_player, 0);
+		process_ins
+
+========== MSG_NEW_PHASE @ processor.cpp:3450 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(infos.phase);
+		emplace_process<Processors::IdleCommand>();
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 10: {
+		if(returns.at<int32_t>(0) == 7) { // End Phase
+			arg.step = 15;
+			return FALSE;
+		}
+		infos.phase = PHASE_BATTLE_START;
+		core.new_fchain.clear();
+		core.new_ochain.clear();
+		core.quick_f_chain.clear();
+		core.delayed_quick_tmp.clear();
+		core.phase_action = false;
+		++core.battle_phase_count[infos.turn_player];
+		auto message = pduel->
+
+========== MSG_NEW_PHASE @ processor.cpp:3469 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(infos.phase);
+		// Show the texts to indicate that BP is entered and skipped
+		if(is_player_affected_by_effect(infos.turn_player, EFFECT_SKIP_BP) || core.force_turn_end) {
+			arg.step = 15;
+			reset_phase(PHASE_BATTLE_START);
+			reset_phase(PHASE_BATTLE_STEP);
+			reset_phase(PHASE_BATTLE);
+			adjust_all();
+			/*if(core.set_forced_attack)
+				emplace_process<Processors::ForcedBattle>();*/
+			return FALSE;
+		}
+		raise_event(nullptr, EVENT_PHASE_START + PHASE_BATTLE_START, nullptr, 0, 0, turn_player, 0);
+		process_instant_event();
+		adjust_all();
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 11: {
+		if(core.new_fchain.size() || core.new_ochain.size())
+			emplace_process<Processors::PointEvent>(false, false, false);
+		emplace_process<Processors::PhaseEvent>(PHASE_BATTLE_START);
+
+
+========== MSG_NEW_PHASE @ processor.cpp:3562 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(infos.phase);
+		infos.can_shuffle = true;
+		emplace_process<Processors::IdleCommand>();
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 16: {
+		//End Phase
+		infos.phase = PHASE_END;
+		core.phase_action = false;
+		if(is_player_affected_by_effect(infos.turn_player, EFFECT_SKIP_EP)) {
+			arg.step = 18;
+			reset_phase(PHASE_END);
+			adjust_all();
+			return FALSE;
+		}
+		auto message = pduel->
+
+========== MSG_NEW_PHASE @ processor.cpp:3580 ==========
+new_message(MSG_NEW_PHASE);
+		message->write<uint16_t>(infos.phase);
+		raise_event(nullptr, EVENT_PHASE_START + PHASE_END, nullptr, 0, 0, turn_player, 0);
+		process_instant_event();
+		adjust_all();
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 17: {
+		if(core.new_fchain.size() || core.new_ochain.size())
+			emplace_process<Processors::PointEvent>(false, false, false);
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 18: {
+		core.new_fchain.clear();
+		core.new_ochain.clear();
+		core.quick_f_chain.clear();
+		core.delayed_quick_tmp.clear();
+		emplace_process<Processors::PhaseEvent>(PHASE_END);
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 19: {
+		raise_event(nullptr, EVENT_TURN_END, nullptr, 0, 0, turn_player, 0);
+		p
+
+========== MSG_DRAW @ operations.cpp:482 ==========
+new_message(MSG_DRAW);
+			message->write<uint8_t>(playerid);
+			message->write<uint32_t>(drawn);
+			for(const auto& pcard : cv) {
+				message->write<uint32_t>(pcard->data.code);
+				message->write<uint32_t>(pcard->current.position);
+			}
+			if(core.deck_reversed && (public_count < drawn)) {
+				message = pduel->
+
+========== MSG_DAMAGE @ operations.cpp:603 ==========
+new_message(MSG_DAMAGE);
+		message->write<uint8_t>(playerid);
+		message->write<uint32_t>(amount);
+		raise_event(reason_card, EVENT_DAMAGE, reason_effect, reason, reason_player, playerid, amount);
+		if(reason == REASON_BATTLE && reason_card) {
+			if((player[playerid].lp <= 0) && (core.attack_target == nullptr) && reason_card->is_affected_by_effect(EFFECT_MATCH_KILL) && !is_player_affected_by_effect(playerid, EFFECT_CANNOT_LOSE_LP)) {
+				message = pduel->
+
+========== MSG_RECOVER @ operations.cpp:674 ==========
+new_message(MSG_RECOVER);
+		message->write<uint8_t>(playerid);
+		message->write<uint32_t>(amount);
+		raise_event(nullptr, EVENT_RECOVER, reason_effect, reason, reason_player, playerid, amount);
+		process_instant_event();
+		return FALSE;
+	}
+	case 2: {
+		returns.set<uint32_t>(0, amount);
+		return TRUE;
+	}
+	case 3: {
+		returns.set<uint32_t>(0, 0);
+		return TRUE;
+	}
+	case 10: {
+		//dummy
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+bool field::process(Processors::PayLPCost& arg) {
+	auto playerid = arg.playerid;
+	auto cost = arg.cost;
+	switch(arg.step) {
+	case 0: {
+		effect_set eset;
+		int32_t val = cost;
+		filter_player_effect(playerid, EFFECT_LPCOST_CHANGE, &eset);
+		for(const auto& peff : eset) {
+			pduel->lua->add_param<LuaParam::EFFECT>(core.reason_effect);
+			pduel->lua->add_param<LuaParam::INT>(playerid);
+			pduel->lua->add_param<LuaParam::INT>(val);
+			val = peff->get_value(3);
+		}
+		if(val <
+
+========== MSG_LPUPDATE @ field.cpp:1243 ==========
+new_message(MSG_LPUPDATE);
+	message->write<uint8_t>(playerid);
+	message->write<uint32_t>(player[playerid].start_lp);
+	player[playerid].recharge = false;
+}
+bool field::is_flag(uint64_t flag) const {
+	return (core.duel_options & flag) == flag;
+}
+bool field::has_separate_pzone(uint8_t p) const {
+	(void)p;
+	return is_flag(DUEL_SEPARATE_PZONE);
+}
+uint32_t field::get_pzone_zones_flag() const {
+	uint32_t flag = 0;
+	if(!has_separate_pzone(0))
+		flag |= 0xC000u;
+	if(!has_separate_pzone(1))
+		flag |= 0xC000u << 16;
+	return flag;
+}
+uint8_t field::get_pzone_index(uint8_t seq, uint8_t p) const {
+	if(seq > 1)
+		return 0;
+	if(has_separate_pzone(p))        // 6 and 7
+		return seq + 6;
+	if(is_flag(DUEL_3_COLUMNS_FIELD))// 1 and 3
+		return seq * 2 + 1;
+	return seq * 4;					 // 0 and 4
+}
+uint32_t field::get_extra_deck_types() const {
+	if(is_flag(DUEL_EXTRA_DECK_RITUAL))
+		return TYPE_FUSION | TYPE_SYNCHRO 
+
+========== MSG_SUMMONING @ operations.cpp:2239 ==========
+new_message(MSG_SUMMONING);
+		message->write<uint32_t>(target->data.code);
+		message->write(target->get_info_location());
+		if(is_flag(DUEL_CANNOT_SUMMON_OATH_OLD)) {
+			++core.summon_state_count[sumplayer];
+			++core.normalsummon_state_count[sumplayer];
+			check_card_counter(target, ACTIVITY_SUMMON, sumplayer);
+			check_card_counter(target, ACTIVITY_NORMALSUMMON, sumplayer);
+		}
+		if (target->material_cards.size()) {
+			for (auto& mcard : target->material_cards)
+				raise_single_event(mcard, nullptr, EVENT_BE_PRE_MATERIAL, summon_procedure_effect, REASON_SUMMON, sumplayer, sumplayer, 0);
+			raise_event(target->material_cards, EVENT_BE_PRE_MATERIAL, summon_procedure_effect, REASON_SUMMON, sumplayer, sumplayer, 0);
+		}
+		process_single_event();
+		process_instant_event();
+		return FALSE;
+	}
+	case 13: {
+		if(core.current_chain.size() == 0) {
+			if(target->is_affected_by_effect(EFFECT_CANNOT
+
+========== MSG_SUMMONED @ operations.cpp:2309 ==========
+new_message(MSG_SUMMONED);
+		adjust_instant();
+		if(target->material_cards.size()) {
+			for(auto& mcard : target->material_cards)
+				raise_single_event(mcard, nullptr, EVENT_BE_MATERIAL, summon_procedure_effect, REASON_SUMMON, sumplayer, sumplayer, 0);
+			raise_event(target->material_cards, EVENT_BE_MATERIAL, summon_procedure_effect, REASON_SUMMON, sumplayer, sumplayer, 0);
+		}
+		process_single_event();
+		process_instant_event();
+		return FALSE;
+	}
+	case 18: {
+		if(!is_flag(DUEL_CANNOT_SUMMON_OATH_OLD)) {
+			++core.summon_state_count[sumplayer];
+			++core.normalsummon_state_count[sumplayer];
+			check_card_counter(target, ACTIVITY_SUMMON, sumplayer);
+			check_card_counter(target, ACTIVITY_NORMALSUMMON, sumplayer);
+		}
+		raise_single_event(target, nullptr, EVENT_SUMMON_SUCCESS, summon_procedure_effect, 0, sumplayer, sumplayer, 0);
+		process_single_event();
+		raise_event(target, EVENT_SUMM
+
+========== MSG_SPSUMMONING @ operations.cpp:3143 ==========
+new_message(MSG_SPSUMMONING);
+		if((target->current.position & POS_FACEDOWN) == 0) {
+			message->write<uint32_t>(target->data.code);
+		} else {
+			message->write<uint32_t>(0);
+		}
+		message->write(target->get_info_location());
+		return FALSE;
+	}
+	case 6: {
+		auto proc = arg.summon_proc_effect;
+		int32_t matreason = REASON_SPSUMMON;
+		if(proc->value == SUMMON_TYPE_SYNCHRO)
+			matreason = REASON_SYNCHRO;
+		else if(proc->value == SUMMON_TYPE_XYZ)
+			matreason = REASON_XYZ;
+		else if(proc->value == SUMMON_TYPE_LINK)
+			matreason = REASON_LINK;
+		if (target->material_cards.size()) {
+			for (auto& mcard : target->material_cards)
+				raise_single_event(mcard, nullptr, EVENT_BE_PRE_MATERIAL, proc, matreason, sumplayer, sumplayer, 0);
+		}
+		raise_event(target->material_cards, EVENT_BE_PRE_MATERIAL, proc, matreason, sumplayer, sumplayer, 0);
+		process_single_event();
+		process_instant_event();
+		r
+
+========== MSG_SPSUMMONING @ operations.cpp:3360 ==========
+new_message(MSG_SPSUMMONING);
+		if((pcard->current.position & POS_FACEDOWN) == 0) {
+			message->write<uint32_t>(pcard->data.code);
+		} else {
+			message->write<uint32_t>(0);
+		}
+		message->write(pcard->get_info_location());
+		set_control(pcard, pcard->current.controler, 0, 0);
+		pcard->set_status(STATUS_SPSUMMON_STEP, TRUE);
+		if(pgroup->it != pgroup->container.end())
+			arg.step = 22;
+		return FALSE;
+	}
+	case 25: {
+		auto pgroup = arg.cards_to_summon_g;
+		if(is_flag(DUEL_CANNOT_SUMMON_OATH_OLD)) {
+			set_spsummon_counter(sumplayer);
+		}
+		if(is_flag(DUEL_SPSUMMON_ONCE_OLD_NEGATE)) {
+			std::set<uint32_t> spsummon_once_set;
+			for(auto& pcard : pgroup->container) {
+				if(pcard->spsummon_code)
+					spsummon_once_set.insert(pcard->spsummon_code);
+			}
+			for(auto& cit : spsummon_once_set)
+				++core.spsummon_once_map[sumplayer][cit];
+		}
+		if(core.current_chain.size() == 0) {
+			card_set 
+
+========== MSG_SPSUMMONING @ operations.cpp:3625 ==========
+new_message(MSG_SPSUMMONING);
+		if((target->current.position & POS_FACEDOWN) == 0) {
+			message->write<uint32_t>(target->data.code);
+		} else {
+			message->write<uint32_t>(0);
+		}
+		message->write(target->get_info_location());
+		return FALSE;
+	}
+	case 3: {
+		returns.set<int32_t>(0, TRUE);
+		set_control(target, target->current.controler, 0, 0);
+		target->set_status(STATUS_SPSUMMON_STEP, TRUE);
+		return TRUE;
+	}
+	case 5: {
+		returns.set<int32_t>(0, FALSE);
+		target->current.reason = target->temp.reason;
+		target->current.reason_effect = target->temp.reason_effect;
+		target->current.reason_player = target->temp.reason_player;
+		if(targets)
+			targets->container.erase(target);
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+bool field::process(Processors::SpSummon& arg) {
+	auto  reason_effect = arg.reason_effect;
+	auto reason_player = arg.reason_player;
+	auto targets = arg.targets;
+	auto zone = arg.zon
+
+========== MSG_MOVE @ field.cpp:280 ==========
+new_message(MSG_MOVE);
+					message->write<uint32_t>(pcard->data.code);
+					message->write(pcard->get_info_location());
+					player[preplayer].list_main.erase(player[preplayer].list_main.begin() + pcard->current.sequence);
+					if (sequence == 0) {		//deck top
+						player[playerid].list_main.push_back(pcard);
+					} else if (sequence == 1) {
+						player[playerid].list_main.insert(player[playerid].list_main.begin(), pcard);
+					} else {
+						player[playerid].list_main.push_back(pcard);
+						if(!core.shuffle_check_disabled)
+							core.shuffle_deck_check[playerid] = true;
+					}
+					reset_sequence(playerid, LOCATION_DECK);
+					pcard->previous.controler = preplayer;
+					pcard->current.controler = playerid;
+					message->write(pcard->get_info_location());
+					message->write<uint32_t>(pcard->current.reason);
+					return true;
+				} else
+					remove_card(pcard);
+			} else if(location
+
+========== MSG_MOVE @ field.cpp:313 ==========
+new_message(MSG_MOVE);
+					message->write<uint32_t>(pcard->data.code);
+					message->write(pcard->get_info_location());
+				}
+				if(core.current_chain.size() > 0)
+					core.just_sent_cards.insert(pcard);
+				pcard->previous.controler = pcard->current.controler;
+				pcard->previous.location = pcard->current.location;
+				pcard->previous.sequence = pcard->current.sequence;
+				pcard->previous.position = pcard->current.position;
+				pcard->previous.pzone = pcard->current.pzone;
+				if (location == LOCATION_MZONE) {
+					player[preplayer].list_mzone[presequence] = nullptr;
+					player[preplayer].used_location &= ~(1 << presequence);
+					player[playerid].list_mzone[sequence] = pcard;
+					player[playerid].used_location |= 1 << sequence;
+					pcard->current.controler = playerid;
+					pcard->current.sequence = sequence;
+				} else {
+					player[preplayer].list_szone[presequence] = nullptr;
+	
+
+========== MSG_MOVE @ field.cpp:356 ==========
+new_message(MSG_MOVE);
+					message->write<uint32_t>(pcard->data.code);
+					message->write(pcard->get_info_location());
+					player[pcard->current.controler].list_grave.erase(player[pcard->current.controler].list_grave.begin() + pcard->current.sequence);
+					player[pcard->current.controler].list_grave.push_back(pcard);
+					reset_sequence(pcard->current.controler, LOCATION_GRAVE);
+					message->write(pcard->get_info_location());
+					message->write<uint32_t>(pcard->current.reason);
+				} else if(location == LOCATION_REMOVED) {
+					if(pcard->current.sequence == player[pcard->current.controler].list_remove.size() - 1)
+						return false;
+					auto message = pduel->
+
+========== MSG_MOVE @ field.cpp:367 ==========
+new_message(MSG_MOVE);
+					message->write<uint32_t>(pcard->data.code);
+					message->write(pcard->get_info_location());
+					player[pcard->current.controler].list_remove.erase(player[pcard->current.controler].list_remove.begin() + pcard->current.sequence);
+					player[pcard->current.controler].list_remove.push_back(pcard);
+					reset_sequence(pcard->current.controler, LOCATION_REMOVED);
+					message->write(pcard->get_info_location());
+					message->write<uint32_t>(pcard->current.reason);
+				} else {
+					auto message = pduel->
+
+========== MSG_MOVE @ field.cpp:376 ==========
+new_message(MSG_MOVE);
+					message->write<uint32_t>(pcard->data.code);
+					message->write(pcard->get_info_location());
+					player[pcard->current.controler].list_extra.erase(player[pcard->current.controler].list_extra.begin() + pcard->current.sequence);
+					player[pcard->current.controler].list_extra.push_back(pcard);
+					reset_sequence(pcard->current.controler, LOCATION_EXTRA);
+					message->write(pcard->get_info_location());
+					message->write<uint32_t>(pcard->current.reason);
+				}
+				return true;
+			}
+		} else {
+			if((pcard->data.type & TYPE_PENDULUM) && (location == LOCATION_GRAVE)
+			        && pcard->is_capable_send_to_extra(playerid)
+			        && (((pcard->current.location == LOCATION_MZONE) && !pcard->is_status(STATUS_SUMMON_DISABLED))
+			        || ((pcard->current.location == LOCATION_SZONE) && !pcard->is_status(STATUS_ACTIVATE_DISABLED)))) {
+				location = LOCATION_EX
+
+========== MSG_MOVE @ field.cpp:470 ==========
+new_message(MSG_MOVE);
+		message->write<uint32_t>(pcard1->data.code);
+		message->write(info1);
+		message->write(pcard1->get_info_location());
+		message->write<uint32_t>(0);
+		message = pduel->
+
+========== MSG_MOVE @ field.cpp:475 ==========
+new_message(MSG_MOVE);
+		message->write<uint32_t>(pcard2->data.code);
+		message->write(info2);
+		message->write(pcard2->get_info_location());
+		message->write<uint32_t>(0);
+	} else {
+		auto message = pduel->
+
+========== MSG_MOVE @ field.cpp:481 ==========
+new_message(MSG_MOVE);
+		message->write<uint32_t>(pcard2->data.code);
+		message->write(info2);
+		message->write(pcard2->get_info_location());
+		message->write<uint32_t>(0);
+		message = pduel->
+
+========== MSG_MOVE @ field.cpp:486 ==========
+new_message(MSG_MOVE);
+		message->write<uint32_t>(pcard1->data.code);
+		message->write(info1);
+		message->write(pcard1->get_info_location());
+		message->write<uint32_t>(0);
+	}
+}
+void field::swap_card(card* pcard1, card* pcard2) {
+	return swap_card(pcard1, pcard2, pcard1->current.sequence, pcard2->current.sequence);
+}
+// add EFFECT_SET_CONTROL
+void field::set_control(card* pcard, uint8_t playerid, uint16_t reset_phase, uint8_t reset_count) {
+	if((core.remove_brainwashing && pcard->is_affected_by_effect(EFFECT_REMOVE_BRAINWASHING)) || std::get<uint8_t>(pcard->refresh_control_status()) == playerid)
+		return;
+	effect* peffect = pduel->new_effect();
+	if(core.reason_effect)
+		peffect->owner = core.reason_effect->get_handler();
+	else
+		peffect->owner = pcard;
+	peffect->handler = pcard;
+	peffect->type = EFFECT_TYPE_SINGLE;
+	peffect->code = EFFECT_SET_CONTROL;
+	peffect->value = playerid;
+	peffect
+
+========== MSG_MOVE @ operations.cpp:1012 ==========
+new_message(MSG_MOVE);
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+			if(pcard->overlay_target) {
+				pcard->overlay_target->xyz_remove(pcard);
+			} else {
+				remove_card(pcard);
+				add_to_disable_check_list(pcard);
+				if(pcard->previous.location == LOCATION_GRAVE) {
+					from_grave.insert(pcard);
+					raise_single_event(pcard, nullptr, EVENT_LEAVE_GRAVE, core.reason_effect, 0, core.reason_player, 0, 0);
+				}
+			}
+			target->xyz_add(pcard);
+			message->write(pcard->get_info_location());
+			message->write<uint32_t>(pcard->current.reason);
+		}
+		auto writetopcard = [rev = core.deck_reversed, &decktop, &player=player, &s](int playerid) {
+			if(!decktop[playerid])
+				return;
+			auto& msg = decktop[playerid];
+			const auto& list = player[playerid].list_main;
+			if(list.empty() || (!rev && list.back()->current.position != POS_FACEUP_DEFENS
+
+========== MSG_MOVE @ operations.cpp:4445 ==========
+new_message(MSG_MOVE);
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+			message->write(loc_info{});
+			message->write<uint32_t>(pcard->current.reason);
+			if(core.current_chain.size() > 0)
+				core.just_sent_cards.insert(pcard);
+			pcard->previous.controler = pcard->current.controler;
+			pcard->previous.location = pcard->current.location;
+			pcard->previous.sequence = pcard->current.sequence;
+			pcard->previous.position = pcard->current.position;
+			pcard->previous.pzone = pcard->current.pzone;
+			pcard->current.reason &= ~REASON_TEMPORARY;
+			pcard->fieldid = infos.field_id++;
+			pcard->fieldid_r = pcard->fieldid;
+			pcard->reset(RESET_LEAVE, RESET_EVENT);
+			pcard->clear_relate_effect();
+			remove_card(pcard);
+			param->leave_field.insert(pcard);
+			++param->cvit;
+			arg.step = 4;
+			pcard->set_status(STATUS_LEAVE_CONFIRMED, FALSE);
+			re
+
+========== MSG_MOVE @ operations.cpp:4498 ==========
+new_message(MSG_MOVE);
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+			if(pcard->overlay_target) {
+				param->detach.insert(pcard->overlay_target);
+				pcard->overlay_target->xyz_remove(pcard);
+			}
+			move_card(playerid, pcard, dest, seq);
+			pcard->current.position = pcard->sendto_param.position;
+			message->write(pcard->get_info_location());
+			message->write<uint32_t>(pcard->current.reason);
+		}
+		if(pcard->current.location == LOCATION_DECK && (core.deck_reversed || (pcard->current.position == POS_FACEUP_DEFENSE)))
+			param->check_decktop_visibility[control_player] = true;
+		pcard->set_status(STATUS_LEAVE_CONFIRMED, FALSE);
+		if(pcard->status & (STATUS_SUMMON_DISABLED | STATUS_ACTIVATE_DISABLED)) {
+			pcard->set_status(STATUS_SUMMON_DISABLED | STATUS_ACTIVATE_DISABLED, FALSE);
+			pcard->previous.location = 0;
+		} else if(oloc & LOCATIO
+
+========== MSG_MOVE @ operations.cpp:4547 ==========
+new_message(MSG_MOVE);
+		message->write<uint32_t>(pcard->data.code);
+		message->write(pcard->get_info_location());
+		if(pcard->overlay_target) {
+			param->detach.insert(pcard->overlay_target);
+			pcard->overlay_target->xyz_remove(pcard);
+		}
+		move_card(pcard->current.controler, pcard, LOCATION_SZONE, seq);
+		pcard->current.position = POS_FACEUP;
+		message->write(pcard->get_info_location());
+		message->write<uint32_t>(pcard->current.reason);
+		pcard->set_status(STATUS_LEAVE_CONFIRMED, FALSE);
+		if(pcard->status & (STATUS_SUMMON_DISABLED | STATUS_ACTIVATE_DISABLED)) {
+			pcard->set_status(STATUS_SUMMON_DISABLED | STATUS_ACTIVATE_DISABLED, FALSE);
+			pcard->previous.location = 0;
+		} else if(oloc & LOCATION_ONFIELD) {
+			pcard->reset(RESET_LEAVE + RESET_MSCHANGE, RESET_EVENT);
+			pcard->clear_card_target();
+			param->leave_field.insert(pcard);
+		}
+		if(param->predirect->operation) {
+			tev
+
+========== MSG_MOVE @ operations.cpp:4808 ==========
+new_message(MSG_MOVE);
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+			pcard->enable_field_effect(false);
+			pcard->cancel_field_effect();
+			player[playerid].list_main.pop_back();
+			if(core.current_chain.size() > 0)
+				core.just_sent_cards.insert(pcard);
+			pcard->previous.controler = pcard->current.controler;
+			pcard->previous.location = pcard->current.location;
+			pcard->previous.sequence = pcard->current.sequence;
+			pcard->previous.position = pcard->current.position;
+			pcard->previous.pzone = pcard->current.pzone;
+			pcard->current.controler = PLAYER_NONE;
+			pcard->current.location = 0;
+			add_card(pcard->owner, pcard, dest, 0);
+			pcard->enable_field_effect(true);
+			pcard->current.position = POS_FACEUP;
+			message->write(pcard->get_info_location());
+			message->write<uint32_t>(pcard->current.reason);
+			if(dest == LOCATION_HAND
+
+========== MSG_MOVE @ operations.cpp:5076 ==========
+new_message(MSG_MOVE);
+		message->write<uint32_t>(target->data.code);
+		message->write(target->get_info_location());
+		if(target->overlay_target)
+			target->overlay_target->xyz_remove(target);
+		// call move_card()
+		move_card(playerid, target, location, target->temp.sequence, pzone);
+		target->current.position = returns.at<int32_t>(0);
+		target->set_status(STATUS_LEAVE_CONFIRMED, FALSE);
+		message->write(target->get_info_location());
+		message->write<uint32_t>(target->current.reason);
+		if((target->current.location != LOCATION_MZONE)) {
+			if(target->equiping_cards.size()) {
+				destroy(target->equiping_cards, nullptr, REASON_LOST_TARGET + REASON_RULE, PLAYER_NONE);
+				for(auto csit = target->equiping_cards.begin(); csit != target->equiping_cards.end();) {
+					auto rm = csit++;
+					(*rm)->unequip();
+				}
+			}
+			if(target->xyz_materials.size()) {
+				send_to(card_set{ target->xyz_ma
+
+========== MSG_MOVE @ processor.cpp:5081 ==========
+new_message(MSG_MOVE);
+			message->write<uint32_t>(0);
+			message->write(pcard->get_info_location());
+			list.erase(list.begin() + pcard->current.sequence);
+			if(bottom)
+				list.insert(list.begin(), pcard);
+			else
+				list.push_back(pcard);
+			reset_sequence(target_player, LOCATION_DECK);
+			message->write(pcard->get_info_location());
+			message->write<uint32_t>(pcard->current.reason);
+		}
+		if(core.global_flag & GLOBALFLAG_DECK_REVERSE_CHECK) {
+			card* ptop = list.back();
+			if(core.deck_reversed || (ptop->current.position == POS_FACEUP_DEFENSE)) {
+				auto message = pduel->
+
+========== MSG_WIN @ processor.cpp:4420 ==========
+new_message(MSG_WIN);
+			message->write<uint8_t>(winp);
+			message->write<uint8_t>(rea);
+			core.overdraw[0] = core.overdraw[1] = false;
+			core.win_player = 5;
+			core.win_reason = 0;
+		} else if(core.win_player != 5) {
+			auto message = pduel->
+
+========== MSG_WIN @ processor.cpp:4427 ==========
+new_message(MSG_WIN);
+			message->write<uint8_t>(core.win_player);
+			message->write<uint8_t>(core.win_reason);
+			core.win_player = 5;
+			core.win_reason = 0;
+			core.overdraw[0] = core.overdraw[1] = false;
+		}
+	}
+	return 0;
+}
+void field::adjust_instant() {
+	++infos.event_id;
+	adjust_disable_check_list();
+	adjust_self_destroy_set();
+}
+void field::adjust_all() {
+	++infos.event_id;
+	core.readjust_map.clear();
+	emplace_process<Processors::Adjust>();
+}
+void field::refresh_location_info_instant() {
+	effect_set eset;
+	uint32_t dis1 = player[0].disabled_location | (player[1].disabled_location << 16);
+	player[0].disabled_location = 0;
+	player[1].disabled_location = 0;
+	filter_field_effect(EFFECT_DISABLE_FIELD, &eset);
+	for(const auto& peff : eset) {
+		uint32_t value = peff->get_value();
+		player[0].disabled_location |= value & 0xff7f;
+		player[1].disabled_location |= (value >> 16) & 0xff7f;
+	}
+
+
+========== MSG_WIN @ processor.cpp:4712 ==========
+new_message(MSG_WIN);
+				message->write<uint8_t>(winp);
+				message->write<uint8_t>(rea);
+				core.overdraw[0] = core.overdraw[1] = false;
+				core.win_player = 5;
+				core.win_reason = 0;
+			} else if(core.win_player != 5) {
+				auto message = pduel->
+
+========== MSG_WIN @ processor.cpp:4719 ==========
+new_message(MSG_WIN);
+				message->write<uint8_t>(core.win_player);
+				message->write<uint8_t>(core.win_reason);
+				core.win_player = 5;
+				core.win_reason = 0;
+				core.overdraw[0] = core.overdraw[1] = false;
+			}
+		}
+		return FALSE;
+	}
+	case 2: {
+		//disable check
+		uint8_t tp = infos.turn_player;
+		for(uint8_t p = 0; p < 2; ++p) {
+			for(auto& pcard : player[tp].list_mzone) {
+				if(pcard)
+					add_to_disable_check_list(pcard);
+			}
+			for(auto& pcard : player[tp].list_szone) {
+				if(pcard)
+					add_to_disable_check_list(pcard);
+			}
+			tp = 1 - tp;
+		}
+		adjust_disable_check_list();
+		emplace_process<Processors::RefreshLoc>();
+		return FALSE;
+	}
+	case 3: {
+		//trap monster
+		core.trap_monster_adjust_set[0].clear();
+		core.trap_monster_adjust_set[1].clear();
+		for(uint8_t p = 0; p < 2; ++p) {
+			for(auto& pcard : player[p].list_mzone) {
+				if(!pcard) continue;
+				if((pcard->get_
+
+========== MSG_ATTACK @ processor.cpp:2118 ==========
+new_message(MSG_ATTACK);
+		message->write(core.attacker->get_info_location());
+		if(core.attack_target) {
+			raise_single_event(core.attack_target, nullptr, EVENT_BE_BATTLE_TARGET, nullptr, 0, 0, 1 - infos.turn_player, 0);
+			raise_event(core.attack_target, EVENT_BE_BATTLE_TARGET, nullptr, 0, 0, 1 - infos.turn_player, 0);
+			message->write(core.attack_target->get_info_location());
+		} else {
+			message->write(loc_info{});
+		}
+		core.attack_rollback = false;
+		core.opp_mzone.clear();
+		for(auto& pcard : player[1 - infos.turn_player].list_mzone) {
+			if(pcard)
+				core.opp_mzone.insert(pcard->fieldid_r);
+		}
+		if(!arg.is_replaying_attack) {
+			raise_single_event(core.attacker, nullptr, EVENT_ATTACK_ANNOUNCE, nullptr, 0, 0, infos.turn_player, 0);
+			raise_event(core.attacker, EVENT_ATTACK_ANNOUNCE, nullptr, 0, 0, infos.turn_player, 0);
+		}
+		core.attacker->attack_controler = core.attacker->
+
+========== MSG_ATTACK @ processor.cpp:2886 ==========
+new_message(MSG_ATTACK);
+		message->write(core.attacker->get_info_location());
+		if(core.attack_target) {
+			message->write(core.attack_target->get_info_location());
+		} else {
+			message->write(loc_info{});
+		}
+		infos.phase = PHASE_DAMAGE;
+		(void)pduel->
+
+========== MSG_BATTLE @ processor.cpp:2444 ==========
+new_message(MSG_BATTLE);
+		message->write(core.attacker->get_info_location());
+		message->write<uint32_t>(aa);
+		message->write<uint32_t>(ad);
+		message->write<uint8_t>(bd[0]);
+		if(core.attack_target) {
+			message->write(core.attack_target->get_info_location());
+			message->write<uint32_t>(da);
+			message->write<uint32_t>(dd);
+			message->write<uint8_t>(bd[1]);
+		} else {
+			message->write(loc_info{});
+			message->write<uint32_t>(0);
+			message->write<uint32_t>(0);
+			message->write<uint8_t>(0);
+		}
+		arg.damage_change_effect = damchange;
+		arg.reason_card = reason_card;
+		if(reason_card)
+			arg.reason_player = reason_card->current.controler;
+		if(!damchange) {
+			if(core.battle_damage[infos.turn_player]) {
+				raise_single_event(core.attacker, nullptr, EVENT_PRE_BATTLE_DAMAGE, nullptr, 0, reason_card->current.controler, infos.turn_player, core.battle_damage[infos.turn_player]);
+				if(
+
+========== MSG_PAY_LPCOST @ operations.cpp:749 ==========
+new_message(MSG_PAY_LPCOST);
+			message->write<uint8_t>(playerid);
+			message->write<uint32_t>(cost);
+			raise_event(nullptr, EVENT_PAY_LPCOST, core.reason_effect, 0, playerid, playerid, cost);
+			process_instant_event();
+			return TRUE;
+		}
+		tevent e;
+		e.event_cards = nullptr;
+		e.event_player = playerid;
+		e.event_value = cost;
+		e.reason = 0;
+		e.reason_effect = core.reason_effect;
+		e.reason_player = playerid;
+		solve_continuous(playerid, peffect, e);
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+// rplayer rmoves counter from pcard or the field
+// s,o: binary value indicating the available side
+// from pcard: Card.RemoveCounter() -> here -> card::remove_counter() -> the script should raise EVENT_REMOVE_COUNTER if necessary
+// from the field: Duel.RemoveCounter() -> here -> field::select_counter() -> the system raises EVENT_REMOVE_COUNTER automatically
+bool field::process(Processors::Remove
+
+========== MSG_HINT @ playerop.cpp:210 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		if((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			returns.set<int32_t>(0, 0);
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:288 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		if(max > core.select_cards.size())
+			max = static_cast<uint8_t>(core.select_cards.size());
+		if(min > max)
+			min = max;
+		if((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			for(int32_t i = 0; i < min; ++i) {
+				return_cards.list.push_back(core.select_cards[i]);
+			}
+			return TRUE;
+		}
+		arg.min = min;
+		arg.max = max;
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:343 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		if(max > core.select_cards_codes.size())
+			max = static_cast<uint8_t>(core.select_cards_codes.size());
+		if(min > max)
+			min = max;
+		if((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			for(int32_t i = 0; i < min; ++i) {
+				return_card_codes.list.push_back(core.select_cards_codes[i]);
+			}
+			return TRUE;
+		}
+		arg.min = min;
+		arg.max = max;
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:398 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		if ((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			if(finishable)
+				return_cards.canceled = true;
+			else
+				return_cards.list.push_back(core.select_cards.size() ? core.select_cards.front() : core.unselect_cards.front());
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:511 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		if((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			flag = ~flag;
+			int32_t filter;
+			int32_t pzone = 0;
+			if(flag & 0x7f) {
+				returns.set<int8_t>(0, 1);
+				returns.set<int8_t>(1, LOCATION_MZONE);
+				filter = flag & 0x7f;
+			} else if(flag & 0x1f00) {
+				returns.set<int8_t>(0, 1);
+				returns.set<int8_t>(1, LOCATION_SZONE);
+				filter = (flag >> 8) & 0x1f;
+			} else if(flag & 0xc000) {
+				returns.set<int8_t>(0, 1);
+				returns.set<int8_t>(1, LOCATION_SZONE);
+				filter = (flag >> 14) & 0x3;
+				pzone = 1;
+			} else if(flag & 0x7f0000) {
+				returns.set<int8_t>(0, 0);
+				returns.set<int8_t>(1, LOCATION_MZONE);
+				filter = (flag >> 16) & 0x7f;
+			} else if(flag & 0x1f000000) {
+				returns.set<int8_t>(0, 0);
+				returns.set
+
+========== MSG_HINT @ playerop.cpp:648 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		uint8_t tm = 0;
+		for(auto& pcard : core.select_cards)
+			tm += pcard->release_param;
+		if(max > 5)
+			max = 5;
+		if(max > tm)
+			max = tm;
+		if(min > max)
+			min = max;
+		arg.min = min;
+		arg.max = max;
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:790 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:881 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:920 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:941 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_RACE);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(returns.at<uint64_t>(0));
+		return TRUE;
+	}
+	return TRUE;
+}
+bool field::process(Processors::AnnounceAttribute& arg) {
+	auto playerid = arg.playerid;
+	auto count = arg.count;
+	auto available = arg.available;
+	if(arg.step == 0) {
+		if(count == 0) {
+			auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:955 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(0);
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:976 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_ATTRIB);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(returns.at<uint32_t>(0));
+		return TRUE;
+	}
+	return TRUE;
+}
+#define BINARY_OP(opcode,op) case opcode: {\
+								if (stack.size() >= 2) {\
+									auto rhs = stack.top();\
+									stack.pop();\
+									auto lhs = stack.top();\
+									stack.pop();\
+									stack.push(lhs op rhs);\
+								}\
+							}\
+							break
+#define UNARY_OP(opcode,op) case opcode: {\
+								if (stack.size() >= 1) {\
+									auto val = stack.top();\
+									stack.pop();\
+									stack.push(op val);\
+								}\
+							}\
+							break
+#define UNARY_OP_OP(opcode,val,op) UNARY_OP(opcode,cd.val op)
+#define GET_OP(opcode,val) case opcode: {\
+								stack.push(cd.val);\
+							}\
+							break
+static int32_t is_declarable(const card_data& cd, const std::vector<uint64_t>& opcodes) {
+	std::
+
+========== MSG_HINT @ playerop.cpp:1091 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_CODE);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(code);
+		return TRUE;
+	}
+	return TRUE;
+}
+bool field::process(Processors::AnnounceNumber& arg) {
+	auto playerid = arg.playerid;
+	if(arg.step == 0) {
+		auto message = pduel->
+
+========== MSG_HINT @ playerop.cpp:1114 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_NUMBER);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(core.select_options[returns.at<int32_t>(0)]);
+		return TRUE;
+	}
+}
+bool field::process(Processors::RockPaperScissors& arg) {
+	auto checkvalid = [&] {
+		const auto ret = returns.at<int32_t>(0);
+		if(ret < 1 || ret > 3) {
+			pduel->
+
+========== MSG_HINT @ operations.cpp:933 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(rplayer);
+		message->write<uint64_t>(519);
+		emplace_process<Processors::SelectCard>(rplayer, cancelable, min, max);
+		return FALSE;
+	}
+	case 3: {
+		send_to(card_set{ return_cards.list.begin(), return_cards.list.end() }, core.reason_effect, reason, rplayer, PLAYER_NONE, LOCATION_GRAVE, 0, POS_FACEUP);
+		return FALSE;
+	}
+	case 4: {
+		returns.set<int32_t>(0, returns.at<int32_t>(0) + arg.replaced_amount);
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+bool field::process(Processors::XyzOverlay& arg) {
+	auto target = arg.target;
+	auto materials = arg.materials;
+	auto send_materials_to_grave = arg.send_materials_to_grave;
+	switch(arg.step) {
+	case 0: {
+		for(auto& pcard : materials->container) {
+			if(!pcard->overlay_target)
+				pcard->enable_field_effect(false);
+		}
+		if(!send_materials_to_grave)
+			return FALS
+
+========== MSG_HINT @ operations.cpp:1104 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(502);
+			uint16_t ct = static_cast<uint16_t>(targets->container.size() - fcount);
+			emplace_process<Processors::SelectCard>(playerid, false, ct, ct);
+		} else
+			arg.step = 1;
+		return FALSE;
+	}
+	case 1: {
+		arg.destroy_set.insert(return_cards.list.begin(), return_cards.list.end());
+		for(auto& pcard : return_cards.list)
+			targets->container.erase(pcard);
+		return FALSE;
+	}
+	case 2: {
+		for(auto& pcard : targets->container) {
+			if(pcard->unique_code && (pcard->unique_location & LOCATION_MZONE))
+				remove_unique_card(pcard);
+		}
+		targets->it = targets->container.begin();
+		return FALSE;
+	}
+	case 3: {
+		if(targets->it == targets->container.end()) {
+			adjust_instant();
+			arg.step = 4;
+			return FALSE;
+		}
+		card* pcard = *targets->it;
+		move_to_field(pc
+
+========== MSG_HINT @ operations.cpp:1270 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(p1);
+		message->write<uint64_t>(pcard2->data.code);
+		emplace_process<Processors::SelectPlace>(p1, flag, 1);
+		return FALSE;
+	}
+	case 2: {
+		arg.self_selected_sequence = returns.at<int8_t>(2);
+		card* pcard2 = *targets2->it;
+		uint8_t p2 = pcard2->current.controler;
+		uint8_t s2 = pcard2->current.sequence;
+		uint32_t flag;
+		get_useable_count(nullptr, p2, LOCATION_MZONE, reason_player, LOCATION_REASON::CONTROL, 0xff, &flag);
+		flag = (flag & ~(1 << s2) & 0xff) | ~0x1f;
+		card* pcard1 = *targets1->it;
+		auto message = pduel->
+
+========== MSG_HINT @ operations.cpp:1286 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(p2);
+		message->write<uint64_t>(pcard1->data.code);
+		emplace_process<Processors::SelectPlace>(p2, flag, 1);
+		return FALSE;
+	}
+	case 3: {
+		card* pcard1 = *targets1->it;
+		card* pcard2 = *targets2->it;
+		uint8_t p1 = pcard1->current.controler, p2 = pcard2->current.controler;
+		uint8_t new_s1 = arg.self_selected_sequence;
+		uint8_t new_s2 = returns.at<int8_t>(2);
+		swap_card(pcard1, pcard2, new_s1, new_s2);
+		pcard1->reset(RESET_CONTROL, RESET_EVENT);
+		pcard2->reset(RESET_CONTROL, RESET_EVENT);
+		set_control(pcard1, p2, reset_phase, reset_count);
+		set_control(pcard2, p1, reset_phase, reset_count);
+		pcard1->set_status(STATUS_ATTACK_CANCELED, TRUE);
+		pcard2->set_status(STATUS_ATTACK_CANCELED, TRUE);
+		++targets1->it;
+		++targets2->it;
+		arg.step = 0;
+		return FALSE;
+	}
+	case 4: {
+		targets1->con
+
+========== MSG_HINT @ operations.cpp:1361 ==========
+new_message(MSG_HINT);
+					message->write<uint8_t>(HINT_SELECTMSG);
+					message->write<uint8_t>(infos.turn_player);
+					message->write<uint64_t>(502);
+					emplace_process<Processors::SelectCard>(1, false, count, count);
+				}
+			} else
+				arg.step = 1;
+		} else if(core.control_adjust_set[0].size() < core.control_adjust_set[1].size()) {
+			if(core.control_adjust_set[1].size() - core.control_adjust_set[0].size() > b0) {
+				if(core.control_adjust_set[0].size() == 0 && b0 == 0) {
+					destroy_set.swap(core.control_adjust_set[1]);
+					arg.step = 4;
+				} else {
+					arg.adjusting_player = 1;
+					uint32_t count = static_cast<uint32_t>(core.control_adjust_set[1].size() - core.control_adjust_set[0].size() - b0);
+					core.select_cards.clear();
+					for(auto& pcard : core.control_adjust_set[1])
+						core.select_cards.push_back(pcard);
+					auto message = pduel->
+
+========== MSG_HINT @ operations.cpp:1380 ==========
+new_message(MSG_HINT);
+					message->write<uint8_t>(HINT_SELECTMSG);
+					message->write<uint8_t>(infos.turn_player);
+					message->write<uint64_t>(502);
+					emplace_process<Processors::SelectCard>(0, false, count, count);
+				}
+			} else
+				arg.step = 1;
+		} else
+			arg.step = 1;
+		return FALSE;
+	}
+	case 1: {
+		auto& destroy_set = arg.destroy_set;
+		destroy_set.insert(return_cards.list.begin(), return_cards.list.end());
+		for(auto& pcard : return_cards.list)
+			core.control_adjust_set[arg.adjusting_player].erase(pcard);
+		return FALSE;
+	}
+	case 2: {
+		for(auto& pcard : core.control_adjust_set[0]) {
+			if(pcard->unique_code && (pcard->unique_location & LOCATION_MZONE))
+				remove_unique_card(pcard);
+		}
+		for(auto& pcard : core.control_adjust_set[1]) {
+			if(pcard->unique_code && (pcard->unique_location & LOCATION_MZONE))
+				remove_unique_card(pcard);
+		}
+		auto cit1 = core.control_ad
+
+========== MSG_HINT @ operations.cpp:1513 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_SELECTMSG);
+				message->write<uint8_t>(playerid);
+				message->write<uint64_t>(534);
+				emplace_process<Processors::SelectCard>(playerid, false, 1, 1);
+			}
+			return FALSE;
+		}
+		core.unique_destroy_set.erase(unique_card);
+		return TRUE;
+	}
+	case 1: {
+		card_set cset;
+		unique_card->get_unique_target(&cset, playerid);
+		card* mcard = return_cards.list.front();
+		unique_card->unique_fieldid = mcard->fieldid;
+		cset.erase(mcard);
+		for(auto& pcard : cset) {
+			pcard->temp.reason_effect = pcard->current.reason_effect;
+			pcard->temp.reason_player = pcard->current.reason_player;
+			pcard->current.reason_effect = unique_card->unique_effect;
+			pcard->current.reason_player = unique_card->current.controler;
+		}
+		destroy(std::move(cset), nullptr, REASON_RULE, PLAYER_SELFDES);
+		return FALSE;
+	}
+	case 2: {
+		core.unique_destroy_set.erase
+
+========== MSG_HINT @ operations.cpp:1629 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(check_player);
+			message->write<uint64_t>(502);
+			emplace_process<Processors::SelectCard>(check_player, false, ct, ct);
+		} else
+			arg.step = 2;
+		return FALSE;
+	}
+	case 2: {
+		uint8_t check_player = infos.turn_player;
+		if(oppo_selection)
+			check_player = 1 - infos.turn_player;
+		for(auto& pcard : return_cards.list) {
+			to_grave_set.insert(pcard);
+			core.trap_monster_adjust_set[check_player].erase(pcard);
+		}
+		[[fallthrough]];
+	}
+	case 3: {
+		if(!oppo_selection) {
+			oppo_selection = true;
+			arg.step = 0;
+		}
+		return FALSE;
+	}
+	case 4: {
+		uint8_t tp = infos.turn_player;
+		for(uint8_t p = 0; p < 2; ++p) {
+			for(auto& pcard : core.trap_monster_adjust_set[tp]) {
+				pcard->reset(RESET_TURN_SET, RESET_EVENT);
+				if(!is_flag(DUEL_TRAP_MONSTERS_NOT_USE_ZONE))
+					refresh_location_info_in
+
+========== MSG_HINT @ operations.cpp:2056 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_CARD);
+				message->write<uint8_t>(0);
+				message->write<uint64_t>(pdec->handler->data.code);
+			}
+			for(const auto& peffect : eset) {
+				if(peffect->is_flag(EFFECT_FLAG_COUNT_LIMIT) && peffect->count_limit > 0 && peffect->target) {
+					int32_t dec = peffect->get_value(target);
+					min -= dec & 0xffff;
+					peffect->dec_count();
+					auto message = pduel->
+
+========== MSG_HINT @ operations.cpp:2066 ==========
+new_message(MSG_HINT);
+					message->write<uint8_t>(HINT_CARD);
+					message->write<uint8_t>(0);
+					message->write<uint64_t>(peffect->handler->data.code);
+					if(min <= 0)
+						break;
+				}
+			}
+			for(const auto& peffect : eset) {
+				if(peffect->is_flag(EFFECT_FLAG_COUNT_LIMIT) && peffect->count_limit > 0 && !peffect->target) {
+					int32_t dec = peffect->get_value(target);
+					min -= dec & 0xffff;
+					peffect->dec_count();
+					auto message = pduel->
+
+========== MSG_HINT @ operations.cpp:2079 ==========
+new_message(MSG_HINT);
+					message->write<uint8_t>(HINT_CARD);
+					message->write<uint8_t>(0);
+					message->write<uint64_t>(peffect->handler->data.code);
+					if(min <= 0)
+						break;
+				}
+			}
+		}
+		target->summon.location = LOCATION_HAND;
+		target->summon.type = SUMMON_TYPE_NORMAL;
+		target->summon.pzone = false;
+		if(!tributes.empty()) {
+			for(auto& pcard : tributes)
+				pcard->current.reason_card = target;
+			target->set_material(tributes);
+			release(std::move(tributes), nullptr, REASON_SUMMON | REASON_MATERIAL, sumplayer);
+			target->summon.type |= SUMMON_TYPE_ADVANCE;
+			adjust_all();
+		}
+		target->current.reason_effect = nullptr;
+		target->current.reason_player = sumplayer;
+		arg.step = 7;
+		return FALSE;
+	}
+	case 7: {
+		target->summon.location = LOCATION_HAND;
+		target->summon.pzone = false;
+		target->summon.type = (summon_procedure_effect->get_value(target) & 0xfffffff) |
+
+========== MSG_HINT @ operations.cpp:2147 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_CARD);
+			message->write<uint8_t>(0);
+			message->write<uint64_t>(pextra->handler->data.code);
+			if(pextra->operation) {
+				pduel->lua->add_param<LuaParam::CARD>(target);
+				core.sub_solving_event.push_back(nil_event);
+				emplace_process<Processors::ExecuteOperation>(pextra, sumplayer);
+			}
+		}
+		return FALSE;
+	}
+	case 9: {
+		uint8_t targetplayer = sumplayer;
+		uint8_t positions = POS_FACEUP_ATTACK;
+		if(is_flag(DUEL_NORMAL_SUMMON_FACEUP_DEF)
+		   || is_player_affected_by_effect(sumplayer, EFFECT_NORMAL_SUMMON_FACEUP_DEFENSE)
+		   || is_player_affected_by_effect(sumplayer, EFFECT_DEVINE_LIGHT)) {
+			positions = POS_FACEUP;
+		}
+		if(summon_procedure_effect && summon_procedure_effect->is_flag(EFFECT_FLAG_SPSUM_PARAM)) {
+			positions = (uint8_t)summon_procedure_effect->s_range & POS_FACEUP;
+			if(summon_procedure_effect->o_range)
+	
+
+========== MSG_HINT @ operations.cpp:2222 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_CARD);
+			message->write<uint8_t>(0);
+			message->write<uint64_t>(pextra->handler->data.code);
+			if(pextra->operation) {
+				pduel->lua->add_param<LuaParam::CARD>(target);
+				core.sub_solving_event.push_back(nil_event);
+				emplace_process<Processors::ExecuteOperation>(pextra, sumplayer);
+			}
+		}
+		return FALSE;
+	}
+	case 12: {
+		set_control(target, target->current.controler, 0, 0);
+		core.phase_action = true;
+		target->current.reason = REASON_SUMMON;
+		target->summon.player = sumplayer;
+		auto message = pduel->
+
+========== MSG_HINT @ operations.cpp:2712 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_CARD);
+			message->write<uint8_t>(0);
+			message->write<uint64_t>(pextra->handler->data.code);
+			if(pextra->operation) {
+				pduel->lua->add_param<LuaParam::CARD>(target);
+				core.sub_solving_event.push_back(nil_event);
+				emplace_process<Processors::ExecuteOperation>(pextra, setplayer);
+			}
+		}
+		return FALSE;
+	}
+	case 9: {
+		uint8_t targetplayer = setplayer;
+		uint8_t positions = POS_FACEDOWN_DEFENSE;
+		if(summon_procedure_effect && summon_procedure_effect->is_flag(EFFECT_FLAG_SPSUM_PARAM)) {
+			positions = (uint8_t)summon_procedure_effect->s_range & POS_FACEDOWN;
+			if(summon_procedure_effect->o_range)
+				targetplayer = 1 - setplayer;
+		}
+		target->enable_field_effect(false);
+		move_to_field(target, setplayer, targetplayer, LOCATION_MZONE, positions, FALSE, 0, zone, FALSE, LOCATION_REASON::SET);
+		return FALSE;
+	}
+	case 10: {
+
+========== MSG_HINT @ operations.cpp:2875 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(setplayer);
+		message->write<uint64_t>(target->data.code);
+		emplace_process<Processors::SelectPlace>(setplayer, flag, 1);
+		return FALSE;
+	}
+	case 2: {
+		card* target = *set_cards.begin();
+		uint32_t seq = returns.at<int8_t>(2);
+		core.set_group_seq[core.set_group_pre_set.size()] = seq;
+		core.set_group_pre_set.insert(target);
+		core.set_group_used_zones |= (1 << seq);
+		set_cards.erase(target);
+		if(!set_cards.empty())
+			arg.step = 0;
+		return FALSE;
+	}
+	case 3: {
+		card* target = *core.set_group_pre_set.begin();
+		target->enable_field_effect(false);
+		uint32_t zone{};
+		if(target->data.type & TYPE_FIELD) {
+			zone = 1 << 5;
+		} else {
+			for(uint32_t i = 0; i < 7; ++i) {
+				zone = 1 << i;
+				if(core.set_group_used_zones & zone) {
+					core.set_group_used_zones &= ~zone;
+					break;
+				}
+			
+
+========== MSG_HINT @ operations.cpp:3921 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_CARD);
+			message->write<uint8_t>(0);
+			message->write<uint64_t>(peffect->owner->data.code);
+		}
+		operation_replace(EFFECT_DESTROY_REPLACE, 5, targets);
+		return FALSE;
+	}
+	case 1: {
+		for (auto& pcard : targets->container) {
+			emplace_process<Processors::DestroyReplace>(targets, pcard, false);
+		}
+		return FALSE;
+	}
+	case 2: {
+		for (auto& pcard : core.destroy_canceled)
+			pcard->set_status(STATUS_DESTROY_CONFIRMED, FALSE);
+		core.destroy_canceled.clear();
+		return FALSE;
+	}
+	case 3: {
+		if(!targets->container.size()) {
+			returns.set<int32_t>(0, 0);
+			core.operated_set.clear();
+			return TRUE;
+		}
+		card_vector cv(targets->container.begin(), targets->container.end());
+		if(cv.size() > 1)
+			std::sort(cv.begin(), cv.end(), card::card_operation_sort);
+		for (auto& pcard : cv) {
+			if(pcard->current.location & (LOCATION_GRAVE | LO
+
+========== MSG_HINT @ operations.cpp:4020 ==========
+new_message(MSG_HINT);
+						message->write<uint8_t>(HINT_CARD);
+						message->write<uint8_t>(0);
+						message->write<uint64_t>(peff->owner->data.code);
+						indes = true;
+						break;
+					}
+				}
+				if(indes) {
+					pcard->current.reason = pcard->temp.reason;
+					pcard->current.reason_effect = pcard->temp.reason_effect;
+					pcard->current.reason_player = pcard->temp.reason_player;
+					pcard->set_status(STATUS_DESTROY_CONFIRMED, FALSE);
+					targets->container.erase(pcard);
+					continue;
+				}
+			}
+			eset.clear();
+			pcard->filter_effect(EFFECT_INDESTRUCTABLE_COUNT, &eset);
+			if(eset.size()) {
+				bool indes = false;
+				for(const auto& peff : eset) {
+					if(peff->is_flag(EFFECT_FLAG_COUNT_LIMIT)) {
+						if(peff->count_limit == 0)
+							continue;
+						pduel->lua->add_param<LuaParam::EFFECT>(pcard->current.reason_effect);
+						pduel->lua->add_param<LuaParam::INT>(pcard->cu
+
+========== MSG_HINT @ operations.cpp:4050 ==========
+new_message(MSG_HINT);
+							message->write<uint8_t>(HINT_CARD);
+							message->write<uint8_t>(0);
+							message->write<uint64_t>(peff->owner->data.code);
+							indes = true;
+						}
+					} else {
+						pduel->lua->add_param<LuaParam::EFFECT>(pcard->current.reason_effect);
+						pduel->lua->add_param<LuaParam::INT>(pcard->current.reason);
+						pduel->lua->add_param<LuaParam::INT>(pcard->current.reason_player);
+						int32_t ct = peff->get_value(3);
+						if(ct) {
+							auto it = pcard->indestructable_effects.emplace(peff->id, 0);
+							if(++it.first->second <= ct) {
+								auto message = pduel->
+
+========== MSG_HINT @ operations.cpp:4064 ==========
+new_message(MSG_HINT);
+								message->write<uint8_t>(HINT_CARD);
+								message->write<uint8_t>(0);
+								message->write<uint64_t>(peff->owner->data.code);
+								indes = true;
+							}
+						}
+					}
+				}
+				if(indes) {
+					pcard->current.reason = pcard->temp.reason;
+					pcard->current.reason_effect = pcard->temp.reason_effect;
+					pcard->current.reason_player = pcard->temp.reason_player;
+					pcard->set_status(STATUS_DESTROY_CONFIRMED, FALSE);
+					targets->container.erase(pcard);
+					continue;
+				}
+			}
+			eset.clear();
+			pcard->filter_effect(EFFECT_DESTROY_SUBSTITUTE, &eset);
+			if(eset.size()) {
+				bool sub = false;
+				for(const auto& peff : eset) {
+					pduel->lua->add_param<LuaParam::EFFECT>(pcard->current.reason_effect);
+					pduel->lua->add_param<LuaParam::INT>(pcard->current.reason);
+					pduel->lua->add_param<LuaParam::INT>(pcard->current.reason_player);
+					i
+
+========== MSG_HINT @ operations.cpp:4201 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_CARD);
+			message->write<uint8_t>(0);
+			message->write<uint64_t>(peffect->get_handler()->data.code);
+		}
+		auto sendtargets = pduel->new_group(targets->container);
+		sendtargets->is_readonly = true;
+		operation_replace(EFFECT_SEND_REPLACE, 5, sendtargets);
+		emplace_process<Processors::SendTo>(Step{ 1 }, sendtargets, reason_effect, reason | REASON_RELEASE, reason_player);
+		return FALSE;
+	}
+	case 4: {
+		for(auto& peffect : core.dec_count_reserve)
+			peffect->dec_count();
+		core.dec_count_reserve.clear();
+		core.operated_set.clear();
+		core.operated_set = targets->container;
+		returns.set<int32_t>(0, static_cast<int32_t>(targets->container.size()));
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+bool field::process(Processors::SendToReplace& arg) {
+	auto targets = arg.targets;
+	auto target = arg.target;
+	uint8_t playerid = target->sendto_param
+
+========== MSG_HINT @ operations.cpp:4535 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(pcard->current.controler);
+		message->write<uint64_t>(pcard->data.code);
+		emplace_process<Processors::SelectPlace>(pcard->current.controler, flag, 1);
+		return FALSE;
+	}
+	case 8: {
+		auto& param = arg.extra_args;
+		card* pcard = *param->cvit;
+		uint8_t oloc = pcard->current.location;
+		uint8_t seq = returns.at<int8_t>(2);
+		auto message = pduel->
+
+========== MSG_HINT @ operations.cpp:4931 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(move_player);
+			message->write<uint64_t>(target->data.code);
+			emplace_process<Processors::SelectPlace>(move_player, flag, 1);
+		} else {
+			uint32_t flag;
+			LOCATION_REASON real_reason = LOCATION_REASON::TOFIELD;
+			if(reason != LOCATION_REASON::NONE) {
+				if(reason != LOCATION_REASON::SUMMON && reason != LOCATION_REASON::SPSUMMON && reason != LOCATION_REASON::SET)
+					real_reason = reason;
+			} else if(target->current.location == LOCATION_MZONE)
+				real_reason = LOCATION_REASON::CONTROL;
+			int32_t ct = get_useable_count(target, playerid, location, move_player, real_reason, zone, &flag);
+			if(location == LOCATION_MZONE && (zone & 0x60) && (zone != 0xff) && !rule) {
+				if((zone & 0x20) && is_location_useable(playerid, location, 5)) {
+					flag = flag & ~(1u << 5);
+					++ct;
+				}
+				i
+
+========== MSG_HINT @ operations.cpp:5008 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(move_player);
+			message->write<uint64_t>(target->data.code);
+			emplace_process<Processors::SelectPlace>(move_player, flag, 1);
+		}
+		return FALSE;
+	}
+	case 1: {
+		uint32_t seq = returns.at<int8_t>(2);
+		if(location == LOCATION_SZONE && zone == 0x1 << 5 && (target->data.type & TYPE_FIELD) && (target->data.type & (TYPE_SPELL | TYPE_TRAP)))
+			seq = 5;
+		if(ret != 1) {
+			if(location != target->current.location) {
+				uint32_t resetflag = 0;
+				if(location & LOCATION_ONFIELD)
+					resetflag |= RESET_TOFIELD;
+				if(target->current.location & LOCATION_ONFIELD)
+					resetflag |= RESET_LEAVE;
+				effect* peffect = target->is_affected_by_effect(EFFECT_PRE_MONSTER);
+				if((location & LOCATION_ONFIELD) && (target->current.location & LOCATION_ONFIELD)
+					&& !(peffect && (peffect->value & TYPE_TRAP))
+
+========== MSG_HINT @ operations.cpp:5265 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_SELECTMSG);
+				message->write<uint8_t>(playerid);
+				message->write<uint64_t>(502);
+				emplace_process<Processors::SelectCard>(playerid, false, ct, ct);
+			}
+		} else
+			arg.step = 2;
+		return FALSE;
+	}
+	case 2: {
+		for(auto& pcard : return_cards.list) {
+			arg.to_grave_set.insert(pcard);
+			targets->container.erase(pcard);
+		}
+		return FALSE;
+	}
+	case 3: {
+		if(!arg.oppo_selection) {
+			arg.oppo_selection = true;
+			arg.step = 0;
+		}
+		return FALSE;
+	}
+	case 4: {
+		card_set equipings;
+		card_set flips;
+		card_set ssets;
+		card_set pos_changed;
+		card_vector cv(targets->container.begin(), targets->container.end());
+		if(cv.size() > 1)
+			std::sort(cv.begin(), cv.end(), card::card_operation_sort);
+		for(auto& pcard : cv) {
+			uint8_t npos = pcard->position_param & 0xff;
+			uint8_t opos = pcard->current.position;
+			uint8_t flag = 
+
+========== MSG_HINT @ operations.cpp:5715 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(500);
+		emplace_process<Processors::SelectCard>(playerid, cancelable, min, max);
+		return FALSE;
+	}
+	case 1: {
+		if(return_cards.canceled)
+			return TRUE;
+		int32_t count = static_cast<int32_t>(return_cards.list.size());
+		core.operated_set.insert(return_cards.list.begin(), return_cards.list.end());
+		if((min-count) > 0) {
+			/*something wrong happened when selecting*/
+			return_cards.clear();
+			return_cards.canceled = true;
+		} else {
+			if(core.release_cards_ex_oneof.size()) {
+				effect* peffect = (*core.release_cards_ex_oneof.begin())->is_affected_by_effect(EFFECT_EXTRA_RELEASE_NONSUM);
+				core.dec_count_reserve.push_back(peffect);
+			}
+		}
+		return TRUE;
+	}
+	case 2: {
+		core.unselect_cards.assign(core.operated_set.begin(), core.operated_set.end());
+
+		a
+
+========== MSG_HINT @ operations.cpp:5789 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(500);
+		emplace_process<Processors::SelectUnselectCard>(playerid, finishable || core.operated_set.empty(), min, max, finishable);
+		return FALSE;
+	}
+	case 3: {
+		if(return_cards.canceled && (core.operated_set.empty() || (int32_t)core.operated_set.size() >= min)) {
+			if(arg.extra_release_nonsum_effect)
+				core.dec_count_reserve.push_back(arg.extra_release_nonsum_effect);
+			return_cards.list.clear();
+			std::copy(core.operated_set.begin(), core.operated_set.end(), std::back_inserter(return_cards.list));
+			if(core.operated_set.size())
+				return_cards.canceled = false;
+			return TRUE;
+		}
+		card* pcard = return_cards.list[0];
+		if(core.operated_set.find(pcard) == core.operated_set.end()) {
+			core.operated_set.insert(pcard);
+			if(core.release_cards_ex_oneof.
+
+========== MSG_HINT @ operations.cpp:5843 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(playerid);
+			message->write<uint64_t>(500);
+			if(core.release_cards_ex.size() + core.release_cards_ex_oneof.size() == 0) {
+				core.select_cards.clear();
+				for(auto& pcard : core.release_cards)
+					core.select_cards.push_back(pcard);
+				emplace_process<Processors::SelectTributeP>(playerid, cancelable, min, max);
+				return TRUE;
+			}
+			if(core.release_cards_ex.size() >= (uint32_t)max) {
+				core.select_cards.clear();
+				for(auto& pcard : core.release_cards_ex)
+					core.select_cards.push_back(pcard);
+				emplace_process<Processors::SelectTributeP>(playerid, cancelable, min, max);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+	case 1: {
+		int32_t rmax = 0;
+		zone &= (0x1f & get_forced_zones(target, toplayer, LOCATION_MZONE, playerid, LOCATION_REASON::TOFIELD));
+		int32_t ct = get_tofield_c
+
+========== MSG_HINT @ operations.cpp:5875 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(500);
+		if(core.release_cards_ex.empty() && core.release_cards_ex_oneof.empty() && min > rmax) {
+			if(rmax > 0) {
+				core.select_cards.clear();
+				for(auto& pcard : core.release_cards)
+					core.select_cards.push_back(pcard);
+			}
+			emplace_process<Processors::SelectTributeP>(playerid, cancelable, min, max);
+			return TRUE;
+		}
+		bool force = !must_choose_one.empty();
+		core.select_cards.clear();
+		core.unselect_cards.clear();
+		for(auto it = core.release_cards_ex_oneof.begin(); it != core.release_cards_ex_oneof.end();) {
+			auto pcard = (*it);
+			if(core.release_cards.find(pcard) != core.release_cards.end() || core.release_cards_ex.find(pcard) != core.release_cards_ex.end())
+				it = core.release_cards_ex_oneof.erase(it);
+			else
+				++it;
+		}
+		if(max - 
+
+========== MSG_HINT @ operations.cpp:5977 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(500);
+		emplace_process<Processors::SelectUnselectCard>(playerid, canc, oldmin, oldmax, finishable);
+		return FALSE;
+	}
+	case 3: {
+		if(return_cards.canceled && core.operated_set.empty())
+			return TRUE;
+		if(!return_cards.canceled) {
+			card* pcard = return_cards.list[0];
+			if(core.operated_set.find(pcard) == core.operated_set.end()) {
+				core.operated_set.insert(pcard);
+				if(core.release_cards_ex_oneof.find(pcard) != core.release_cards_ex_oneof.end())
+					arg.extra_release_effect = pcard->is_affected_by_effect(EFFECT_EXTRA_RELEASE_SUM);
+			} else {
+				core.operated_set.erase(pcard);
+				if(core.release_cards_ex_oneof.find(pcard) != core.release_cards_ex_oneof.end())
+					arg.extra_release_effect = nullptr;
+			}
+		}
+		uint32_t rmin = static_cast<uint32_
+
+========== MSG_HINT @ processor.cpp:429 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_EVENT);
+			message->write<uint8_t>(check_player);
+			if(infos.phase == PHASE_DRAW)
+				message->write<uint64_t>(20);
+			else if(infos.phase == PHASE_STANDBY)
+				message->write<uint64_t>(21);
+			else if(infos.phase == PHASE_BATTLE_START)
+				message->write<uint64_t>(28);
+			else if(infos.phase == PHASE_BATTLE)
+				message->write<uint64_t>(25);
+			else
+				message->write<uint64_t>(26);
+			if(tf_count == 0 && to_count == 1 && fc_count == 0 && cn_count == 0) {
+				emplace_process<Processors::SelectEffectYesNo>(check_player, 0, core.select_chains.front().triggering_effect->get_handler());
+				return FALSE;
+			} else {
+				emplace_process<Processors::SelectChain>(check_player, core.spe_effect[check_player], (tf_count + cn_count) > 0);
+				arg.step = 1;
+				return FALSE;
+			}
+		}
+		return FALSE;
+	}
+	case 1: {
+		returns.set<int32_t>(0, retu
+
+========== MSG_HINT @ processor.cpp:540 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(infos.turn_player);
+		message->write<uint64_t>(501);
+		auto to_discard = hd - limit;
+		emplace_process<Processors::SelectCard>(infos.turn_player, false, to_discard, to_discard);
+		return FALSE;
+	}
+	case 21: {
+		if(return_cards.list.size())
+			send_to(card_set{ return_cards.list.begin(), return_cards.list.end() }, nullptr, REASON_RULE + REASON_DISCARD + REASON_ADJUST, infos.turn_player, PLAYER_NONE, LOCATION_GRAVE, 0, POS_FACEUP);
+		return FALSE;
+	}
+	case 22: {
+		core.hand_adjusted = true;
+		emplace_process<Processors::PointEvent>(false, false, false);
+		arg.step = Processors::restart;
+		arg.is_opponent = false;
+		arg.priority_passed = false;
+		return FALSE;
+	}
+	case 25: {
+		core.hint_timing[infos.turn_player] = 0;
+		reset_phase(phase);
+		adjust_all();
+		return FALSE;
+	}
+	case 26: {
+		core.quick_f_
+
+========== MSG_HINT @ processor.cpp:1643 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_EVENT);
+			message->write<uint8_t>(1 - infos.turn_player);
+			message->write<uint64_t>(23);
+			core.select_chains.clear();
+			core.hint_timing[infos.turn_player] = TIMING_MAIN_END;
+			emplace_process<Processors::QuickEffect>(false, 1 - infos.turn_player);
+			infos.priorities[infos.turn_player] = 1;
+			infos.priorities[1 - infos.turn_player] = 0;
+			arg.phase_to_change_to = ctype;
+			return FALSE;
+		}
+		/*if(core.set_forced_attack) {
+			core.set_forced_attack = false;
+			emplace_process<Processors::ForcedBattle>();
+		}*/
+		return TRUE;
+	}
+	case 2: {
+		for(auto& ch_lim : core.chain_limit)
+			ensure_luaL_stack(luaL_unref, pduel->lua->lua_state, LUA_REGISTRYINDEX, ch_lim.function);
+		core.chain_limit.clear();
+		for(auto& ch : core.current_chain)
+			ch.triggering_effect->get_handler()->set_status(STATUS_CHAINING, FALSE);
+		emplace_process
+
+========== MSG_HINT @ processor.cpp:1882 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_EVENT);
+			message->write<uint8_t>(1 - infos.turn_player);
+			message->write<uint64_t>(29);
+			core.select_chains.clear();
+			core.hint_timing[infos.turn_player] = TIMING_BATTLE_STEP_END;
+			emplace_process<Processors::QuickEffect>(false, 1 - infos.turn_player);
+			infos.priorities[infos.turn_player] = 1;
+			infos.priorities[1 - infos.turn_player] = 0;
+			return FALSE;
+		} else if(ctype == 0) {
+			auto newchain = std::next(core.select_chains.begin(), sel);
+			effect* peffect = newchain->triggering_effect;
+			if(peffect->type & EFFECT_TYPE_CONTINUOUS) {
+				core.select_chains.clear();
+				solve_continuous(peffect->get_handler_player(), peffect, nil_event);
+				arg.step = 14;
+				return FALSE;
+			}
+			card* phandler = peffect->get_handler();
+			newchain->flag = 0;
+			newchain->chain_id = infos.field_id++;
+			newchain->evt.event_code = 
+
+========== MSG_HINT @ processor.cpp:2034 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_SELECTMSG);
+				message->write<uint8_t>(1 - infos.turn_player);
+				message->write<uint64_t>(549);
+				emplace_process<Processors::SelectCard>(1 - infos.turn_player, false, 1, 1);
+				if(!patrician && atype == 3 && arg.must_attack_map.size() != differentMustAttackMonsterEffects) {
+					arg.step = 15;
+					return FALSE;
+				}
+			}
+		} else {
+			auto message = pduel->
+
+========== MSG_HINT @ processor.cpp:2045 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_SELECTMSG);
+			message->write<uint8_t>(infos.turn_player);
+			message->write<uint64_t>(549);
+			emplace_process<Processors::SelectCard>(infos.turn_player, core.attack_cancelable, 1, 1);
+		}
+		arg.step = 5;
+		return FALSE;
+	}
+	case 5: {
+		// the answer of "direct attack or not"
+		if(returns.at<int32_t>(0)) {
+			returns.set<int32_t>(0, -2);
+		} else {
+			if(core.select_cards.size()) {
+				auto opposel = !!is_player_affected_by_effect(infos.turn_player, EFFECT_PATRICIAN_OF_DARKNESS);
+				const auto sel_player = opposel ? 1 - infos.turn_player : infos.turn_player;
+				const auto cancelable = (core.attack_cancelable && !opposel);
+				auto message = pduel->
+
+========== MSG_HINT @ processor.cpp:2063 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_SELECTMSG);
+				message->write<uint8_t>(opposel ? 1 - infos.turn_player : infos.turn_player);
+				message->write<uint64_t>(549);
+				emplace_process<Processors::SelectCard>(sel_player, cancelable, 1, 1);
+			} else {
+				arg.attack_announce_failed = true;
+				arg.step = 6;
+			}
+		}
+		return FALSE;
+	}
+	case 6: {
+		if(return_cards.canceled) {//cancel attack manually
+			if(arg.is_replaying_attack) {
+				arg.step = 12;
+				return FALSE;
+			}
+			if(arg.forced_attack) {
+				returns.set<int32_t>(0, 2);
+				arg.step = 0;
+			} else
+				arg.step = Processors::restart;
+			return FALSE;
+		}
+		if(returns.at<int32_t>(0) == -2)
+			core.attack_target = nullptr;
+		else
+			core.attack_target = return_cards.list[0];
+		if(core.attack_target)
+			core.pre_field[1] = core.attack_target->fieldid_r;
+		else
+			core.pre_field[1] = 0;
+		return FALSE;
+	}
+	case 7
+
+========== MSG_HINT @ processor.cpp:2151 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(0);
+		message->write<uint64_t>(24);
+		message = pduel->
+
+========== MSG_HINT @ processor.cpp:2155 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(1);
+		message->write<uint64_t>(24);
+		core.hint_timing[0] = TIMING_BATTLE_PHASE;
+		core.hint_timing[1] = TIMING_BATTLE_PHASE;
+		emplace_process<Processors::PointEvent>(Step{ 30 }, false, false, false);
+		return FALSE;
+	}
+	case 10: {
+		if(returns.at<int32_t>(0))
+			arg.step = 8;
+		else
+			adjust_all();
+		return FALSE;
+	}
+	case 11: {
+		if(core.attacker->is_affected_by_effect(EFFECT_ATTACK_DISABLED)) {
+			core.attacker->reset(EFFECT_ATTACK_DISABLED, RESET_CODE);
+			pduel->
+
+========== MSG_HINT @ processor.cpp:2266 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(infos.turn_player);
+		message->write<uint64_t>(549);
+		emplace_process<Processors::SelectCard>(infos.turn_player, core.attack_cancelable, 1, 1);
+		arg.step = 5;
+		return FALSE;
+	}
+	case 19: {
+		infos.phase = PHASE_DAMAGE;
+		core.chain_attack = false;
+		arg.is_replaying_attack = false;
+		core.damage_calculated = false;
+		core.selfdes_disabled = true;
+		core.flip_delayed = true;
+		core.attacker->attack_controler = core.attacker->current.controler;
+		core.pre_field[0] = core.attacker->fieldid_r;
+		if(core.attack_target) {
+			core.attack_target->attack_controler = core.attack_target->current.controler;
+			core.pre_field[1] = core.attack_target->fieldid_r;
+		} else
+			core.pre_field[1] = 0;
+		++core.attacker->attacked_count;
+		core.attacker->attacked_cards.addcard(core.attack_target);
+		++core.battled_
+
+========== MSG_HINT @ processor.cpp:2307 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_EVENT);
+			message->write<uint8_t>(0);
+			message->write<uint64_t>(40);
+			message = pduel->
+
+========== MSG_HINT @ processor.cpp:2311 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_EVENT);
+			message->write<uint8_t>(1);
+			message->write<uint64_t>(40);
+			emplace_process<Processors::PointEvent>(false, false, is_flag(DUEL_SINGLE_CHAIN_IN_DAMAGE_SUBSTEP));
+		}
+		return FALSE;
+	}
+	case 21: {
+		if(core.attacker->is_status(STATUS_ATTACK_CANCELED)) {
+			arg.step = 33;
+			return FALSE;
+		}
+		if(!core.attack_target) {
+			return FALSE;
+		}
+		core.attacker->temp.position = core.attacker->current.position;
+		core.attack_target->temp.position = core.attack_target->current.position;
+		if(core.attack_target->is_position(POS_FACEDOWN)) {
+			change_position(core.attack_target, nullptr, PLAYER_NONE, core.attack_target->current.position >> 1, 0, TRUE);
+			adjust_all();
+		}
+		return FALSE;
+	}
+	case 22: {
+		raise_single_event(core.attacker, nullptr, EVENT_BATTLE_CONFIRM, nullptr, 0, 0, 0, 0);
+		if(core.attack_target) {
+			if(core.
+
+========== MSG_HINT @ processor.cpp:2347 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_EVENT);
+			message->write<uint8_t>(0);
+			message->write<uint64_t>(41);
+			message = pduel->
+
+========== MSG_HINT @ processor.cpp:2351 ==========
+new_message(MSG_HINT);
+			message->write<uint8_t>(HINT_EVENT);
+			message->write<uint8_t>(1);
+			message->write<uint64_t>(41);
+			core.hint_timing[infos.turn_player] = TIMING_DAMAGE_STEP;
+			emplace_process<Processors::PointEvent>(false, false, is_flag(DUEL_SINGLE_CHAIN_IN_DAMAGE_SUBSTEP));
+		}
+		return FALSE;
+	}
+	case 23: {
+		if(core.attacker->is_status(STATUS_ATTACK_CANCELED)) {
+			arg.step = 33;
+			return FALSE;
+		}
+		infos.phase = PHASE_DAMAGE_CAL;
+		adjust_all();
+		return FALSE;
+	}
+	case 24: {
+		// PHASE_DAMAGE_CAL;
+		calculate_battle_damage(nullptr, nullptr, nullptr);
+		raise_single_event(core.attacker, nullptr, EVENT_PRE_DAMAGE_CALCULATE, nullptr, 0, 0, 0, 0);
+		if(core.attack_target)
+			raise_single_event(core.attack_target, nullptr, EVENT_PRE_DAMAGE_CALCULATE, nullptr, 0, 0, 0, 1);
+		raise_event(nullptr, EVENT_PRE_DAMAGE_CALCULATE, nullptr, 0, 0, 0, 0);
+		process_single_event();
+
+========== MSG_HINT @ processor.cpp:2378 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(0);
+		message->write<uint64_t>(42);
+		message = pduel->
+
+========== MSG_HINT @ processor.cpp:2382 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(1);
+		message->write<uint64_t>(42);
+		core.hint_timing[infos.turn_player] = TIMING_DAMAGE_CAL;
+		emplace_process<Processors::PointEvent>(false, false, is_flag(DUEL_SINGLE_CHAIN_IN_DAMAGE_SUBSTEP));
+		return FALSE;
+	}
+	case 25: {
+		if(core.attacker->is_status(STATUS_ATTACK_CANCELED)) {
+			reset_phase(PHASE_DAMAGE_CAL);
+			adjust_all();
+			infos.phase = PHASE_DAMAGE;
+			arg.step = 33;
+			return FALSE;
+		}
+		return FALSE;
+	}
+	case 26: {
+		// Duel.CalculateDamage() goes here
+		uint32_t aa = core.attacker->get_attack(), ad = core.attacker->get_defense();
+		uint32_t da = 0, dd = 0;
+		uint8_t pa = core.attacker->current.controler, pd;
+		core.attacker->set_status(STATUS_BATTLE_RESULT, FALSE);
+		core.attacker->set_status(STATUS_BATTLE_DESTROYED, FALSE);
+		if(core.attack_target) {
+			da = core.attack_target->ge
+
+========== MSG_HINT @ processor.cpp:2425 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_CARD);
+				message->write<uint8_t>(0);
+				message->write<uint64_t>(indestructable_effect->owner->data.code);
+				bd[0] = false;
+			} else
+				core.attacker->set_status(STATUS_BATTLE_RESULT, TRUE);
+		}
+		if(bd[1]) {
+			effect* indestructable_effect = core.attack_target->is_affected_by_effect(EFFECT_INDESTRUCTABLE_BATTLE, core.attacker);
+			if(indestructable_effect) {
+				auto message = pduel->
+
+========== MSG_HINT @ processor.cpp:2436 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_CARD);
+				message->write<uint8_t>(0);
+				message->write<uint64_t>(indestructable_effect->owner->data.code);
+				bd[1] = false;
+			} else
+				core.attack_target->set_status(STATUS_BATTLE_RESULT, TRUE);
+		}
+		auto message = pduel->
+
+========== MSG_HINT @ processor.cpp:2588 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_EVENT);
+				message->write<uint8_t>(0);
+				message->write<uint64_t>(45);
+				message = pduel->
+
+========== MSG_HINT @ processor.cpp:2592 ==========
+new_message(MSG_HINT);
+				message->write<uint8_t>(HINT_EVENT);
+				message->write<uint8_t>(1);
+				message->write<uint64_t>(45);
+				core.hint_timing[infos.turn_player] = TIMING_DAMAGE_CAL;
+				emplace_process<Processors::PointEvent>(false, false, is_flag(DUEL_SINGLE_CHAIN_IN_DAMAGE_SUBSTEP));
+			} else {
+				break_effect();
+			}
+		}
+		return FALSE;
+	}
+	case 31: {
+		core.flip_delayed = false;
+		core.new_fchain.splice(core.new_fchain.begin(), core.new_fchain_b);
+		core.new_ochain.splice(core.new_ochain.begin(), core.new_ochain_b);
+		raise_single_event(core.attacker, nullptr, EVENT_BATTLED, nullptr, 0, PLAYER_NONE, 0, 0);
+		card_set battled_cards{ core.attacker };
+		if(core.attack_target) {
+			battled_cards.insert(core.attack_target);
+			raise_single_event(core.attack_target, nullptr, EVENT_BATTLED, nullptr, 0, PLAYER_NONE, 0, 1);
+		}
+		raise_event(std::move(battled_cards), EVENT_BATTLED,
+
+========== MSG_HINT @ processor.cpp:2629 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(0);
+		message->write<uint64_t>(43);
+		message = pduel->
+
+========== MSG_HINT @ processor.cpp:2633 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(1);
+		message->write<uint64_t>(43);
+		core.hint_timing[0] |= TIMING_BATTLED;
+		core.hint_timing[1] |= TIMING_BATTLED;
+		emplace_process<Processors::PointEvent>(false, false, is_flag(DUEL_SINGLE_CHAIN_IN_DAMAGE_SUBSTEP));
+		return FALSE;
+	}
+	case 33: {
+		auto des = arg.cards_destroyed_by_battle;
+		if(des) {
+			for(auto cit = des->container.begin(); cit != des->container.end();) {
+				auto rm = cit++;
+				if((*rm)->current.location != LOCATION_MZONE || ((*rm)->fieldid_r != core.pre_field[0] && (*rm)->fieldid_r != core.pre_field[1]))
+					des->container.erase(rm);
+			}
+			emplace_process<Processors::Destroy>(Step{ 3 }, des, nullptr, REASON_BATTLE, PLAYER_NONE);
+		}
+		adjust_all();
+		return FALSE;
+	}
+	case 34: {
+		arg.cards_destroyed_by_battle = nullptr;
+		// for unexpected end of damage step
+		core.damag
+
+========== MSG_HINT @ processor.cpp:2694 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(0);
+		message->write<uint64_t>(44);
+		message = pduel->
+
+========== MSG_HINT @ processor.cpp:2698 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(1);
+		message->write<uint64_t>(44);
+		emplace_process<Processors::PointEvent>(false, false, true);
+		arg.step = 38;
+		return FALSE;
+	}
+	case 38: {
+		return FALSE;
+	}
+	case 39: {
+		//end of damage step
+		core.attacker->set_status(STATUS_OPPO_BATTLE, FALSE);
+		if(core.attack_target)
+			core.attack_target->set_status(STATUS_OPPO_BATTLE, FALSE);
+		if(arg.forced_attack) {
+			arg.forced_attack_done = true;
+			arg.step = 0;
+		} else
+			arg.step = Processors::restart;
+		infos.phase = PHASE_BATTLE_STEP;
+		pduel->
+
+========== MSG_HINT @ processor.cpp:3369 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_EVENT);
+		message->write<uint8_t>(turn_player);
+		message->write<uint64_t>(27);
+		if(core.new_fchain.size() || core.new_ochain.size())
+			emplace_process<Processors::PointEvent>(false, true, false);
+		/*if(core.set_forced_attack)
+			emplace_process<Processors::ForcedBattle>();*/
+		return FALSE;
+	}
+	case 3: {
+		// Draw, new ruling
+		if(is_flag(DUEL_1ST_TURN_DRAW) || (infos.turn_id > 1)) {
+			int32_t count = get_draw_count(infos.turn_player);
+			if(count > 0 && is_flag(DUEL_DRAW_UNTIL_5)) {
+				count = std::max<int32_t>(static_cast<int32_t>(5 - player[turn_player].list_hand.size()), count);
+			}
+			if(count > 0) {
+				draw(nullptr, REASON_RULE, turn_player, turn_player, count);
+				emplace_process<Processors::PointEvent>(false, false, false);
+			}
+		}
+		emplace_process<Processors::PhaseEvent>(PHASE_DRAW);
+		/*if(core.set_forced_attack)
+
+
+========== MSG_HINT @ processor.cpp:3786 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_OPSELECTED);
+		message->write<uint8_t>(playerid);
+		message->write<uint64_t>(returns.at<int32_t>(0) >= (int32_t)core.select_options.size() ? core.select_options[returns.at<int32_t>(0)] : 65);
+		clit.triggering_effect = peffect;
+		clit.evt = ch->evt;
+		phandler->create_relation(clit);
+		peffect->dec_count(playerid);
+		if(!(peffect->type & EFFECT_TYPE_ACTIVATE)) {
+			peffect->type |= EFFECT_TYPE_ACTIVATE;
+			clit.flag |= CHAIN_ACTIVATING;
+		}
+		core.select_chains.clear();
+		core.select_options.clear();
+		effect* deffect = pduel->new_effect();
+		deffect->owner = phandler;
+		deffect->code = 0;
+		deffect->type = EFFECT_TYPE_SINGLE;
+		deffect->flag[0] = EFFECT_FLAG_CANNOT_DISABLE | EFFECT_FLAG_CLIENT_HINT;
+		deffect->description = 65;
+		deffect->reset_flag = RESET_CHAIN;
+		phandler->add_effect(deffect);
+		return FALSE;
+	}
+	case 6: {
+		auto&
+
+========== MSG_HINT @ processor.cpp:5116 ==========
+new_message(MSG_HINT);
+		message->write<uint8_t>(HINT_SELECTMSG);
+		message->write<uint8_t>(playerid);
+		if(reason & REASON_DISCARD)
+			message->write<uint64_t>(501);
+		else
+			message->write<uint64_t>(504);
+		emplace_process<Processors::SelectCard>(playerid, false, min, max);
+		return FALSE;
+	}
+	case 1: {
+		if(return_cards.list.empty())
+			returns.set<int32_t>(0, 0);
+		else
+			send_to(card_set{ return_cards.list.begin(), return_cards.list.end() }, core.reason_effect, reason, core.reason_player, PLAYER_NONE, LOCATION_GRAVE, 0, POS_FACEUP);
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+
+bool field::process(Processors::AttackDisable& arg) {
+	switch(arg.step) {
+	case 0: {
+		auto* attacker = core.attacker;
+		if(!attacker
+		   || core.effect_damage_step != 0
+		   || (attacker->fieldid_r != core.pre_field[0])
+		   || (attacker->current.location != LOCATION_MZONE)
+		   || !attacker->is_capable_attack()
+
+
+========== MSG_RETRY @ playerop.cpp:63 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectIdleCmd& arg) {
+	auto playerid = arg.playerid;
+	if(arg.step == 0) {
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:154 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectEffectYesNo& arg) {
+	auto playerid = arg.playerid;
+	auto pcard = arg.pcard;
+	auto description = arg.description;
+	if(arg.step == 0) {
+		if((arg.playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			returns.set<int32_t>(0, 1);
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:178 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectYesNo& arg) {
+	auto playerid = arg.playerid;
+	auto description = arg.description;
+	if(arg.step == 0) {
+		if((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			returns.set<int32_t>(0, 1);
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:199 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectOption& arg) {
+	auto playerid = arg.playerid;
+	if(arg.step == 0) {
+		returns.set<int32_t>(0, -1);
+		if(core.select_options.size() == 0) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:228 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+
+namespace {
+template<typename ReturnType>
+bool parse_response_cards(ProgressiveBuffer& returns, return_card_generic<ReturnType>& return_cards, const std::vector<ReturnType>& select_cards, bool cancelable) {
+	auto type = returns.at<int32_t>(0);
+	//allowed values are from -1 to 3
+	if(static_cast<uint32_t>(type + 1) > 4)
+		return false;
+	if(type == -1) {
+		if(cancelable) {
+			return_cards.canceled = true;
+			return true;
+		}
+		return false;
+	}
+	auto& list = return_cards.list;
+	if(type == 3) {
+		for(size_t i = 0; i < select_cards.size(); ++i) {
+			if(returns.bitGet(i + (sizeof(uint32_t) * 8)))
+				list.push_back(select_cards[i]);
+		}
+	} else {
+		auto size = returns.at<uint32_t>(1);
+		for(uint32_t i = 0; i < size; ++i) {
+			auto idx = (type == 0) ? returns.at<uint32_t>(i + 2) :
+				(type == 1) ? returns.at<uint16_t>(i + 4) :
+		
+
+========== MSG_RETRY @ playerop.cpp:321 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		if(return_cards.canceled)
+			return TRUE;
+		if(return_cards.list.size() < min || return_cards.list.size() > max) {
+			return_cards.clear();
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:328 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectCardCodes& arg) {
+	auto playerid = arg.playerid;
+	auto cancelable = arg.cancelable;
+	auto min = arg.min;
+	auto max = arg.max;
+	if(arg.step == 0) {
+		return_card_codes.clear();
+		returns.clear();
+		if(max == 0 || core.select_cards_codes.empty()) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:375 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		if(return_card_codes.canceled)
+			return TRUE;
+		if(return_card_codes.list.size() < min || return_card_codes.list.size() > max) {
+			return_card_codes.clear();
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:382 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectUnselectCard& arg) {
+	auto playerid = arg.playerid;
+	auto cancelable = arg.cancelable;
+	auto min = arg.min;
+	auto max = arg.max;
+	auto finishable = arg.finishable;
+	if (arg.step == 0) {
+		return_cards.clear();
+		returns.clear();
+		if (core.select_cards.empty() && core.unselect_cards.empty()) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:436 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		if(returns.at<int32_t>(0) == 0 || returns.at<int32_t>(0) > 1) {
+			return_cards.clear();
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:441 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		int32_t _max = (int32_t)(core.select_cards.size() + core.unselect_cards.size());
+		int retval = returns.at<int32_t>(1);
+		if(retval < 0 || retval >= _max){
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:447 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return_cards.list.push_back((retval >= (int32_t)core.select_cards.size()) ? core.unselect_cards[retval - core.select_cards.size()] : core.select_cards[retval]);
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectChain& arg) {
+	auto playerid = arg.playerid;
+	auto spe_count = arg.spe_count;
+	auto forced = arg.forced;
+	if(arg.step == 0) {
+		returns.set<int32_t>(0, -1);
+		if((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			if(core.select_chains.size() == 0)
+				returns.set<int32_t>(0, -1);
+			else if(forced)
+				returns.set<int32_t>(0, 0);
+			else {
+				bool act = true;
+				for(const auto& ch : core.current_chain)
+					if(ch.triggering_player == 1)
+						act = false;
+				if(act)
+					returns.set<int32_t>(0, 0);
+				else
+					returns.set<int32_t>(0, -1);
+			}
+			return TRUE;
+		}
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:498 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectPlace& arg) {
+	auto playerid = arg.playerid;
+	auto flag = arg.flag;
+	auto count = arg.count;
+	auto disable_field = arg.disable_field;
+	if(arg.step == 0) {
+		if(count == 0) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:570 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		};
+		uint8_t pt = 0;
+		for(int8_t i = 0; i < count; ++i) {
+			uint8_t select_player = returns.at<uint8_t>(pt);
+			if(select_player > 1)
+				return retry();
+			const bool isplayerid = (select_player == playerid);
+			uint8_t location = returns.at<uint8_t>(pt + 1);
+			if(location != LOCATION_MZONE && location != LOCATION_SZONE)
+				return retry();
+			const bool ismzone = location == LOCATION_MZONE;
+			uint8_t sequence = returns.at<uint8_t>(pt + 2);
+			if(sequence > 7 - ismzone) //szone allow max of 8 zones, so 0-7, mzones 7 zones, so 0-6
+				return retry();
+			uint32_t to_check = 0x1u << sequence;
+			if(!ismzone)
+				to_check <<= 8;
+			if(!isplayerid)
+				to_check <<= 16;
+			if(to_check & flag)
+				return retry();
+			flag |= to_check;
+			pt += 3;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectPosition& arg) {
+	auto playerid = arg.pla
+
+========== MSG_RETRY @ playerop.cpp:633 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectTributeP& arg) {
+	auto playerid = arg.playerid;
+	auto cancelable = arg.cancelable;
+	auto min = arg.min;
+	auto max = arg.max;
+	if(arg.step == 0) {
+		returns.clear();
+		return_cards.clear();
+		if(max == 0 || core.select_cards.empty()) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:683 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		if(return_cards.canceled)
+			return TRUE;
+		if(return_cards.list.size() > max) {
+			return_cards.clear();
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:690 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		int32_t tt = 0;
+		for(auto& pcard : return_cards.list)
+			tt += pcard->release_param;
+		if (tt < min) {
+			return_cards.clear();
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:698 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		return TRUE;
+	}
+}
+bool field::process(Processors::SelectCounter& arg) {
+	auto playerid = arg.playerid;
+	auto countertype = arg.countertype;
+	auto count = arg.count;
+	auto self = arg.self;
+	auto oppo = arg.oppo;
+	if(arg.step == 0) {
+		if(count == 0)
+			return TRUE;
+		uint8_t avail = self;
+		uint8_t fp = playerid;
+		uint32_t total = 0;
+		core.select_cards.clear();
+		for(int p = 0; p < 2; ++p) {
+			if(avail) {
+				for(auto& pcard : player[fp].list_mzone) {
+					if(pcard && pcard->get_counter(countertype)) {
+						core.select_cards.push_back(pcard);
+						total += pcard->get_counter(countertype);
+					}
+				}
+				for(auto& pcard : player[fp].list_szone) {
+					if(pcard && pcard->get_counter(countertype)) {
+						core.select_cards.push_back(pcard);
+						total += pcard->get_counter(countertype);
+					}
+				}
+			}
+			fp = 1 - fp;
+			avail = oppo;
+
+
+========== MSG_RETRY @ playerop.cpp:759 ==========
+new_message(MSG_RETRY);
+				return FALSE;
+			}
+			ct += returns.at<int16_t>(i);
+		}
+		if(ct != count) {
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:765 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+static int32_t select_sum_check1(const std::vector<int32_t>& oparam, int32_t size, int32_t index, int32_t acc) {
+	if(acc == 0 || index == size)
+		return FALSE;
+	int32_t o1 = oparam[index] & 0xffff;
+	int32_t o2 = oparam[index] >> 16;
+	if(index == size - 1)
+		return acc == o1 || acc == o2;
+	return (acc > o1 && select_sum_check1(oparam, size, index + 1, acc - o1))
+	       || (o2 > 0 && acc > o2 && select_sum_check1(oparam, size, index + 1, acc - o2));
+}
+bool field::process(Processors::SelectSum& arg) {
+	auto playerid = arg.playerid;
+	auto acc = arg.acc;
+	auto min = arg.min;
+	auto max = arg.max;
+	if(arg.step == 0) {
+		return_cards.clear();
+		returns.clear();
+		if(core.select_cards.empty()) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:824 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		int32_t tot = static_cast<int32_t>(return_cards.list.size());
+		if (max) {
+			if(tot < min || tot > max) {
+				return_cards.clear();
+				pduel->
+
+========== MSG_RETRY @ playerop.cpp:831 ==========
+new_message(MSG_RETRY);
+				return FALSE;
+			}
+			int32_t mcount = static_cast<int32_t>(core.must_select_cards.size());
+			std::vector<int32_t> oparam;
+			for(auto& list : { &core.must_select_cards , &return_cards.list })
+				for(auto& pcard : *list)
+					oparam.push_back(pcard->sum_param);
+			if(!select_sum_check1(oparam, tot + mcount, 0, acc)) {
+				return_cards.clear();
+				pduel->
+
+========== MSG_RETRY @ playerop.cpp:841 ==========
+new_message(MSG_RETRY);
+				return FALSE;
+			}
+			return TRUE;
+		} else {
+			// UNUSED VARIABLE
+			// int32_t mcount = core.must_select_cards.size();
+			int32_t sum = 0, mx = 0, mn = 0x7fffffff;
+			for(auto& list : { &core.must_select_cards , &return_cards.list }) {
+				for(auto& pcard : *list) {
+					int32_t op = pcard->sum_param;
+					int32_t o1 = op & 0xffff;
+					int32_t o2 = op >> 16;
+					int32_t ms = (o2 && o2 < o1) ? o2 : o1;
+					sum += ms;
+					mx += (o2 > o1) ? o2 : o1;
+					if(ms < mn)
+						mn = ms;
+				}
+			}
+			if(mx < acc || sum - mn >= acc) {
+				return_cards.clear();
+				pduel->
+
+========== MSG_RETRY @ playerop.cpp:863 ==========
+new_message(MSG_RETRY);
+				return FALSE;
+			}
+			return TRUE;
+		}
+	}
+	return TRUE;
+}
+bool field::process(Processors::SortCard& arg) {
+	auto playerid = arg.playerid;
+	auto is_chain = arg.is_chain;
+	if(arg.step == 0) {
+		returns.clear();
+		if((playerid == 1) && is_flag(DUEL_SIMPLE_AI)) {
+			returns.set<int8_t>(0, -1);
+			return TRUE;
+		}
+		if(core.select_cards.empty()) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:905 ==========
+new_message(MSG_RETRY);
+				return FALSE;
+			}
+			c[v] = true;
+		}
+		return TRUE;
+	}
+	return TRUE;
+}
+bool field::process(Processors::AnnounceRace& arg) {
+	auto playerid = arg.playerid;
+	auto count = arg.count;
+	auto available = arg.available;
+	if(arg.step == 0) {
+		if(count == 0) {
+			auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:934 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		if(bit::popcnt(selected_races) != count) {
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:938 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:969 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		if(bit::popcnt(selected_attributes) != count) {
+			pduel->
+
+========== MSG_RETRY @ playerop.cpp:973 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:1088 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:1111 ==========
+new_message(MSG_RETRY);
+			return FALSE;
+		}
+		auto message = pduel->
+
+========== MSG_RETRY @ playerop.cpp:1125 ==========
+new_message(MSG_RETRY);
+			--arg.step;
+			return false;
+		}
+		return true;
+	};
+	auto repeat = arg.repeat;
+	switch(arg.step) {
+	case 0: {
+		auto message = pduel->
+
+========== MSG_SELECT_POSITION @ playerop.cpp:624 ==========
+new_message(MSG_SELECT_POSITION);
+		message->write<uint8_t>(playerid);
+		message->write<uint32_t>(code);
+		message->write<uint8_t>(positions);
+		returns.set<int32_t>(0, 0);
+		return FALSE;
+	} else {
+		uint32_t pos = returns.at<int32_t>(0);
+		if((pos != 0x1 && pos != 0x2 && pos != 0x4 && pos != 0x8) || !(pos & positions)) {
+			pduel->
+
+========== MSG_BECOME_TARGET @ operations.cpp:93 ==========
+new_message(MSG_BECOME_TARGET);
+			message->write<uint32_t>(ot->container.size());
+			for(auto& pcard : ot->container) {
+				message->write(pcard->get_info_location());
+			}
+		}
+	}
+}
+void field::change_target_player(uint8_t chaincount, uint8_t playerid) {
+	if(core.current_chain.size() == 0)
+		return;
+	if(chaincount > core.current_chain.size() || chaincount < 1)
+		chaincount = static_cast<uint8_t>(core.current_chain.size());
+	core.current_chain[chaincount - 1].target_player = playerid;
+}
+void field::change_target_param(uint8_t chaincount, int32_t param) {
+	if(core.current_chain.size() == 0)
+		return;
+	if(chaincount > core.current_chain.size() || chaincount < 1)
+		chaincount = static_cast<uint8_t>(core.current_chain.size());
+	core.current_chain[chaincount - 1].target_param = param;
+}
+void field::remove_counter(uint32_t reason, card* pcard, uint32_t rplayer, uint8_t self, uint8_t oppo, uint
+
+========== MSG_CHAINING @ processor.cpp:3700 ==========
+new_message(MSG_CHAINING);
+		message->write<uint32_t>(phandler->data.code);
+		message->write(phandler->get_info_location());
+		message->write<uint8_t>(clit.triggering_controler);
+		message->write<uint8_t>((uint8_t)clit.triggering_location);
+		message->write<uint32_t>(clit.triggering_sequence);
+		message->write<uint64_t>(peffect->description);
+		message->write<uint32_t>(core.current_chain.size() + 1);
+		for(auto& ch_lim : core.chain_limit)
+			ensure_luaL_stack(luaL_unref, pduel->lua->lua_state, LUA_REGISTRYINDEX, ch_lim.function);
+		core.chain_limit.clear();
+		peffect->card_type = phandler->get_type();
+		if((peffect->card_type & (TYPE_TRAP | TYPE_MONSTER)) == (TYPE_TRAP | TYPE_MONSTER))
+			peffect->card_type -= TYPE_TRAP;
+		if(is_flag(DUEL_TRIGGER_WHEN_PRIVATE_KNOWLEDGE)) {
+			if(!((peffect->type & EFFECT_TYPE_CONTINUOUS) == 0 && (peffect->type & EFFECT_TYPE_SINGLE) != 0))
+				peffect->se
+
+========== MSG_CHAINED @ processor.cpp:3893 ==========
+new_message(MSG_CHAINED);
+		message->write<uint8_t>(clit.chain_count);
+		raise_event(phandler, EVENT_CHAINING, peffect, 0, clit.triggering_player, clit.triggering_player, clit.chain_count);
+		process_instant_event();
+		core.just_sent_cards.clear();
+		++core.real_chain_count;
+		if(core.new_chains.size())
+			emplace_process<Processors::AddChain>();
+		adjust_all();
+		return TRUE;
+	}
+	case 10: {
+		arg.is_activated_effect = true;
+		auto& clit = core.new_chains.front();
+		effect* peffect = clit.triggering_effect;
+		card* phandler = peffect->get_handler();
+		int32_t ecode = 0;
+		if(phandler->current.location == LOCATION_HAND) {
+			if(phandler->data.type & TYPE_TRAP)
+				ecode = EFFECT_TRAP_ACT_IN_HAND;
+			else if((phandler->data.type & TYPE_SPELL) && (phandler->data.type & TYPE_QUICKPLAY || phandler->is_affected_by_effect(EFFECT_BECOME_QUICK))
+					&& infos.turn_player != phandler->current.cont
+
+========== MSG_CHAIN_SOLVING @ processor.cpp:4113 ==========
+new_message(MSG_CHAIN_SOLVING);
+		message->write<uint8_t>(cait->chain_count);
+		add_to_disable_check_list(cait->triggering_effect->get_handler());
+		adjust_instant();
+		raise_event(nullptr, EVENT_CHAIN_ACTIVATING, cait->triggering_effect, 0, cait->triggering_player, cait->triggering_player, cait->chain_count);
+		process_instant_event();
+		return FALSE;
+	}
+	case 1: {
+		effect* peffect = cait->triggering_effect;
+		if(cait->flag & CHAIN_DISABLE_ACTIVATE && is_chain_negatable(cait->chain_count)) {
+			remove_oath_effect(peffect);
+			if(peffect->is_flag(EFFECT_FLAG_COUNT_LIMIT) && (peffect->count_flag & EFFECT_COUNT_CODE_OATH)) {
+				dec_effect_code(peffect->count_code, peffect->count_flag, peffect->count_hopt_index, cait->triggering_player);
+			}
+			if(cait->applied_chain_counters != nullptr) {
+				restore_chain_counter(cait->triggering_player, *cait->applied_chain_counters);
+				delete cait-
+
+========== MSG_CHAIN_SOLVED @ processor.cpp:4279 ==========
+new_message(MSG_CHAIN_SOLVED);
+		message->write<uint8_t>(cait->chain_count);
+		effect* peffect = cait->triggering_effect;
+		card* pcard = peffect->get_handler();
+		if((peffect->type & EFFECT_TYPE_ACTIVATE) && (cait->flag & CHAIN_ACTIVATING))
+			peffect->type &= ~EFFECT_TYPE_ACTIVATE;
+		if((cait->flag & CHAIN_HAND_EFFECT) && !pcard->is_position(POS_FACEUP) && (pcard->current.location == LOCATION_HAND))
+			shuffle(pcard->current.controler, LOCATION_HAND);
+		if(cait->target_cards && cait->target_cards->container.size()) {
+			for(auto& ptarget : cait->target_cards->container)
+				ptarget->release_relation(*cait);
+		}
+		if((pcard->data.type & TYPE_EQUIP) && (peffect->type & EFFECT_TYPE_ACTIVATE)
+			&& !pcard->equiping_target && pcard->is_has_relation(*cait))
+			pcard->set_status(STATUS_LEAVE_CONFIRMED, TRUE);
+		if(is_flag(DUEL_1_FACEUP_FIELD)) {
+			if((pcard->data.type & TYPE_FIELD) && (peffe
+
+========== MSG_CHAIN_END @ processor.cpp:4339 ==========
+new_message(MSG_CHAIN_END);
+		reset_chain();
+		if((core.summoning_card || core.summoning_proc_group_type || core.effect_damage_step == 1) && core.reserved)
+			core.subunits.push_back(*std::exchange(core.reserved, std::nullopt));
+		core.summoning_proc_group_type = 0;
+		core.summoning_card = nullptr;
+		return FALSE;
+	}
+	case 13: {
+		core.just_sent_cards.clear();
+		raise_event(nullptr, EVENT_CHAIN_END, nullptr, 0, 0, 0, 0);
+		process_instant_event();
+		adjust_all();
+		if(!arg.skip_trigger || !arg.skip_new) {
+			core.hint_timing[0] |= TIMING_CHAIN_END;
+			core.hint_timing[1] |= TIMING_CHAIN_END;
+			emplace_process<Processors::PointEvent>(arg.skip_trigger, arg.skip_freechain || arg.skip_new, arg.skip_new);
+		}
+		returns.set<int32_t>(0, TRUE);
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+int32_t field::break_effect(bool clear_sent) {
+	if(clear_sent)
+		core.just_sent_cards.clear();
+	core.hint_timing[0]
+
+========== MSG_SELECT_UNSELECT_CARD @ playerop.cpp:411 ==========
+new_message(MSG_SELECT_UNSELECT_CARD);
+		message->write<uint8_t>(playerid);
+		message->write<uint8_t>(finishable);
+		message->write<uint8_t>(cancelable);
+		message->write<uint32_t>(min);
+		message->write<uint32_t>(max);
+		message->write<uint32_t>((uint32_t)core.select_cards.size());
+		std::sort(core.select_cards.begin(), core.select_cards.end(), card::card_operation_sort);
+		for (auto& pcard : core.select_cards) {
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+		}
+		message->write<uint32_t>((uint32_t)core.unselect_cards.size());
+		for(auto& pcard : core.unselect_cards) {
+			message->write<uint32_t>(pcard->data.code);
+			message->write(pcard->get_info_location());
+		}
+		return FALSE;
+	} else {
+		if(returns.at<int32_t>(0) == -1) {
+			if(cancelable || finishable) {
+				return_cards.canceled = true;
+				return TRUE;
+			}
+			return_cards.clear();
+
+========== MSG_SELECT_TRIBUTE @ playerop.cpp:665 ==========
+new_message(MSG_SELECT_TRIBUTE);
+		message->write<uint8_t>(playerid);
+		message->write<uint8_t>(cancelable || min == 0);
+		message->write<uint32_t>(min);
+		message->write<uint32_t>(max);
+		message->write<uint32_t>((uint32_t)core.select_cards.size());
+		std::sort(core.select_cards.begin(), core.select_cards.end(), card::card_operation_sort);
+		for(auto& pcard : core.select_cards) {
+			message->write<uint32_t>(pcard->data.code);
+			message->write<uint8_t>(pcard->current.controler);
+			message->write<uint8_t>(pcard->current.location);
+			message->write<uint32_t>(pcard->current.sequence);
+			message->write<uint8_t>(pcard->release_param);
+		}
+		return FALSE;
+	} else {
+		if(!parse_response_cards(cancelable || min == 0)) {
+			return_cards.clear();
+			pduel->
+
+========== MSG_POS_CHANGE @ operations.cpp:5308 ==========
+new_message(MSG_POS_CHANGE);
+			message->write<uint32_t>(pcard->data.code);
+			message->write<uint8_t>(pcard->current.controler);
+			message->write<uint8_t>(pcard->current.location);
+			message->write<uint8_t>(pcard->current.sequence);
+			message->write<uint8_t>(pcard->previous.position);
+			message->write<uint8_t>(pcard->current.position);
+			core.hint_timing[pcard->current.controler] |= TIMING_POS_CHANGE;
+			if((opos & POS_FACEDOWN) && (npos & POS_FACEUP)) {
+				pcard->fieldid = infos.field_id++;
+				if(check_unique_onfield(pcard, pcard->current.controler, pcard->current.location))
+					pcard->unique_fieldid = UINT_MAX;
+				if(pcard->current.location == LOCATION_MZONE) {
+					raise_single_event(pcard, nullptr, EVENT_FLIP, reason_effect, 0, reason_player, 0, flag);
+					flips.insert(pcard);
+				}
+				if(enable) {
+					if(!reason_effect || !(reason_effect->type & 0x7f0) || pcard->current
+
+========== MSG_SET @ operations.cpp:2742 ==========
+new_message(MSG_SET);
+		message->write<uint32_t>(target->data.code);
+		message->write(target->get_info_location());
+		adjust_instant();
+		raise_event(target, EVENT_MSET, summon_procedure_effect, 0, setplayer, setplayer, 0);
+		process_instant_event();
+		if(core.current_chain.size() == 0) {
+			adjust_all();
+			core.hint_timing[setplayer] |= TIMING_MSET;
+			emplace_process<Processors::PointEvent>(false, false, false);
+		}
+		return TRUE;
+	}
+	}
+	return TRUE;
+}
+bool field::process(Processors::SpellSet& arg) {
+	auto setplayer = arg.setplayer;
+	auto toplayer = arg.toplayer;
+	auto target = arg.target;
+	auto reason_effect = arg.reason_effect;
+	switch(arg.step) {
+	case 0: {
+		if(!(target->data.type & TYPE_FIELD) && get_useable_count(target, toplayer, LOCATION_SZONE, setplayer, LOCATION_REASON::TOFIELD) <= 0)
+			return TRUE;
+		if(target->data.type & TYPE_MONSTER && !target->is_affected_by_effect(EFF
+
+========== MSG_SET @ operations.cpp:2804 ==========
+new_message(MSG_SET);
+		message->write<uint32_t>(target->data.code);
+		message->write(target->get_info_location());
+		adjust_instant();
+		raise_event(target, EVENT_SSET, reason_effect, 0, setplayer, setplayer, 0);
+		process_instant_event();
+		if(core.current_chain.size() == 0) {
+			adjust_all();
+			core.hint_timing[setplayer] |= TIMING_SSET;
+			emplace_process<Processors::PointEvent>(false, false, false);
+		}
+	}
+	}
+	return TRUE;
+}
+bool field::process(Processors::SpellSetGroup& arg) {
+	auto setplayer = arg.setplayer;
+	auto toplayer = arg.toplayer;
+	auto ptarget = arg.ptarget;
+	auto confirm = arg.confirm;
+	auto reason_effect = arg.reason_effect;
+	auto& set_cards = arg.set_cards;
+	switch(arg.step) {
+	case 0: {
+		core.operated_set.clear();
+		for(auto& target : ptarget->container) {
+			if((!(target->data.type & TYPE_FIELD) && get_useable_count(target, toplayer, LOCATION_SZONE, setplayer, LOCA
+
+========== MSG_SET @ operations.cpp:2925 ==========
+new_message(MSG_SET);
+		message->write<uint32_t>(target->data.code);
+		message->write(target->get_info_location());
+		core.set_group_set.insert(target);
+		core.set_group_pre_set.erase(target);
+		if(!core.set_group_pre_set.empty())
+			arg.step = 2;
+		return FALSE;
+	}
+	case 5: {
+		if(confirm) {
+			auto message = pduel->
+
+========== MSG_FLIPSUMMONING @ operations.cpp:2373 ==========
+new_message(MSG_FLIPSUMMONING);
+		message->write<uint32_t>(target->data.code);
+		message->write(target->get_info_location());
+		if(target->is_affected_by_effect(EFFECT_CANNOT_DISABLE_FLIP_SUMMON))
+			arg.step = 2;
+		else {
+			target->set_status(STATUS_SUMMONING, TRUE);
+			target->set_status(STATUS_SUMMON_DISABLED, FALSE);
+			raise_event(target, EVENT_FLIP_SUMMON, nullptr, 0, sumplayer, sumplayer, 0);
+			process_instant_event();
+			emplace_process<Processors::PointEvent>(true, true, true);
+		}
+		return FALSE;
+	}
+	case 2: {
+		if(target->is_status(STATUS_SUMMONING))
+			return FALSE;
+		for(const auto& peffect : arg.flip_summon_cost_effects)
+			remove_oath_effect(peffect);
+		if(target->current.location == LOCATION_MZONE)
+			send_to(target, nullptr, REASON_RULE, sumplayer, sumplayer, LOCATION_GRAVE, 0, 0);
+		emplace_process<Processors::PointEvent>(false, false, false);
+		return TRUE;
+	}
+	case 
+
+========== MSG_CARD_SELECTED @ processor.cpp:2031 ==========
+new_message(MSG_CARD_SELECTED);
+				message->write<uint32_t>(1);
+				message->write(core.attacker->get_info_location());
+				message = pduel->
