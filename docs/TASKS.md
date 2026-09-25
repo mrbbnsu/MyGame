@@ -49,34 +49,23 @@
 - 验收：✅ 通过 Card ID 可查询中文名/英文名/类型/ATK/DEF/Level/效果文字。
 - 报告：`docs/reports/phase-1-report.md`
 
-## Phase 2：卡图 —— ⏸ 推迟（不阻塞引擎/AI）
+## Phase 2：卡图 —— 📋 工单已定义，可并行分发（WO-002）
 
 - 依赖：Phase 1
-- 决策：任务书原排在引擎前，但卡图只影响 UI 展示；为尽快达成"可完整对局"里程碑，推迟到 Phase 7（真实卡组）前完成。
+- 决策：卡图不阻塞引擎/AI，可与 Phase 3 并行；Phase 7（真实卡组+UI）前必须完成。
 - 任务：
   - [ ] 卡图下载器（id.jpg，本地缓存，只下载缺失，失败重试，禁止热链）
   - [ ] 简中 → 其他版本 fallback
 - 验收：随机抽 20 张卡正确显示对应卡图。
 
-## Phase 3：最小 Rule Engine —— 🔄 进行中（2026-09-25 启动）
+## Phase 3：最小 Rule Engine —— 📋 工单已定义，待分发（WO-001）
 
 - 依赖：Phase 0
 - 范围：**只用普通怪兽**。Deck / Hand / Monster Zone / Graveyard / Draw / 通常召唤 / 盖放 / 反转召唤 / 祭品召唤 / 位置变更 / 回合 / 阶段 / 战斗 / LP / 胜负 / 手牌上限。
 - 明确不做：效果、魔法陷阱、连锁、特殊召唤（接口预留：special_summon_limit 进配置）。
-- 架构要求（从第一天遵守）：
-  - 所有卡牌移动走统一 `moveCard(state, uid, from, to)` API（任务书 §14）
-  - 所有玩家决策表达为**数据化 Action**，`legalActions(state)` 生成 + `applyAction(state, action)` 执行（任务书 §21，为 AI 铺路）
-  - GameState 为纯 JSON 结构（可 structuredClone），AI 搜索可直接复制推演
-  - RNG 注入式（种子化，测试可复现）
+- 架构要求（WO-001 中已细化为接口契约）：统一 moveCard API、数据化 Action（legalActions/applyAction）、GameState 可 structuredClone、RNG 种子化。
 - 规则基准：`docs/v1-rules.md`（冻结版）；已固定选项：**先攻第一回合不抽牌**。
-- 任务：
-  - [x] 状态模型与 Zone/Move API
-  - [x] 回合/阶段机（DRAW→STANDBY→MAIN1→BATTLE→MAIN2→END；先攻首回合锁战斗）
-  - [x] 召唤系（通常/盖放/祭品/反转/位置变更）
-  - [x] 战斗解算器（ATKvsATK / ATKvsDEF / 直接攻击 / 贯穿接口 / 战斗破坏 / LP）
-  - [x] 胜负判断（LP≤0 / 抽空卡组）
-  - [x] 手牌上限（结束阶段弃至 6）
-  - [x] 测试：召唤/祭品/战斗各情形/回合流/完整对局（真实卡库数据）
+- 任务与验收：见 `docs/workorders/WO-001-phase3-rule-engine.md`
 - 验收：两套普通怪兽卡组可脚本驱动完整打完一局并正确判胜，全程无非法状态。
 
 ## Phase 4：Effect Engine V1 —— ⬜ 未开始
@@ -120,13 +109,20 @@
 
 | 任务 | 归属 | 状态 |
 |---|---|---|
-| 卡池筛选（supported/complexity 打标） | Card Database | ⬜ Phase 4 起随能力扩展滚动进行 |
+| 卡池筛选（supported/complexity 打标） | Card Database | 📋 初筛工单 WO-003，可并行分发 |
 | Test Mode（指定 LP/手牌/墓地起局） | Game Modes | ⬜ Phase 6 前就绪（AI 残局测试依赖） |
 | YGOPRODeck 补充数据 | Card Database | ⬜ 按需 |
 | 卡图下载 | Card Database | ⏸ Phase 7 前 |
+
+## 工单索引（PM 制定，用户分发，完成后 PM 验收）
+
+| 工单 | 内容 | 依赖 | 优先级 | 状态 |
+|---|---|---|---|---|
+| `workorders/WO-001-phase3-rule-engine.md` | 最小规则引擎 + 规则测试套件 | Phase 0（已完成） | 🔴 关键路径 | 待分发 |
+| `workorders/WO-002-card-images.md` | 卡图下载器（本地缓存） | Phase 1（已完成） | 🟡 可并行 | 待分发 |
+| `workorders/WO-003-v1-pool-screening.md` | V1 卡池机器初筛打标 | Phase 1（已完成） | 🟢 低 | 待分发 |
 
 ## 阶段报告索引
 
 - `docs/reports/phase-0-report.md`
 - `docs/reports/phase-1-report.md`
-- `docs/reports/phase-3-report.md`（最小规则引擎）
