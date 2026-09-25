@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Classic Duel</title>
+  <link rel="stylesheet" href="/ui.css">
+</head>
+<body>
+  <header id="topbar">
+    <h1>Classic Duel <span class="sub">经典决斗 · 双人热座</span></h1>
+    <div id="duel-status" class="hidden">
+      <span id="turn-info"></span>
+      <span id="lp-info"></span>
+      <button id="btn-restart" class="ghost">重新开局</button>
+    </div>
+  </header>
+
+  <!-- 开局选卡组 -->
+  <section id="setup">
+    <h2>选择预设卡组开始对局</h2>
+    <div class="setup-row">
+      <label>玩家1 卡组 <select id="deck-p1"></select></label>
+      <label>玩家2 卡组 <select id="deck-p2"></select></label>
+      <button id="btn-start">开始对局</button>
+    </div>
+    <p id="setup-hint" class="hint">双方各 40 张 · 8000 LP · 经典规则（ocgcore 裁决）</p>
+  </section>
+
+  <!-- 对局区 -->
+  <main id="arena" class="hidden">
+    <section class="side opponent">
+      <div class="player-bar" id="bar-p-opp">
+        <span class="pname" id="opp-name"></span>
+        <span class="lp" id="opp-lp"></span>
+        <span class="counts" id="opp-counts"></span>
+      </div>
+      <div class="zones">
+        <div class="zone-row" id="opp-spell"></div>
+        <div class="zone-row" id="opp-monster"></div>
+      </div>
+    </section>
+
+    <section id="handoff" class="hidden"></section>
+
+    <section id="log-panel">
+      <h3>对局日志</h3>
+      <div id="log"></div>
+    </section>
+
+    <section id="pending-panel">
+      <h3 id="pending-title">等待操作</h3>
+      <div id="pending-body"></div>
+    </section>
+
+    <section class="side me">
+      <div class="zones">
+        <div class="zone-row" id="me-monster"></div>
+        <div class="zone-row" id="me-spell"></div>
+      </div>
+      <div class="player-bar" id="bar-p-me">
+        <span class="pname" id="me-name"></span>
+        <span class="lp" id="me-lp"></span>
+        <span class="counts" id="me-counts"></span>
+      </div>
+    </section>
+
+    <section id="hand-panel">
+      <h3>你的手牌</h3>
+      <div id="hand"></div>
+    </section>
+
+    <section id="winner-banner" class="hidden"></section>
+  </main>
+
+  <!-- 卡片详情浮层 -->
+  <div id="overlay" class="hidden">
+    <div id="overlay-card">
+      <button id="overlay-close">×</button>
+      <img id="overlay-art" alt="">
+      <div id="overlay-info"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden"></div>
+  <script type="module" src="/ui.js"></script>
+</body>
+</html>

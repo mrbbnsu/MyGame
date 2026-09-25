@@ -132,6 +132,8 @@ core 消息按 core writer 布局解码为 `{type:<MSG名>, …字段}` 的数�
 
 同 `seed` + 完全一致的 respond 序列 ⇒ **事件流与状态序列逐字节一致**
 （测试以 canonical JSON 比较通过）。注意：duel_id 是服务会话序号，不在此保证内。
+卡组初始顺序 = 服务按 seed 派生 PRNG 对传入 decks 做的确定性洗牌
+（core 的 Startup 不洗卡组，初始洗牌是宿主职责；传入顺序不影响抽牌序）。
 
 ## 6. v0 偏差与已知限制（PM 报备同文）
 

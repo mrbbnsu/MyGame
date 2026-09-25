@@ -326,8 +326,10 @@ def _decode_move(r, p):
 
 
 def _decode_pos_change(r, p):
-    return {"code": r.u32(), "at": r.loc_info(), "prev_pos": r.u8(),
-            "new_pos": r.u8()}
+    # code u32 + con u8 + loc u8 + seq u8 + prev_pos u8 + new_pos u8 = 9 字节
+    #（operations.cpp:5308~5314；无 pos 字段、seq 为 u8）
+    return {"code": r.u32(), "at": {"con": r.u8(), "loc": r.u8(), "seq": r.u8()},
+            "prev_pos": r.u8(), "new_pos": r.u8()}
 
 
 def _decode_swap(r, p):
@@ -525,7 +527,20 @@ def _decode_select_card(r, p):
     m["cards"] = [r.card_entry() for _ in range(n)]
     return m
 
-_decode_select_tribute = _decode_select_card
+
+def _decode_select_tribute(r, p):
+    # 与 SELECT_CARD 同构但条目不同：code u32 + con u8 + loc u8 + seq u32 +
+    # release_param u8（无 pos，playerop.cpp:672~678）；应答格式与 SELECT_CARD
+    # 相同（parse_response_cards）
+    m = {"player": r.u8(), "cancelable": r.u8(), "min": r.u32(), "max": r.u32()}
+    n = r.u32()
+    m["cards"] = []
+    for _ in range(n):
+        code = r.u32()
+        at = {"con": r.u8(), "loc": r.u8(), "seq": r.u32()}
+        m["cards"].append({"code": code, "at": at,
+                           "release_param": r.u8()})
+    return m
 
 
 def _decode_select_chain(r, p):

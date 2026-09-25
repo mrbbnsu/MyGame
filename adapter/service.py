@@ -16,6 +16,7 @@
 import argparse
 import json
 import os
+import random
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -157,9 +158,16 @@ class AdapterService:
                                f"mode 必须是 {sorted(cb.MODE_FLAGS)} 之一")
         flags = cb.DUEL_TEST_MODE | cb.MODE_FLAGS[mode]
 
+        # 初始洗牌：core 的 Startup 不洗卡组（EDOPro 由服务器预洗），宿主负责。
+        # 用 seed 派生 PRNG => 同 seed + 同应答序列的确定性契约不受影响。
+        rng = random.Random(seed[0] ^ ((seed[1] if len(seed) > 1 else 0) << 1))
+        shuffled = [list(d) for d in decks]
+        for d in shuffled:
+            rng.shuffle(d)
+
         self.core.create_duel(seed=seed, flags=flags, lp=lp,
                               start_hand=start_hand)
-        for p, deck in enumerate(decks):
+        for p, deck in enumerate(shuffled):
             for code in deck:
                 self.core.new_card(p, code, _DECK)
         self.core.start()
@@ -551,7 +559,10 @@ def _redact_event(ev, viewer):
     if t == "MOVE" and "to" in out:
         pairs.append((out, "code", out["to"]))
     if t == "POS_CHANGE":
-        out["code"] = out["code"] if visible(out["at"], viewer) else None
+        # 变更后表侧则公开（at 本身无 pos，用 new_pos 判定）
+        at = {**out["at"], "pos": out["new_pos"]}
+        if not visible(at, viewer):
+            out["code"] = None
         return out
     if t == "SWAP":
         out["code1"] = out["code1"] if visible(out["at1"], viewer) else None
@@ -576,8 +587,11 @@ def _card_ref(e):
 
 
 def _choice_card(e):
-    """SELECT_CARD 条目 -> choice {card: {code, con, loc, seq, pos}}。"""
-    return {"card": _card_ref(e)}
+    """SELECT_CARD/TRIBUTE 条目 -> choice {card: {code, con, loc, seq, pos}}。"""
+    c = {"card": _card_ref(e)}
+    if "release_param" in e:
+        c["release_param"] = e["release_param"]   # 上祭所需祭品数
+    return c
 
 
 def _pos_name(pos):
