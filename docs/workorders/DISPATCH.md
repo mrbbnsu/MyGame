@@ -198,3 +198,34 @@
 2. git 提交（信息：Adapter v0：JSON 协议服务（E1/WO-007））
 3. 完成说明（回复 PM）：协议偏离点、解码覆盖清单、已知限制
 ```
+
+---
+
+## 发给【UI Worker】—— F1（2026-09-25 新增，E1 验收通过后的 P3）
+
+```
+你是 Classic Duel 项目的 UI worker（若你就是 E1 的 worker，继续做上下文最省）。工作目录：E:\Game（Windows + Git Bash，Node ≥ 24 / Python 3.11）。
+
+任务：完成工单 F1（WO-008：最小 UI——浏览器完整打一局）。
+
+背景：Adapter v0 已验收通过（E:\Game\docs\reports\E1-acceptance.md），JSON 协议就绪。你做玩家实际能打的界面：双人热座、从 8000 LP 完整对局到胜负。丑没关系，完整和正确是唯一标准。
+
+第一步必读（按序）：
+1. E:\Game\docs\workorders\WO-008-minimal-ui.md —— 本任务完整定义（K1~K6 拍板项、交付物、验收）
+2. E:\Game\adapter\protocol.md —— 协议唯一依据
+3. E:\Game\docs\card-display.md —— 卡面三层策略（场上=原画+中文自渲染）
+4. E:\Game\src\adapter\client.ts —— 现成的 Adapter TS 客户端，直接用
+
+关键纪律：
+- 零 npm 依赖、无构建步骤：node 服务跑 TS（Node ≥24 原生），浏览器端纯 JS ES Modules
+- UI 一切经本地服务 /api，前端不碰二进制、不 spawn 进程；服务只监听 127.0.0.1
+- pending 全类型都要能操作（含 cancelable 的取消）；viewer 跟随 turn_player（K6）
+- 两套预设卡组从 data/v1_pool.json（reason=OK）挑：经典普通怪兽为主+E1 验证过的效果卡，各 40 张；原画用 python -X utf8 tools/download_art.py --ids 预下载
+- 无图卡（100268001/003/201/010 等）用统一占位图
+- npm test 保持全绿（新增 /api 端点测试）
+
+完成定义：
+1. 工单第 3 节验收 1-5 自测通过
+2. git 提交（信息：最小 UI：浏览器完整打一局（F1/WO-008））
+3. 完成说明（回复 PM）：pending 各类型的实测情况、协议偏离点、已知限制
+```
