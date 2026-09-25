@@ -95,6 +95,12 @@
 
 > 秘书 worker（`SECRETARY.md`）：PM 直接控制的小改动子代理，规则不变。
 
+### 执行者与模块纪律（2026-09-25 增补）
+
+1. **任务编号 ≠ worker**：A1/B1/E1 只是追踪号，同一 worker 可以顺序领多张单（主线已串行：E1→P3 UI→P5 AI 建议同一人连续做，上下文最省）；DISPATCH 命令对任何执行会话成立
+2. **模块跟架构边界走，不跟工单走**：现有模块清单见 architecture-v2.md。新任务**默认在既有模块里加文件**；只有出现架构图上的真实新边界（新进程/新语言/新数据权属）才允许建新目录，且必须先改 architecture-v2.md 再动工
+3. 已归档模块（src/engine、src/core）与一次性产物（spike/）不再增长，勿在其中追加功能
+
 ## 8. 归档区（fallback，不删除）
 
 - `docs/v1-rules.md`、`docs/effect-system.md`（已加归档头注）
