@@ -92,7 +92,7 @@
 | **D1**（`WO-005`） | worker D | **Phase P 探针 P1~P4（路线决策）** | 无 | 🔴 P0 | ✅ 验收通过，**判定 GO**（`reports/D1-acceptance.md`，提交 `feeede7`） |
 | **D2**（`WO-006`） | worker D | WindBot 技术调查 | D1 ✅ | P0 | ✅ 验收通过（`reports/D2-acceptance.md`，结论 REFERENCE_ONLY，AI V0 设计输入已沉淀） |
 | **E1**（`WO-007`） | worker E | **Adapter v0：JSON 协议服务（P2 关键路径）** | D1 ✅ GO | 🔴 P2 | ✅ 验收通过（`reports/E1-acceptance.md`，解码 79 种，K3 破坏性验证过） |
-| **F1**（`WO-008`） | 建议 worker E 继续 | **最小 UI：浏览器完整打一局（P3）** | E1 ✅ | 🔴 P3 | 待派发 |
+| **F1**（`WO-008`） | worker F | **最小 UI：浏览器完整打一局（P3）** | E1 ✅ | 🔴 P3 | ✅ 验收通过（`reports/F1-acceptance.md`，PM 浏览器实打 100+ 回合） |
 
 > 秘书 worker（`SECRETARY.md`）：PM 直接控制的小改动子代理，规则不变。
 
